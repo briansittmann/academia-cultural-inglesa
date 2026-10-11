@@ -46,14 +46,16 @@ const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
   <div class="lg:col-span-5">
     {
       publico.data.foto && (
-        <Image
-          src={publico.data.foto}
-          alt={publico.data.fotoAlt ?? ''}
-          widths={[480, 800, 1200]}
-          sizes="(min-width: 1024px) 40vw, 100vw"
-          loading="lazy"
-          class="aspect-[4/3] w-full rounded-card object-cover shadow-card lg:aspect-[4/5]"
-        />
+        <div class="panel-foto aspect-[4/3] overflow-hidden rounded-card shadow-card lg:aspect-[4/5]">
+          <Image
+            src={publico.data.foto}
+            alt={publico.data.fotoAlt ?? ''}
+            widths={[480, 800, 1200]}
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            loading="lazy"
+            class="h-full w-full object-cover"
+          />
+        </div>
       )
     }
     <h3 class="mt-6 text-2xl">{publico.data.titulo}</h3>

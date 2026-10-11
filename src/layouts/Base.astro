@@ -78,6 +78,7 @@ const ogImageUrl = new URL(ogImage, Astro.site);
     >
       Ir al contenido
     </a>
+    <div class="absolute top-0 left-0 h-px w-px" data-centinela aria-hidden="true"></div>
     <Header />
     <main id="contenido" class="flex-1">
       <slot />
@@ -98,11 +99,28 @@ const ogImageUrl = new URL(ogImage, Astro.site);
               if (!e.isIntersecting) return;
               e.target.setAttribute('data-visible', '');
               io.unobserve(e.target);
+              e.target.querySelectorAll<HTMLElement>('[data-cifra]').forEach(contar);
             });
           },
           { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
         );
         elementos.forEach((el) => io.observe(el));
+      }
+      // Contador: la cifra sube de 0 al valor final en 900 ms con ease-out (WAAPI no
+      // anima texto, así que se interpola en requestAnimationFrame).
+      function contar(el: HTMLElement) {
+        const fin = Number(el.dataset.cifra);
+        if (!Number.isFinite(fin) || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        const inicio = performance.now();
+        const duracion = 900;
+        const easeOut = (t: number) => 1 - Math.pow(1 - t, 4);
+        function paso(ahora: number) {
+          const t = Math.min(1, (ahora - inicio) / duracion);
+          el.textContent = String(Math.round(easeOut(t) * fin));
+          if (t < 1) requestAnimationFrame(paso);
+        }
+        el.textContent = '0';
+        requestAnimationFrame(paso);
       }
       document.addEventListener('astro:page-load', iniciarReveal);
     </script>

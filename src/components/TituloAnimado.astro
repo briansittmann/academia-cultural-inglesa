@@ -1,0 +1,31 @@
+---
+/**
+ * Título que entra palabra por palabra (cada palabra sube desde un marco
+ * recortado). Con `espera`, se queda en pausa hasta que su bloque [data-reveal]
+ * sea visible; sin JS, corre al cargar.
+ */
+interface Props {
+  texto: string;
+  as?: 'h1' | 'h2' | 'h3';
+  class?: string;
+  espera?: boolean;
+  retraso?: number; // ms antes de la primera palabra
+}
+const { texto, as: Tag = 'h2', class: className, espera = false, retraso = 0 } = Astro.props;
+const palabras = texto.trim().split(/\s+/);
+---
+
+<Tag class={className} data-espera={espera ? '' : undefined} style={`--retraso-titulo: ${retraso}ms`}>
+  {
+    palabras.map((palabra, i) => (
+      <>
+        <span class="palabra-marco">
+          <span class="palabra" style={`--i: ${i}`}>
+            {palabra}
+          </span>
+        </span>
+        {i < palabras.length - 1 ? ' ' : ''}
+      </>
+    ))
+  }
+</Tag>

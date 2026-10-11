@@ -2,10 +2,14 @@
 /**
  * Hero partido texto / foto. Cuatro elementos: eyebrow (la campaña vigente de
  * novedades), H1, bajada y dos CTAs. Único eyebrow de toda la página.
+ * Entrada de carga: eyebrow desde la izquierda, título palabra por palabra,
+ * bajada y CTAs desde abajo, foto revelada con máscara y zoom que se asienta.
+ * Parallax suave de la foto al hacer scroll (mejora progresiva).
  */
 import { Image } from 'astro:assets';
 import { getCollection, getEntry } from 'astro:content';
 import Boton from '../Boton.astro';
+import TituloAnimado from '../TituloAnimado.astro';
 
 const instituto = await getEntry('instituto', 'instituto');
 if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
@@ -22,17 +26,17 @@ const whatsappUrl = `https://wa.me/${sede.data.whatsapp.internacional}?text=${en
 
 <section id="inicio" class="scroll-mt-16">
   <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-10 pb-14 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:pt-16 lg:pb-20">
-    <div class="hero-entrada lg:col-span-6">
+    <div class="lg:col-span-6">
       {
         inscripciones?.data.eyebrow && (
-          <p class="mb-5 inline-flex items-center rounded-full bg-verde-100 px-3 py-1 text-sm font-semibold text-verde-900">
+          <p class="hero-eyebrow mb-5 inline-flex items-center rounded-full bg-verde-100 px-3 py-1 text-sm font-semibold text-verde-900">
             {inscripciones.data.eyebrow}
           </p>
         )
       }
-      <h1 class="text-[2.5rem] leading-[1.05] sm:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]">{hero.titulo}</h1>
-      <p class="mt-5 max-w-[32rem] text-lg leading-relaxed text-tinta-suave sm:text-xl">{hero.bajada}</p>
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <TituloAnimado as="h1" texto={hero.titulo} retraso={120} class="text-[2.5rem] leading-[1.05] sm:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]" />
+      <p class="hero-bajada mt-5 max-w-[32rem] text-lg leading-relaxed text-tinta-suave sm:text-xl">{hero.bajada}</p>
+      <div class="hero-ctas mt-8 flex flex-col gap-3 sm:flex-row">
         <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo>
           Escribir por WhatsApp
         </Boton>
@@ -42,16 +46,18 @@ const whatsappUrl = `https://wa.me/${sede.data.whatsapp.internacional}?text=${en
       </div>
     </div>
 
-    <figure class="hero-entrada lg:col-span-6" style="--entrada-delay: 80ms">
-      <Image
-        src={hero.foto}
-        alt={hero.fotoAlt}
-        widths={[480, 800, 1200, 1600]}
-        sizes="(min-width: 1024px) 50vw, 100vw"
-        loading="eager"
-        fetchpriority="high"
-        class="aspect-[4/3] w-full rounded-card object-cover shadow-card"
-      />
-    </figure>
+    <div class="hero-foto-parallax lg:col-span-6">
+      <figure class="hero-foto-mascara overflow-hidden rounded-card shadow-card">
+        <Image
+          src={hero.foto}
+          alt={hero.fotoAlt}
+          widths={[480, 800, 1200, 1600]}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="hero-foto-img aspect-[4/3] w-full object-cover"
+        />
+      </figure>
+    </div>
   </div>
 </section>

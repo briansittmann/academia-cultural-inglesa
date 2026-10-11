@@ -24,10 +24,10 @@ const anclas = [
 ];
 ---
 
-<header class="sticky top-0 z-40 border-b border-borde/50 bg-crema/90 backdrop-blur-md">
+<header class="sticky top-0 z-40 border-b border-borde/50 bg-crema/90 backdrop-blur-md" data-header>
   <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
     <a href="#inicio" class="flex min-w-0 items-center gap-3 rounded-control" aria-label={`${instituto.data.nombre}, ir al inicio`}>
-      <Logo size={40} alt="" />
+      <span class="header-logo flex shrink-0"><Logo size={40} alt="" /></span>
       <span class="truncate text-[15px] font-bold leading-tight text-verde-900 sm:text-base">{instituto.data.nombre}</span>
     </a>
 
@@ -110,6 +110,15 @@ const anclas = [
     window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
       if (e.matches) setAbierto(false);
     });
+
+    // Header compacto: se activa cuando el centinela del tope sale del viewport.
+    const header = document.querySelector<HTMLElement>('[data-header]');
+    const centinela = document.querySelector('[data-centinela]');
+    if (header && centinela && 'IntersectionObserver' in window) {
+      new IntersectionObserver(([e]) => header.toggleAttribute('data-compacto', !e.isIntersecting), {
+        rootMargin: '48px 0px 0px 0px',
+      }).observe(centinela);
+    }
   }
   document.addEventListener('astro:page-load', iniciarMenu);
 </script>

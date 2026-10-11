@@ -1,0 +1,321 @@
+/*
+  Animaciones (fase 4, motion 5). Guía: motion-skills/animations.md + RECIPES.md.
+  Reglas: solo transform, opacity y clip-path; curvas de los tokens; UI < 300 ms,
+  entradas de marketing hasta ~700 ms; nada en loop; reduced motion = versión suave.
+
+  Dos familias:
+  1. Carga de página (hero, header): animaciones CSS, sin JS.
+  2. Reveal al hacer scroll: un IntersectionObserver (Base.astro) pone
+     data-visible en cada [data-reveal]; los estados ocultos solo existen con
+     la clase html.js, así nadie se queda sin contenido si el script no corre.
+     El clip-path nunca va sobre el elemento observado: Chrome lo respeta al
+     calcular la intersección y con un recorte del 100 % nunca dispara.
+*/
+
+/* ---------- Títulos palabra por palabra ---------- */
+.palabra-marco {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+.palabra {
+  display: inline-block;
+  animation: palabra-sube 700ms var(--ease-out) both;
+  animation-delay: calc(var(--retraso-titulo, 0ms) + var(--i, 0) * 45ms);
+}
+@keyframes palabra-sube {
+  from {
+    opacity: 0;
+    transform: translateY(110%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+/* Títulos que esperan al reveal (data-espera): quedan en pausa hasta ser visibles. */
+.js [data-reveal]:not([data-visible]) [data-espera] .palabra {
+  animation-play-state: paused;
+}
+
+/* ---------- Hero: secuencia de carga ---------- */
+.hero-eyebrow {
+  animation: entra-izquierda 500ms var(--ease-out) both;
+}
+.hero-bajada {
+  animation: entra-abajo 600ms var(--ease-out) 550ms both;
+}
+.hero-ctas {
+  animation: entra-abajo 600ms var(--ease-out) 680ms both;
+}
+.hero-foto-mascara {
+  animation: mascara-derecha 900ms var(--ease-in-out) 200ms both;
+}
+.hero-foto-img {
+  animation: asienta-zoom 1400ms var(--ease-out) 200ms both;
+}
+@keyframes entra-izquierda {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes entra-abajo {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes mascara-derecha {
+  from {
+    clip-path: inset(0 100% 0 0 round var(--radius-card));
+  }
+  to {
+    clip-path: inset(0 0 0 0 round var(--radius-card));
+  }
+}
+@keyframes asienta-zoom {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+/* Parallax suave de la foto al salir del viewport: mejora progresiva. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-foto-parallax {
+      animation: hero-parallax linear both;
+      animation-timeline: view();
+      animation-range: exit 0% exit 100%;
+    }
+  }
+}
+@keyframes hero-parallax {
+  to {
+    transform: translateY(14%);
+  }
+}
+
+/* ---------- Header: se compacta al hacer scroll ---------- */
+.header-logo {
+  transform-origin: left center;
+  transition: transform 250ms var(--ease-out);
+}
+header[data-compacto] .header-logo {
+  transform: scale(0.85);
+}
+header {
+  transition: box-shadow 250ms var(--ease-out);
+}
+header[data-compacto] {
+  box-shadow: var(--shadow-card);
+}
+
+/* ---------- Reveal genérico: variantes por clase ---------- */
+.sube,
+.izq,
+.der,
+.zoom {
+  transition:
+    opacity 500ms var(--ease-out),
+    transform 700ms var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 100ms);
+}
+.js [data-reveal]:not([data-visible]) :is(.sube, .izq, .der, .zoom) {
+  opacity: 0;
+}
+.js [data-reveal]:not([data-visible]) .sube {
+  transform: translateY(32px);
+}
+.js [data-reveal]:not([data-visible]) .izq {
+  transform: translateX(-40px);
+}
+.js [data-reveal]:not([data-visible]) .der {
+  transform: translateX(40px);
+}
+.js [data-reveal]:not([data-visible]) .zoom {
+  transform: scale(0.94);
+}
+
+/* ---------- Cursos: cambio de pestaña ---------- */
+.panel-cursos {
+  opacity: 1;
+  transition: opacity 200ms var(--ease-out);
+  @starting-style {
+    opacity: 0;
+  }
+}
+[data-entrando] .panel-foto {
+  animation: foto-desliza 500ms var(--ease-out) both;
+}
+[data-entrando] .curso-item {
+  animation: entra-abajo 400ms var(--ease-out) both;
+  animation-delay: calc(80ms + var(--i, 0) * 60ms);
+}
+@keyframes foto-desliza {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.panel-foto img {
+  transition: transform 600ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .panel-foto:hover img {
+    transform: scale(1.04);
+  }
+}
+/* Indicador de tabs (receta): copia activa recortada con clip-path. */
+.tabs-copia {
+  clip-path: inset(0 var(--clip-der, 100%) 0 var(--clip-izq, 0) round var(--radius-full));
+  transition: clip-path 250ms var(--ease-in-out);
+}
+
+/* ---------- Cambridge: sello con rebote corto ---------- */
+.sello {
+  transition:
+    opacity 300ms var(--ease-out),
+    transform 500ms var(--ease-out-back);
+  transition-delay: calc(450ms + var(--i, 0) * 120ms);
+}
+.js [data-reveal]:not([data-visible]) .sello {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+/* ---------- La Academia: barra dorada que crece ---------- */
+.cifra-bloque {
+  position: relative;
+  padding-left: 1.25rem;
+}
+.cifra-bloque::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--color-dorado-600);
+  transform-origin: top;
+  transition: transform 700ms var(--ease-in-out);
+  transition-delay: calc(200ms + var(--i, 0) * 150ms);
+}
+.js [data-reveal]:not([data-visible]) .cifra-bloque::before {
+  transform: scaleY(0);
+}
+
+/* ---------- Cómo empezar: líneas que se dibujan y números en secuencia ---------- */
+.paso {
+  position: relative;
+  padding-top: 1.25rem;
+}
+.paso::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 2px;
+  background: var(--color-verde-700);
+  transform-origin: left;
+  transition: transform 500ms var(--ease-in-out);
+  transition-delay: calc(var(--i, 0) * 250ms);
+}
+.paso-numero,
+.paso-texto {
+  transition:
+    opacity 400ms var(--ease-out),
+    transform 500ms var(--ease-out);
+}
+.paso-numero {
+  transition-delay: calc(var(--i, 0) * 250ms + 250ms);
+}
+.paso-texto {
+  transition-delay: calc(var(--i, 0) * 250ms + 350ms);
+}
+.js [data-reveal]:not([data-visible]) .paso::before {
+  transform: scaleX(0);
+}
+.js [data-reveal]:not([data-visible]) :is(.paso-numero, .paso-texto) {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* ---------- Menú mobile (receta accordion) ---------- */
+.menu-panel {
+  height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    height 200ms var(--ease-out),
+    opacity 200ms var(--ease-out);
+}
+.menu-panel[data-abierto] {
+  opacity: 1;
+}
+
+/* ---------- Reduced motion: solo opacidad, sin desplazamientos ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .palabra {
+    animation: solo-opacidad 400ms var(--ease-out) both;
+    animation-delay: var(--retraso-titulo, 0ms);
+  }
+  .hero-eyebrow,
+  .hero-bajada,
+  .hero-ctas,
+  .hero-foto-mascara,
+  .hero-foto-img,
+  [data-entrando] .panel-foto,
+  [data-entrando] .curso-item {
+    animation-name: solo-opacidad;
+    animation-duration: 300ms;
+  }
+  [data-entrando] .curso-item {
+    animation-delay: 0ms;
+  }
+  @keyframes solo-opacidad {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  header[data-compacto] .header-logo,
+  .js [data-reveal]:not([data-visible]) :is(.sube, .izq, .der, .zoom, .sello, .paso-numero, .paso-texto) {
+    transform: none;
+  }
+  .sube,
+  .izq,
+  .der,
+  .zoom,
+  .sello,
+  .paso-numero,
+  .paso-texto {
+    transition: opacity 300ms var(--ease-out);
+  }
+  .js [data-reveal]:not([data-visible]) .cifra-bloque::before,
+  .js [data-reveal]:not([data-visible]) .paso::before {
+    transform: none;
+  }
+  .panel-foto img,
+  .tabs-copia {
+    transition: none;
+  }
+  .menu-panel {
+    transition: opacity 200ms var(--ease-out);
+  }
+}
