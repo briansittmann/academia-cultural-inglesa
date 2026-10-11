@@ -1,7 +1,9 @@
 ---
 /**
- * Panel de un público: foto, descripción, progresión real de niveles y CTA
- * "Pedir información". Recibe el público y sus cursos ya ordenados.
+ * Panel de un público: foto, descripción, cifras del recorrido, progresión real
+ * de niveles y CTA "Pedir información". Al entrar en pantalla o al cambiar de
+ * pestaña: la foto entra desde la izquierda, las cifras cuentan, la línea del
+ * recorrido se dibuja de arriba hacia abajo y cada nivel aparece a su turno.
  */
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
@@ -32,6 +34,15 @@ function meta(c: CollectionEntry<'cursos'>) {
   return partes;
 }
 const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
+
+// Cifras del recorrido (se cuentan de 0 al valor al entrar).
+const nivelesTotal = cursos.reduce((n, c) => n + Math.max(1, c.data.niveles.length), 0);
+const horasMax = Math.max(0, ...cursos.map((c) => c.data.horasSemanales ?? 0));
+const cifras = [
+  { valor: cursos.length, etiqueta: cursos.length === 1 ? 'curso' : 'cursos' },
+  { valor: nivelesTotal, etiqueta: nivelesTotal === 1 ? 'nivel' : 'niveles' },
+  ...(horasMax > 0 ? [{ valor: horasMax, etiqueta: 'h por semana' }] : []),
+];
 ---
 
 <div
@@ -42,11 +53,12 @@ const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
   hidden={!activo}
   class="panel-cursos scroll-mt-32 grid gap-8 lg:grid-cols-12 lg:gap-10"
   data-panel
+  data-reveal
 >
   <div class="lg:col-span-5">
     {
       publico.data.foto && (
-        <div class="panel-foto aspect-[4/3] overflow-hidden rounded-card shadow-card lg:aspect-[4/5]">
+        <div class="panel-foto izq aspect-[4/3] overflow-hidden rounded-card shadow-card lg:aspect-[4/5]">
           <Image
             src={publico.data.foto}
             alt={publico.data.fotoAlt ?? ''}
@@ -58,8 +70,23 @@ const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
         </div>
       )
     }
-    <h3 class="mt-6 text-2xl">{publico.data.titulo}</h3>
-    <p class="mt-3 leading-relaxed text-tinta-suave">{publico.data.descripcion}</p>
+    <h3 class="sube mt-6 text-2xl" style="--i: 1">{publico.data.titulo}</h3>
+    <p class="sube mt-3 leading-relaxed text-tinta-suave" style="--i: 1.5">{publico.data.descripcion}</p>
+    <dl class="mt-5 flex flex-wrap gap-x-6 gap-y-3">
+      {
+        cifras.map((c, i) => (
+          <div class="sube" style={`--i: ${2 + i * 0.6}`}>
+            <dt class="sr-only">{c.etiqueta}</dt>
+            <dd class="flex items-baseline gap-1.5 whitespace-nowrap">
+              <span class="text-3xl font-bold leading-none text-verde-900 tabular-nums" data-cifra={c.valor}>
+                {c.valor}
+              </span>
+              <span class="text-sm text-tinta-suave">{c.etiqueta}</span>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
     {
       algunoConTest && (
         <p class="mt-3 text-sm text-tinta-suave">
@@ -80,13 +107,13 @@ const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
     }
   </div>
 
-  <ol class="lg:col-span-7 lg:border-l lg:border-borde/70 lg:pl-10">
+  <ol class="recorrido relative lg:col-span-7 lg:pl-10">
     {
       cursos.map((c, i) => {
         const sedes = sedesPorCurso.get(c.id) ?? [];
         return (
           <li class:list={['curso-item relative py-6', i > 0 && 'border-t border-borde/60']} style={`--i: ${i}`}>
-            <span class="absolute top-7 -left-[calc(2.5rem+5px)] hidden size-2.5 rounded-full bg-verde-700 ring-4 ring-crema lg:block" aria-hidden="true" />
+            <span class="curso-punto absolute top-7 -left-[calc(2.5rem+5px)] hidden size-2.5 rounded-full bg-verde-700 ring-4 ring-crema lg:block" aria-hidden="true" />
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
               <h4 class="text-lg">{c.data.nombre}</h4>
               {c.data.etiqueta && <Etiqueta>{c.data.etiqueta}</Etiqueta>}

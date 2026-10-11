@@ -149,29 +149,12 @@ header[data-compacto] {
   transform: scale(0.94);
 }
 
-/* ---------- Cursos: cambio de pestaña ---------- */
+/* ---------- Cursos: cambio de pestaña y recorrido de niveles ---------- */
 .panel-cursos {
   opacity: 1;
   transition: opacity 200ms var(--ease-out);
   @starting-style {
     opacity: 0;
-  }
-}
-[data-entrando] .panel-foto {
-  animation: foto-desliza 500ms var(--ease-out) both;
-}
-[data-entrando] .curso-item {
-  animation: entra-abajo 400ms var(--ease-out) both;
-  animation-delay: calc(80ms + var(--i, 0) * 60ms);
-}
-@keyframes foto-desliza {
-  from {
-    opacity: 0;
-    transform: translateX(-24px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
   }
 }
 .panel-foto img {
@@ -180,6 +163,55 @@ header[data-compacto] {
 @media (hover: hover) and (pointer: fine) {
   .panel-foto:hover img {
     transform: scale(1.04);
+  }
+}
+/* La línea del recorrido se dibuja de arriba hacia abajo (solo escritorio). */
+.recorrido::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 1px;
+  background: var(--color-borde);
+  transform-origin: top;
+  transition: transform 900ms var(--ease-in-out);
+  transition-delay: 150ms;
+}
+@media (max-width: 63.99rem) {
+  .recorrido::before {
+    display: none;
+  }
+}
+.curso-item {
+  transition:
+    opacity 450ms var(--ease-out),
+    transform 600ms var(--ease-out);
+  transition-delay: calc(250ms + var(--i, 0) * 150ms);
+}
+.curso-punto {
+  transition:
+    opacity 250ms var(--ease-out),
+    transform 450ms var(--ease-out-back);
+  transition-delay: calc(350ms + var(--i, 0) * 150ms);
+}
+.js [data-reveal]:not([data-visible]) .recorrido::before {
+  transform: scaleY(0);
+}
+.js [data-reveal]:not([data-visible]) .curso-item {
+  opacity: 0;
+  transform: translateX(-24px);
+}
+.js [data-reveal]:not([data-visible]) .curso-punto {
+  opacity: 0;
+  transform: scale(0.4);
+}
+@media (hover: hover) and (pointer: fine) {
+  .curso-item {
+    transition-property: opacity, transform;
+  }
+  [data-visible] .curso-item:hover {
+    transition-delay: 0ms;
+    transition-duration: 200ms;
+    transform: translateX(4px);
   }
 }
 /* Indicador de tabs (receta): copia activa recortada con clip-path. */
@@ -219,39 +251,82 @@ header[data-compacto] {
   transform: scaleY(0);
 }
 
-/* ---------- Cómo empezar: líneas que se dibujan y números en secuencia ---------- */
-.paso {
-  position: relative;
-  padding-top: 1.25rem;
-}
-.paso::before {
+/* ---------- Cómo empezar: cards conectadas por un haz que viaja una sola vez ---------- */
+/* Patrón de puntos (port del dot pattern de Magic UI), estático y desvanecido hacia los bordes. */
+.patron-puntos::before {
   content: '';
   position: absolute;
-  inset: 0 0 auto 0;
-  height: 2px;
-  background: var(--color-verde-700);
-  transform-origin: left;
-  transition: transform 500ms var(--ease-in-out);
-  transition-delay: calc(var(--i, 0) * 250ms);
+  inset: 0;
+  background-image: radial-gradient(var(--color-borde) 1px, transparent 1.5px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 70% 80% at 50% 40%, black 30%, transparent 100%);
+  opacity: 0.7;
+  pointer-events: none;
 }
-.paso-numero,
-.paso-texto {
+.conector {
+  overflow: hidden;
+}
+.conector::before {
+  /* riel */
+  content: '';
+  position: absolute;
+  background: var(--color-borde);
+  inset: 0 auto 0 50%;
+  width: 2px;
+  transform: translateX(-50%);
+}
+.haz {
+  /* port del animated beam: gradiente que recorre el riel, una sola vez */
+  position: absolute;
+  inset: 0 auto 0 50%;
+  width: 2px;
+  transform: translate(-50%, -100%);
+  background: linear-gradient(180deg, transparent, var(--color-verde-700) 40%, var(--color-dorado-600) 70%, transparent);
+}
+@media (min-width: 48rem) {
+  .conector::before,
+  .haz {
+    inset: 50% 0 auto 0;
+    width: auto;
+    height: 2px;
+    transform: translateY(-50%);
+  }
+  .haz {
+    transform: translate(-100%, -50%);
+    background: linear-gradient(90deg, transparent, var(--color-verde-700) 40%, var(--color-dorado-600) 70%, transparent);
+  }
+}
+[data-visible] .haz {
+  animation: haz-baja 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 1) * 600ms - 250ms);
+}
+@media (min-width: 48rem) {
+  [data-visible] .haz {
+    animation-name: haz-cruza;
+  }
+}
+@keyframes haz-baja {
+  to {
+    transform: translate(-50%, 100%);
+  }
+}
+@keyframes haz-cruza {
+  to {
+    transform: translate(100%, -50%);
+  }
+}
+.paso {
+  transition-delay: calc(var(--i, 0) * 240ms);
+}
+.paso-icono {
   transition:
-    opacity 400ms var(--ease-out),
-    transform 500ms var(--ease-out);
+    opacity 300ms var(--ease-out),
+    transform 500ms var(--ease-out-back);
+  transition-delay: calc(var(--i, 0) * 240ms + 200ms);
 }
-.paso-numero {
-  transition-delay: calc(var(--i, 0) * 250ms + 250ms);
-}
-.paso-texto {
-  transition-delay: calc(var(--i, 0) * 250ms + 350ms);
-}
-.js [data-reveal]:not([data-visible]) .paso::before {
-  transform: scaleX(0);
-}
-.js [data-reveal]:not([data-visible]) :is(.paso-numero, .paso-texto) {
+.js [data-reveal]:not([data-visible]) .paso-icono {
   opacity: 0;
-  transform: translateY(10px);
+  transform: scale(0.5);
 }
 
 /* ---------- Menú mobile (receta accordion) ---------- */
@@ -278,13 +353,9 @@ header[data-compacto] {
   .hero-ctas,
   .hero-foto-mascara,
   .hero-foto-img,
-  [data-entrando] .panel-foto,
-  [data-entrando] .curso-item {
-    animation-name: solo-opacidad;
-    animation-duration: 300ms;
-  }
-  [data-entrando] .curso-item {
-    animation-delay: 0ms;
+  [data-visible] .haz {
+    animation: none;
+    opacity: 0;
   }
   @keyframes solo-opacidad {
     from {
@@ -295,7 +366,7 @@ header[data-compacto] {
     }
   }
   header[data-compacto] .header-logo,
-  .js [data-reveal]:not([data-visible]) :is(.sube, .izq, .der, .zoom, .sello, .paso-numero, .paso-texto) {
+  .js [data-reveal]:not([data-visible]) :is(.sube, .izq, .der, .zoom, .sello, .paso-icono, .curso-item, .curso-punto) {
     transform: none;
   }
   .sube,
@@ -303,12 +374,13 @@ header[data-compacto] {
   .der,
   .zoom,
   .sello,
-  .paso-numero,
-  .paso-texto {
+  .paso-icono,
+  .curso-item,
+  .curso-punto {
     transition: opacity 300ms var(--ease-out);
   }
   .js [data-reveal]:not([data-visible]) .cifra-bloque::before,
-  .js [data-reveal]:not([data-visible]) .paso::before {
+  .js [data-reveal]:not([data-visible]) .recorrido::before {
     transform: none;
   }
   .panel-foto img,

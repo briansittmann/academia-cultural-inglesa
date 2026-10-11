@@ -37,9 +37,15 @@ formularios:
 testDeNivel:
   preguntas: 124
   pasos:
-    - Completá tus datos y respondé el test online. Son 124 preguntas; si no sabés una, marcá "No sabe / No contesta".
-    - Recibís por mail el resultado con tu nivel.
-    - Escribinos por WhatsApp o pedí información para reservar tu lugar.
+    - titulo: Hacé el test online
+      texto: Completá tus datos y respondé las 124 preguntas. Si no sabés una, marcá "No sabe / No contesta".
+      icono: quiz-outline
+    - titulo: Recibí tu nivel por mail
+      texto: El resultado llega a tu casilla con el nivel que te corresponde.
+      icono: mark-email-read-outline
+    - titulo: Reservá tu lugar
+      texto: Escribinos por WhatsApp o pedí información y te contamos días, horarios y sede.
+      icono: event-available-outline
 hero:
   titulo: Inglés para todas las edades, desde 1979
   bajada: >-

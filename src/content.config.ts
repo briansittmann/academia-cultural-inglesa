@@ -52,7 +52,13 @@ const instituto = defineCollection({
       }),
       testDeNivel: z.object({
         preguntas: z.number().int(),
-        pasos: z.array(z.string()),
+        pasos: z.array(
+          z.object({
+            titulo: z.string(), // "Hacé el test"
+            texto: z.string(),
+            icono: z.string(), // Material Symbols, ej. "quiz-outline" (sumarlo al include de astro.config)
+          }),
+        ),
       }),
       hero: z.object({
         titulo: z.string(), // H1, máximo 2 líneas en escritorio

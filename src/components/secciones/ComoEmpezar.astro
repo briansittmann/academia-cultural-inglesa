@@ -1,9 +1,12 @@
 ---
 /**
- * Cómo empezar: tres pasos en fila (columna en mobile) alrededor del test de
- * nivel online gratuito, más las dos vías de contacto.
+ * Cómo empezar: tres pasos como cards conectadas por un haz de luz que viaja
+ * de una a la siguiente (port a CSS del "animated beam" de Magic UI: recorre
+ * una sola vez al entrar en pantalla, no en loop). Fondo con patrón de puntos
+ * (port del "dot pattern"). En mobile las cards se apilan y el haz baja.
  */
 import { getEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components';
 import Boton from '../Boton.astro';
 
 const instituto = await getEntry('instituto', 'instituto');
@@ -11,36 +14,55 @@ if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
 const { testDeNivel, formularios } = instituto.data;
 ---
 
-<section id="test-de-nivel" class="scroll-mt-16 border-y border-borde/50 bg-white py-16 lg:py-24">
-  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+<section id="test-de-nivel" class="patron-puntos relative scroll-mt-16 overflow-hidden border-y border-borde/50 bg-white py-16 lg:py-24">
+  <div class="relative mx-auto max-w-6xl px-4 sm:px-6">
     <div class="max-w-[60ch]" data-reveal>
       <h2 class="sube text-3xl sm:text-4xl">Cómo empezar</h2>
       <p class="sube mt-4 text-lg leading-relaxed text-tinta-suave" style="--i: 1">
-        Si no sabés en qué nivel anotarte, el test online gratuito te lo dice. Son {testDeNivel.preguntas} preguntas y el
-        resultado llega por mail.
+        Tres pasos. Si no sabés en qué nivel anotarte, el test online gratuito te lo dice en minutos.
       </p>
     </div>
 
-    <ol class="mt-10 grid gap-8 md:grid-cols-3 md:gap-6" data-reveal>
+    <ol class="mt-12 grid items-stretch gap-0 md:grid-cols-[1fr_3.5rem_1fr_3.5rem_1fr]" data-reveal>
       {
         testDeNivel.pasos.map((paso, i) => (
-          <li class="paso" style={`--i: ${i}`}>
-            <span class="paso-numero block text-4xl font-bold leading-none text-dorado-800" aria-hidden="true">
-              {i + 1}
-            </span>
-            <p class="paso-texto mt-3 leading-relaxed text-tinta">{paso}</p>
-          </li>
+          <>
+            {i > 0 && (
+              <li class="conector relative h-12 md:h-auto" aria-hidden="true" style={`--i: ${i}`}>
+                <span class="haz" />
+              </li>
+            )}
+            <li class="paso sube relative flex flex-col rounded-card border border-borde/60 bg-crema p-6 shadow-card sm:p-7" style={`--i: ${i * 2.5}`}>
+              <div class="flex items-center justify-between">
+                <span class="paso-icono inline-flex size-12 items-center justify-center rounded-full bg-verde-100 text-verde-700">
+                  <Icon name={`material-symbols:${paso.icono}`} class="size-6" aria-hidden="true" />
+                </span>
+                <span class="text-3xl font-bold leading-none text-dorado-800 tabular-nums" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+              </div>
+              <h3 class="mt-5 text-xl">
+                <span class="sr-only">Paso {i + 1}: </span>
+                {paso.titulo}
+              </h3>
+              <p class="mt-2 leading-relaxed text-tinta-suave">{paso.texto}</p>
+            </li>
+          </>
         ))
       }
     </ol>
 
     <div class="mt-10 flex flex-col gap-3 sm:flex-row" data-reveal>
-      <div class="sube"><Boton href={formularios.testDeNivel} variante="primario" icono="material-symbols:open-in-new-rounded" externo>
-        Hacer el test de nivel
-      </Boton></div>
-      <div class="sube" style="--i: 1"><Boton href={formularios.consultaGeneral} variante="secundario" icono="material-symbols:open-in-new-rounded" externo>
-        Pedir información
-      </Boton></div>
+      <div class="sube">
+        <Boton href={formularios.testDeNivel} variante="primario" icono="material-symbols:open-in-new-rounded" externo>
+          Hacer el test de nivel
+        </Boton>
+      </div>
+      <div class="sube" style="--i: 1">
+        <Boton href={formularios.consultaGeneral} variante="secundario" icono="material-symbols:open-in-new-rounded" externo>
+          Pedir información
+        </Boton>
+      </div>
     </div>
   </div>
 </section>
