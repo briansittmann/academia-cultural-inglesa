@@ -1,0 +1,80 @@
+---
+/**
+ * Card de una sede: mapa de Google con carga diferida (se inserta el iframe al
+ * tocar "Ver mapa"), dirección, horario, teléfonos, email y WhatsApp.
+ */
+import type { CollectionEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import Boton from '../Boton.astro';
+
+interface Props {
+  sede: CollectionEntry<'sedes'>;
+  horarioAtencion: { dias: string; horas: string };
+}
+const { sede, horarioAtencion } = Astro.props;
+const d = sede.data;
+
+const direccionCompleta = `${d.direccion}, ${d.barrio}, ${d.ciudad}`;
+const consulta = encodeURIComponent(`${d.direccion}, ${d.ciudad}, Argentina`);
+const mapaEmbed = `https://www.google.com/maps?q=${consulta}&z=16&hl=es&output=embed`;
+const comoLlegar = `https://www.google.com/maps/search/?api=1&query=${consulta}`;
+const whatsappUrl = `https://wa.me/${d.whatsapp.internacional}?text=${encodeURIComponent(d.whatsapp.mensaje ?? '')}`;
+---
+
+<article class="flex flex-col overflow-hidden rounded-card border border-borde/60 bg-white shadow-card">
+  <div class="relative aspect-[16/9] bg-verde-100" data-mapa data-src={mapaEmbed} data-titulo={`Mapa de la sede ${d.nombre}`}>
+    <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center" data-mapa-placeholder>
+      <Icon name="material-symbols:location-on-outline" class="size-10 text-verde-700" aria-hidden="true" />
+      <p class="text-sm text-tinta-suave">{direccionCompleta}</p>
+      <button
+        type="button"
+        class="boton inline-flex min-h-10 items-center gap-2 rounded-control border border-verde-700 bg-white px-4 text-sm font-semibold text-verde-900 hover:bg-verde-50"
+        data-mapa-boton
+      >
+        Ver mapa
+      </button>
+    </div>
+  </div>
+
+  <div class="flex flex-1 flex-col p-6 sm:p-8">
+    <h3 class="text-2xl">Sede {d.nombre}</h3>
+    <address class="mt-4 grid gap-2.5 text-[15px] not-italic">
+      <p class="flex items-start gap-2.5">
+        <Icon name="material-symbols:location-on-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
+        <span>{direccionCompleta}</span>
+      </p>
+      <p class="flex items-start gap-2.5">
+        <Icon name="material-symbols:schedule-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
+        <span>{horarioAtencion.dias} de {horarioAtencion.horas}</span>
+      </p>
+      <p class="flex items-start gap-2.5">
+        <Icon name="material-symbols:call-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
+        <span>
+          {
+            d.telefonos.map((t, i) => (
+              <>
+                {i > 0 && ' o '}
+                <a href={`tel:${t.tel}`} class="font-medium text-verde-900 underline-offset-4 hover:underline">
+                  {t.numero}
+                </a>
+              </>
+            ))
+          }
+        </span>
+      </p>
+      <p class="flex items-start gap-2.5">
+        <Icon name="material-symbols:mail-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
+        <a href={`mailto:${d.email}`} class="font-medium break-all text-verde-900 underline-offset-4 hover:underline">{d.email}</a>
+      </p>
+    </address>
+
+    <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+      <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo>
+        Escribir por WhatsApp
+      </Boton>
+      <Boton href={comoLlegar} variante="secundario" icono="material-symbols:open-in-new-rounded" externo>
+        Cómo llegar
+      </Boton>
+    </div>
+  </div>
+</article>

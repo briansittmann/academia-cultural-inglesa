@@ -1,7 +1,6 @@
 ---
 /**
  * Landing de una sola página. Secciones según docs/fase-1-analisis.md §4.
- * Lo que falta (La Academia, Cómo empezar, Sedes) queda como esqueleto al final.
  */
 import Base from '../layouts/Base.astro';
 import Hero from '../components/secciones/Hero.astro';
@@ -9,6 +8,7 @@ import Cursos from '../components/secciones/Cursos.astro';
 import Cambridge from '../components/secciones/Cambridge.astro';
 import Academia from '../components/secciones/Academia.astro';
 import ComoEmpezar from '../components/secciones/ComoEmpezar.astro';
+import Sedes from '../components/secciones/Sedes.astro';
 ---
 
 <Base>
@@ -17,7 +17,5 @@ import ComoEmpezar from '../components/secciones/ComoEmpezar.astro';
   <Cambridge />
   <Academia />
   <ComoEmpezar />
-
-  {/* Esqueleto provisorio para el ancla de la nav; Sedes llega en el próximo paso. */}
-  <section id="sedes" class="scroll-mt-16"></section>
+  <Sedes />
 </Base>

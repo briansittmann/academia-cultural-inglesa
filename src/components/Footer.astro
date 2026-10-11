@@ -1,7 +1,6 @@
 ---
 /**
- * Footer: placeholder mínimo para la fase 2 (escudo, sedes, email, Facebook).
- * En la fase 3 se completa con anclas y layout en columnas.
+ * Footer: escudo y una línea, anclas, las dos sedes, email general y Facebook.
  */
 import { getEntry, getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
@@ -11,55 +10,93 @@ const instituto = await getEntry('instituto', 'instituto');
 if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
 const sedes = (await getCollection('sedes')).sort((a, b) => a.data.orden - b.data.orden);
 const anio = new Date().getFullYear();
+
+const anclas = [
+  { href: '#cursos', texto: 'Cursos' },
+  { href: '#cambridge', texto: 'Cambridge' },
+  { href: '#nosotros', texto: 'La Academia' },
+  { href: '#test-de-nivel', texto: 'Cómo empezar' },
+  { href: '#sedes', texto: 'Sedes' },
+];
 ---
 
 <footer class="bg-verde-900 text-verde-100">
-  <div class="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:px-6 md:grid-cols-3">
-    <div class="flex items-start gap-3">
-      <Logo size={48} alt="" />
-      <p class="text-sm leading-relaxed">
-        <strong class="block text-white">{instituto.data.nombre}</strong>
-        {instituto.data.bajada}
-      </p>
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-12">
+    <div class="lg:col-span-4">
+      <a href="#inicio" class="inline-flex items-center gap-3">
+        <Logo size={48} alt="" />
+        <span class="font-bold text-white">{instituto.data.nombre}</span>
+      </a>
+      <p class="mt-4 max-w-[34ch] text-sm leading-relaxed">{instituto.data.bajada}</p>
     </div>
+
+    <nav aria-label="Secciones del sitio" class="lg:col-span-2">
+      <p class="text-sm font-bold text-white">Secciones</p>
+      <ul class="mt-3 space-y-2 text-sm">
+        {
+          anclas.map((a) => (
+            <li>
+              <a href={a.href} class="underline-offset-4 hover:text-white hover:underline">
+                {a.texto}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
     {
       sedes.map((sede) => (
-        <address class="text-sm not-italic leading-relaxed">
-          <strong class="block text-white">Sede {sede.data.nombre}</strong>
-          <span class="flex items-center gap-1.5">
-            <Icon name="material-symbols:location-on-outline" class="size-4 shrink-0" aria-hidden="true" />
-            {sede.data.direccion}, {sede.data.ciudad}
-          </span>
-          {sede.data.telefonos.map((t) => (
-            <a href={`tel:${t.tel}`} class="flex items-center gap-1.5 hover:text-white">
-              <Icon name="material-symbols:call-outline" class="size-4 shrink-0" aria-hidden="true" />
-              {t.numero}
-            </a>
-          ))}
-          <a
-            href={`https://wa.me/${sede.data.whatsapp.internacional}?text=${encodeURIComponent(sede.data.whatsapp.mensaje ?? '')}`}
-            class="flex items-center gap-1.5 hover:text-white"
-            rel="noopener"
-          >
-            <Icon name="material-symbols:chat-outline" class="size-4 shrink-0" aria-hidden="true" />
-            WhatsApp {sede.data.whatsapp.numero}
-          </a>
-          <a href={`mailto:${sede.data.email}`} class="flex items-center gap-1.5 hover:text-white">
-            <Icon name="material-symbols:mail-outline" class="size-4 shrink-0" aria-hidden="true" />
-            {sede.data.email}
-          </a>
+        <address class="text-sm not-italic leading-relaxed lg:col-span-3">
+          <p class="font-bold text-white">Sede {sede.data.nombre}</p>
+          <ul class="mt-3 space-y-1.5">
+            <li class="flex items-start gap-2">
+              <Icon name="material-symbols:location-on-outline" class="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+              {sede.data.direccion}, {sede.data.ciudad}
+            </li>
+            {sede.data.telefonos.map((t) => (
+              <li>
+                <a href={`tel:${t.tel}`} class="flex items-start gap-2 hover:text-white">
+                  <Icon name="material-symbols:call-outline" class="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                  {t.numero}
+                </a>
+              </li>
+            ))}
+            <li>
+              <a
+                href={`https://wa.me/${sede.data.whatsapp.internacional}?text=${encodeURIComponent(sede.data.whatsapp.mensaje ?? '')}`}
+                class="flex items-start gap-2 hover:text-white"
+                target="_blank"
+                rel="noopener"
+              >
+                <Icon name="material-symbols:chat-rounded" class="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                WhatsApp {sede.data.whatsapp.numero}
+              </a>
+            </li>
+            <li>
+              <a href={`mailto:${sede.data.email}`} class="flex items-start gap-2 break-all hover:text-white">
+                <Icon name="material-symbols:mail-outline" class="mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                {sede.data.email}
+              </a>
+            </li>
+          </ul>
         </address>
       ))
     }
   </div>
+
   <div class="border-t border-white/10">
-    <div class="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-2 px-4 py-4 text-xs sm:px-6">
+    <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-5 text-xs sm:flex-row sm:items-center sm:justify-between sm:px-6">
       <span>© {anio} {instituto.data.nombre}. Desde {instituto.data.fundacion}.</span>
-      <span class="flex gap-4">
+      <span class="flex flex-wrap gap-x-5 gap-y-1">
         <a href={`mailto:${instituto.data.email}`} class="hover:text-white">{instituto.data.email}</a>
-        {instituto.data.redes.facebook && (
-          <a href={instituto.data.redes.facebook} rel="noopener" target="_blank" class="hover:text-white">Facebook</a>
-        )}
+        {
+          instituto.data.redes.facebook && (
+            <a href={instituto.data.redes.facebook} rel="noopener" target="_blank" class="hover:text-white">
+              Facebook
+            </a>
+          )
+        }
       </span>
     </div>
   </div>
