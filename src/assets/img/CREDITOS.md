@@ -6,7 +6,7 @@ implementan las secciones.
 
 | Archivo | Uso | Autor | Link |
 |---|---|---|---|
-| (todavía ninguna) | | | |
+| `hero-aula.jpg` | Hero | Ronald Felton | https://unsplash.com/photos/teacher-and-student-in-classroom-6c86TCPmNRQ |
 
 El escudo (`src/assets/logo/escudo.svg`) es un calco provisorio con vtracer del PNG
 `content/imagenes/marca/logo-escudo.png`, hasta que el instituto entregue el vector.

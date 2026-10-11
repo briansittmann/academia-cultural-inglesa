@@ -1,0 +1,57 @@
+---
+/**
+ * Hero partido texto / foto. Cuatro elementos: eyebrow (la campaña vigente de
+ * novedades), H1, bajada y dos CTAs. Único eyebrow de toda la página.
+ */
+import { Image } from 'astro:assets';
+import { getCollection, getEntry } from 'astro:content';
+import Boton from '../Boton.astro';
+
+const instituto = await getEntry('instituto', 'instituto');
+if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+const sede = await getEntry(instituto.data.whatsappPrincipal);
+if (!sede) throw new Error('La sede del WhatsApp principal no existe');
+
+const inscripciones = (await getCollection('novedades', ({ data }) => data.vigente && data.tipo === 'inscripciones')).sort(
+  (a, b) => a.data.orden - b.data.orden,
+)[0];
+
+const { hero } = instituto.data;
+const whatsappUrl = `https://wa.me/${sede.data.whatsapp.internacional}?text=${encodeURIComponent(sede.data.whatsapp.mensaje ?? '')}`;
+---
+
+<section id="inicio" class="scroll-mt-16">
+  <div class="mx-auto grid max-w-6xl items-center gap-10 px-4 pt-10 pb-14 sm:px-6 lg:grid-cols-12 lg:gap-8 lg:pt-16 lg:pb-20">
+    <div class="lg:col-span-6">
+      {
+        inscripciones?.data.eyebrow && (
+          <p class="mb-5 inline-flex items-center rounded-full bg-verde-100 px-3 py-1 text-sm font-semibold text-verde-900">
+            {inscripciones.data.eyebrow}
+          </p>
+        )
+      }
+      <h1 class="text-[2.5rem] leading-[1.05] sm:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]">{hero.titulo}</h1>
+      <p class="mt-5 max-w-[32rem] text-lg leading-relaxed text-tinta-suave sm:text-xl">{hero.bajada}</p>
+      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+        <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo>
+          Escribir por WhatsApp
+        </Boton>
+        <Boton href="#cursos" variante="secundario" icono="material-symbols:arrow-downward-rounded">
+          Ver cursos
+        </Boton>
+      </div>
+    </div>
+
+    <figure class="lg:col-span-6">
+      <Image
+        src={hero.foto}
+        alt={hero.fotoAlt}
+        widths={[480, 800, 1200, 1600]}
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="aspect-[4/3] w-full rounded-card object-cover shadow-card"
+      />
+    </figure>
+  </div>
+</section>

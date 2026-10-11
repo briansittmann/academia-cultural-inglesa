@@ -1,0 +1,54 @@
+---
+/**
+ * Botón / link con aspecto de botón. Tres variantes, dos intenciones en toda la
+ * página: "Pedir información" (formulario) y "Escribir por WhatsApp" (contacto).
+ * Receta "button press" de motion-skills: solo transform, 160 ms, ease-out.
+ */
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  href: string;
+  variante?: 'primario' | 'secundario' | 'whatsapp';
+  icono?: string; // nombre de Material Symbols, ej. "material-symbols:chat-rounded"
+  externo?: boolean; // target _blank + rel
+  class?: string;
+}
+const { href, variante = 'primario', icono, externo = false, class: className } = Astro.props;
+
+const base =
+  'boton inline-flex min-h-12 items-center justify-center gap-2 rounded-control px-5 font-semibold whitespace-nowrap no-underline';
+const variantes = {
+  primario: 'bg-verde-700 text-white hover:bg-verde-900',
+  secundario: 'border border-borde bg-white text-verde-900 hover:border-verde-700 hover:bg-verde-50',
+  whatsapp: 'bg-whatsapp text-tinta hover:bg-[#1fb857]',
+};
+---
+
+<a
+  href={href}
+  class:list={[base, variantes[variante], className]}
+  target={externo ? '_blank' : undefined}
+  rel={externo ? 'noopener' : undefined}
+>
+  {icono && <Icon name={icono} class="size-5 shrink-0" aria-hidden="true" />}
+  <slot />
+</a>
+
+<style>
+  .boton {
+    transition:
+      transform 160ms var(--ease-out),
+      background-color 160ms var(--ease-out),
+      border-color 160ms var(--ease-out);
+  }
+  .boton:active {
+    transform: scale(0.97);
+  }
+  /* El hover solo cambia color (ya está en las clases); se gata para no quedar pegado en touch. */
+  @media not ((hover: hover) and (pointer: fine)) {
+    .boton:hover {
+      background-color: revert-layer;
+      border-color: revert-layer;
+    }
+  }
+</style>

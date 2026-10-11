@@ -1,36 +1,22 @@
 ---
 /**
- * Landing. En la fase 2 es un esqueleto que solo comprueba que las collections
- * estén cargadas; las secciones reales llegan en la fase 3.
+ * Landing de una sola página. Las secciones se agregan de a una o dos por fase
+ * según docs/fase-1-analisis.md §4. Lo que falta queda como esqueleto al final.
  */
-import { getCollection, getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-
-const instituto = await getEntry('instituto', 'instituto');
-if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+import Hero from '../components/secciones/Hero.astro';
 
 const publicos = (await getCollection('publicos')).sort((a, b) => a.data.orden - b.data.orden);
 const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.data.orden);
-const novedades = (await getCollection('novedades', ({ data }) => data.vigente)).sort(
-  (a, b) => a.data.orden - b.data.orden,
-);
-const inscripciones = novedades.find((n) => n.data.tipo === 'inscripciones');
 ---
 
 <Base>
-  <section id="inicio" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
-    {inscripciones?.data.eyebrow && (
-      <p class="mb-4 inline-block rounded-full bg-verde-100 px-3 py-1 text-sm font-semibold text-verde-900">
-        {inscripciones.data.eyebrow}
-      </p>
-    )}
-    <h1 class="max-w-2xl text-4xl sm:text-5xl">Inglés para niños, adolescentes y adultos, desde {instituto.data.fundacion}</h1>
-    <p class="mt-4 max-w-xl text-lg text-tinta-suave">{instituto.data.bajada}</p>
-  </section>
+  <Hero />
 
-  {/* Esqueleto de fase 2: comprobación de que las collections cargan. Se reemplaza en la fase 3. */}
-  <section id="cursos" class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-    <h2 class="text-2xl">Cursos</h2>
+  {/* Esqueleto provisorio: se reemplaza por Cursos, Cambridge, La Academia, Cómo empezar y Sedes. */}
+  <section id="cursos" class="mx-auto max-w-6xl scroll-mt-16 px-4 py-16 sm:px-6">
+    <h2 class="text-3xl">Cursos</h2>
     <div class="mt-6 grid gap-6 md:grid-cols-2">
       {
         publicos.map((publico) => (
@@ -43,8 +29,7 @@ const inscripciones = novedades.find((n) => n.data.tipo === 'inscripciones');
                 .map((c) => (
                   <li>
                     <strong>{c.data.nombre}</strong>
-                    {c.data.horasSemanales && <span class="text-tinta-suave"> · {c.data.horasSemanales} h semanales</span>}
-                    {c.data.periodo && <span class="text-tinta-suave"> · {c.data.periodo}</span>}
+                    {c.data.periodo && <span class="text-tinta-suave">, {c.data.periodo.toLowerCase()}</span>}
                   </li>
                 ))}
             </ol>
@@ -53,19 +38,6 @@ const inscripciones = novedades.find((n) => n.data.tipo === 'inscripciones');
       }
     </div>
   </section>
-
-  {
-    novedades.length > 0 && (
-      <section class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
-        <h2 class="text-2xl">Novedades vigentes</h2>
-        <ul class="mt-4 space-y-2 text-sm">
-          {novedades.map((n) => (
-            <li>
-              <strong>{n.data.titulo}</strong> <span class="text-tinta-suave">({n.data.periodo})</span>
-            </li>
-          ))}
-        </ul>
-      </section>
-    )
-  }
+  <section id="sedes" class="scroll-mt-16"></section>
+  <section id="nosotros" class="scroll-mt-16"></section>
 </Base>

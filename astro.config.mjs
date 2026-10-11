@@ -27,6 +27,8 @@ export default defineConfig({
           'arrow-forward-rounded',
           'open-in-new-rounded',
           'chat-outline',
+          'chat-rounded',
+          'arrow-downward-rounded',
           'check-circle-outline',
         ],
       },

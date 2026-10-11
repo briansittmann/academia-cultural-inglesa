@@ -40,6 +40,13 @@ testDeNivel:
     - Completá tus datos y respondé el test online. Son 124 preguntas; si no sabés una, marcá "No sabe / No contesta".
     - Recibís por mail el resultado con tu nivel.
     - Escribinos por WhatsApp o pedí información para reservar tu lugar.
+hero:
+  titulo: Aprendé inglés en tu barrio, desde 1979
+  bajada: >-
+    Cursos para niños, adolescentes y adultos en Villa Urquiza y Villa del Parque.
+    Sede de los exámenes Cambridge.
+  foto: ../../assets/img/hero-aula.jpg
+  fotoAlt: Una docente ayuda a un alumno de primaria con su cuaderno en el aula.
 seo:
   titulo: Academia Cultural Inglesa | Inglés en Villa Urquiza y Villa del Parque
   descripcion: >-

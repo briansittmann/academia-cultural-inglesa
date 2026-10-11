@@ -54,6 +54,12 @@ const instituto = defineCollection({
         preguntas: z.number().int(),
         pasos: z.array(z.string()),
       }),
+      hero: z.object({
+        titulo: z.string(), // H1, máximo 2 líneas en escritorio
+        bajada: z.string(), // máximo 20 palabras
+        foto: image(),
+        fotoAlt: z.string(),
+      }),
       seo: z.object({
         titulo: z.string(),
         descripcion: z.string().max(160),
