@@ -7,15 +7,17 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/secciones/Hero.astro';
 import Cursos from '../components/secciones/Cursos.astro';
 import Cambridge from '../components/secciones/Cambridge.astro';
+import Academia from '../components/secciones/Academia.astro';
+import ComoEmpezar from '../components/secciones/ComoEmpezar.astro';
 ---
 
 <Base>
   <Hero />
   <Cursos />
   <Cambridge />
+  <Academia />
+  <ComoEmpezar />
 
-  {/* Esqueleto provisorio para las anclas de la nav. */}
-  <section id="nosotros" class="scroll-mt-16"></section>
-  <section id="test-de-nivel" class="scroll-mt-16"></section>
+  {/* Esqueleto provisorio para el ancla de la nav; Sedes llega en el próximo paso. */}
   <section id="sedes" class="scroll-mt-16"></section>
 </Base>

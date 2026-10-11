@@ -1,0 +1,57 @@
+---
+/**
+ * La Academia: fusiona "Por qué nos destacamos" y "Quiénes somos". Cifra grande
+ * (meses de clase extra por año, dato real del flyer), hechos verificables y un
+ * párrafo corto. Layout asimétrico, sin cards.
+ */
+import { getEntry } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+
+const instituto = await getEntry('instituto', 'instituto');
+if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+const { cargaHoraria, hechos, descripcion } = instituto.data;
+---
+
+<section id="nosotros" class="scroll-mt-16 py-16 lg:py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <h2 class="text-3xl sm:text-4xl">La Academia</h2>
+        <p class="mt-5 text-lg leading-relaxed text-tinta-suave">{descripcion}</p>
+        <ul class="mt-8 divide-y divide-borde/60 border-y border-borde/60">
+          {
+            hechos.map((h) => (
+              <li class="flex items-start gap-3 py-3">
+                <Icon name="material-symbols:check-circle-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
+                <span class="font-medium text-verde-900">{h}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="lg:col-span-7 lg:pt-2">
+        <div class="rounded-card bg-verde-100/70 p-6 sm:p-10">
+          <h3 class="text-2xl sm:text-3xl">{cargaHoraria.titulo}</h3>
+          <div class="mt-8 grid gap-8 sm:grid-cols-2">
+            {
+              cargaHoraria.detalle.map((d) => (
+                <div class="border-l-4 border-dorado-600 pl-5">
+                  <p class="text-6xl leading-none font-bold tracking-tight text-verde-900 sm:text-7xl">
+                    +{d.mesesExtra}
+                  </p>
+                  <p class="mt-2 text-lg font-semibold text-verde-900">meses de clase por año</p>
+                  <p class="mt-1 text-tinta-suave">en los cursos de {d.horasSemanales} h semanales</p>
+                </div>
+              ))
+            }
+          </div>
+          <p class="mt-8 max-w-[55ch] leading-relaxed text-tinta-suave">
+            Nuestros cursos de 3 y 4 horas semanales suman más clases al año que los de la competencia en la zona. Esa
+            diferencia se nota al final del ciclo.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
