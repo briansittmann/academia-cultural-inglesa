@@ -1,20 +1,32 @@
 # Academia Cultural Inglesa
 
-Landing page informativa para un instituto de inglés. Sin backend, sin login, sin aplicación: solo muestra información (cursos, niveles, contacto, ubicación, etc.). Reemplaza/migra la página actual del instituto.
+Landing page informativa para un instituto de inglés. Sitio estático, sin base de datos ni servidor propio: solo muestra información (cursos, niveles, contacto, ubicación, etc.). Reemplaza/migra la página actual del instituto. El único login es el del panel de administración (Keystatic, fase 6), con el que la dueña edita el contenido.
 
 ## Stack
 
 - **Astro** (sitio estático) + **Tailwind CSS**
-- **Sin React**: todo con componentes `.astro`. La poca interactividad que haga falta (menú mobile, tabs de cursos) va con `<script>` nativo dentro del componente.
-- Build estático (`dist/`) deployable en cualquier hosting (Hostinger, Netlify, Vercel o GitHub Pages)
+- **Sin React** en el sitio: todo con componentes `.astro`. La poca interactividad que haga falta (menú mobile, tabs de cursos) va con `<script>` nativo dentro del componente. (El panel de Keystatic trae su propio React, pero solo se carga en `/keystatic`.)
+- Build estático (`dist/`) deployable en Netlify, Vercel o Cloudflare Pages (ver Hosting en Forma de trabajo).
 
 ## Diseño
 
-- El diseño original se hizo en **Google Stitch**. Las fuentes de verdad son el HTML exportado, el `DESIGN.md` y las capturas, todo en `Referencias/` (por ahora solo están las capturas; faltan el HTML y el `DESIGN.md`).
-- Respetar la paleta, tipografías y espaciados del diseño; si hay que crear algo nuevo, seguir las reglas del `DESIGN.md`.
-- Definir colores y fuentes como tokens en la config de Tailwind, no hardcodeados en los componentes.
-- **Contenido real:** usar los datos de `content/README.md` (direcciones, teléfonos, cursos). El diseño de Stitch tiene datos inventados; ver la sección "Datos del diseño de Stitch que no coinciden" en ese archivo.
-- **Logo:** por ahora, el escudo real (`content/imagenes/marca/`), no el ícono genérico de Stitch.
+- El punto de partida es un **borrador de Google Stitch** (`Referencias/stitch_modern_cultural_inglesa_redesign/`: `DESIGN.md`, `code.html`, `screen.png`). Salió de un solo prompt: **no es un diseño cerrado**. Se toma como base para la estructura, la paleta y el tono, y se audita con criterio usando el skill Taste. Se cambia lo que no funcione (jerarquía, tipografía, espaciado, secciones redundantes o genéricas, patrones típicos de IA, textos de relleno, comportamiento en el celular).
+- La auditoría y la estructura aprobada están en **`docs/fase-1-analisis.md`**: es la referencia para implementar las secciones.
+- **Identidad de marca que no se negocia:** verde y dorado del escudo, tono confiable y cálido, público de familias y adultos de barrio.
+- **Solo modo claro.** Esto pisa la regla del skill Taste de dark mode obligatorio.
+- **Landing de una sola página** (secciones y anclas). Las páginas por curso y las redirecciones 301 desde las URLs viejas quedan para más adelante. Los posts y eventos del panel de administración agregarán páginas secundarias de contenido, sin cambiar la landing.
+- Definir colores, fuentes, radios y easings como tokens en el tema de Tailwind (`@theme`), no hardcodeados en los componentes.
+- **Fuentes** alojadas en el proyecto con **Fontsource**, nunca desde Google Fonts. Familia elegida: Plus Jakarta Sans (ver `docs/fase-1-analisis.md`).
+- **Contenido real:** usar los datos de `content/README.md` (direcciones, teléfonos, cursos). El diseño de Stitch tiene datos inventados; ver la sección "Datos del diseño de Stitch que no coinciden" en ese archivo. Los datos del instituto viven en **content collections de Astro** (`src/content/`), una sola fuente de verdad; los componentes nunca tienen datos hardcodeados. Esto deja el sitio listo para el panel de administración.
+- **Fechas:** hoy la campaña vigente es "Inscripciones 2027" y "Verano 2027" (en Argentina la campaña de verano arranca en diciembre; los cursos son en febrero). Todo dato con fecha va en la collection `novedades`, nunca en los componentes.
+- **Copy** en español rioplatense (voseo), sin guiones largos, sin "&", sin separadores decorativos.
+
+### Imágenes
+
+- **Reales:** flyers y fotos de `content/imagenes/` solo donde aporten. Copiar al proyecto únicamente las que se usen.
+- **Provisorias:** fotos de Unsplash (licencia libre, no Unsplash+) **descargadas al proyecto**, nunca enlazadas desde afuera, acordes al contenido (aulas, chicos, adolescentes, adultos estudiando). Registrar autor y link de cada una en `src/assets/img/CREDITOS.md` para reemplazarlas después por fotos reales.
+- **No usar** las imágenes de `lh3.googleusercontent.com` del HTML de Stitch (son generadas por IA).
+- **Logo:** no hay versión vectorial. Se usa un SVG provisorio calcado de `content/imagenes/marca/logo-escudo.png` (vtracer o equivalente que respete los colores), marcado como provisorio, también como favicon. Más adelante llega el original.
 
 ## Herramientas
 
@@ -22,9 +34,10 @@ Landing page informativa para un instituto de inglés. Sin backend, sin login, s
 
 Usarlo para las decisiones visuales (tipografía, espaciado, jerarquía, evitar el look genérico de IA), con estos ajustes para este proyecto:
 - **Stack:** Astro + Tailwind manda sobre los defaults del skill (Next.js/RSC, `motion/react`, librerías de íconos de React).
-- **Íconos:** `astro-icon` con el set de Phosphor de Iconify (`@iconify-json/ph`): la misma familia que recomienda el skill, pero sin React.
-- **Diseño ya definido:** el punto de partida es el diseño de Stitch; aplicar el skill para pulirlo, no para reinventarlo.
-- **Público:** familias y adultos de barrio (Villa Urquiza / Villa del Parque) → claridad y confianza por encima de efectos llamativos. Motion bajo.
+- **Íconos:** **Material Symbols** vía `astro-icon` + Iconify (`@iconify-json/material-symbols`). Una sola familia en todo el sitio; íconos funcionales, no decorativos en cada viñeta.
+- **Borrador de Stitch:** es el punto de partida, no la meta. Aplicar el skill para auditarlo y cambiar lo que no funcione, conservando la identidad de marca (ver sección Diseño).
+- **Modo claro solamente:** ignorar la regla de dark mode obligatorio.
+- **Público:** familias y adultos de barrio (Villa Urquiza / Villa del Parque) → claridad y confianza por encima de efectos llamativos. Motion bajo. Diales de referencia: variance 5, motion 3, density 4-5.
 
 ### Context7: documentación actualizada
 
@@ -57,6 +70,20 @@ Ajustes para este proyecto (la guía está escrita pensando en React):
 - `content/`: respaldo de la página actual (textos en `.md`, flyers transcritos, imágenes) y `content/README.md` con los datos reales del instituto y las dudas pendientes.
 - `Referencias/`: diseño de Stitch.
 - `motion-skills/`: guías de animación (ver sección Animaciones).
+- `docs/`: análisis y decisiones por fase.
+
+## Forma de trabajo
+
+- **Por fases.** Al terminar cada fase, frenar, mostrar lo hecho y esperar el OK antes de seguir:
+  1. Análisis y auditoría (`docs/fase-1-analisis.md`).
+  2. Setup: Astro + Tailwind, tokens, fuentes, logo SVG provisorio, layout base con SEO y favicon.
+  3. Secciones, de a una o dos por vez, según la estructura aprobada. Todo con datos reales.
+  4. Animaciones según `motion-skills` (motion bajo).
+  5. Cierre: datos estructurados, sitemap, prueba responsive y de accesibilidad, Lighthouse, pasada final de Taste.
+  6. Panel de administración con **Keystatic** (`@keystatic/astro`, Keystatic Cloud para que la dueña entre sin cuenta de GitHub), campos con etiquetas en español, deploy automático desde Git. Detalle en `docs/fase-1-analisis.md` §8.
+- **Hosting:** uno que reconstruya desde Git y soporte funciones del lado del servidor para el login del panel (Netlify, Vercel o Cloudflare Pages). Salida estática; el adaptador solo para las rutas del panel.
+- Antes de usar Astro, Tailwind o cualquier librería, consultar la documentación con Context7.
+- **Un commit en español por fase. No hacer push sin preguntar.**
 
 ## Convenciones
 
