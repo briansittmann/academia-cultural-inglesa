@@ -1,0 +1,30 @@
+---
+/**
+ * JSON-LD del sitio: EducationalOrganization + una LocalBusiness por sede.
+ * Se arma en src/lib/datos-estructurados.ts a partir de las collections.
+ */
+import { getCollection, getEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
+import logo from '../assets/logo/logo-recortado.png';
+import { armarDatosEstructurados } from '../lib/datos-estructurados';
+
+const instituto = await getEntry('instituto', 'instituto');
+if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+const sedes = (await getCollection('sedes')).sort((a, b) => a.data.orden - b.data.orden);
+if (!Astro.site) throw new Error('Falta `site` en astro.config.mjs');
+
+// Logo en PNG (los buscadores no indexan webp como logo de organización) a 600 px de ancho.
+const logoImg = await getImage({ src: logo, width: 600, format: 'png' });
+const datos = armarDatosEstructurados({
+  site: Astro.site,
+  instituto,
+  sedes,
+  logoUrl: new URL(logoImg.src, Astro.site).href,
+  logoAncho: logoImg.attributes.width,
+  logoAlto: logoImg.attributes.height,
+});
+// "</" se escapa para que el JSON no pueda cerrar el <script>.
+const json = JSON.stringify(datos).replace(/<\//g, '<\\/');
+---
+
+<script type="application/ld+json" set:html={json} />

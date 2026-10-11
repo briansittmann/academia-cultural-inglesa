@@ -94,13 +94,17 @@ Ajustes para este proyecto (la guía está escrita pensando en React):
 
 Actualizado el 2026-10-12. Mantener esta sección al cerrar cada entrega.
 
-- **Fases 1 a 4: hechas y commiteadas** (sin push). Notas en `docs/fase-1-analisis.md`, `fase-2-setup.md`, `fase-3-secciones.md` y `fase-4-animaciones.md`. Leerlas antes de tocar algo de esas fases.
-- **Sigue: fase 5 (cierre).** Datos estructurados `EducationalOrganization` / `LocalBusiness` con las dos sedes, revisar sitemap y robots, prueba responsive y de accesibilidad (teclado, contraste, lectores de pantalla), Lighthouse en mobile y escritorio, pasada final con el skill Taste (Pre-Flight Check de la sección 14). Después, fase 6 (Keystatic).
-- **Animaciones:** dial de motion 5 (el dueño pidió "más carácter" el 2026-10-12; la primera versión con el mismo fundido en todo se descartó). Un efecto distinto por sección, documentado en `docs/fase-4-animaciones.md`. Magic UI solo como referencia para portar efectos a CSS y JS nativo; su MCP está en `.mcp.json` y hay que aprobarlo con `/mcp`. `astro-component-kit` descartado.
+- **Fases 1 a 5: hechas** (sin push). Notas en `docs/fase-1-analisis.md`, `fase-2-setup.md`, `fase-3-secciones.md`, `fase-4-animaciones.md` y `fase-5-cierre.md`. Leerlas antes de tocar algo de esas fases.
+- **Sigue: fase 6 (Keystatic).** Instalar `@keystatic/core` y `@keystatic/astro`, mapear las collections a campos con etiquetas en español, Keystatic Cloud para el login de la dueña sin GitHub, adaptador del hosting solo para las rutas del panel y deploy automático desde Git. Detalle en `docs/fase-1-analisis.md` §8.
+- **Logo:** el instituto entregó `src/assets/logo/logo.png` (PNG con los dos leones). Es el logo oficial hasta que llegue el SVG; `Logo.astro` usa `logo-recortado.png` (sin márgenes) y de ahí salen favicons y `og.jpg` (ver `docs/fase-5-cierre.md`). El escudo calcado en SVG se borró.
+- **Datos estructurados:** `src/lib/datos-estructurados.ts` + `src/components/DatosEstructurados.astro` (EducationalOrganization con cada sede como LocalBusiness). El horario de atención se escribe en español en `instituto.yaml` y se traduce al formato de schema.org al construir.
+- **Animaciones:** dial de motion 5. Un efecto distinto por sección, documentado en `docs/fase-4-animaciones.md`. Magic UI solo como referencia para portar efectos a CSS y JS nativo; su MCP está en `.mcp.json` y hay que aprobarlo con `/mcp`.
+- **Breakpoints del header y de Cómo empezar:** la nav de escritorio y las tres cards en fila recién aparecen desde `lg` (1024 px); hasta ahí, hamburguesa y pasos apilados.
+- **Lighthouse (2026-10-12):** mobile 99 / 100 / 100 / 100, escritorio 100 en todo. LCP mobile 2,1 s (es el H1, no la foto).
 - **Pendientes concretos:**
-  - Medir el LCP del hero: la foto está enmascarada 200 ms y se revela en 900 ms; si Lighthouse lo penaliza, acortar la máscara en `src/styles/animaciones.css`.
   - Decidir si Apoyo escolar va en Niños o Adultos (`src/content/cursos/apoyo-escolar.yaml`).
-  - Las dudas para la dueña están en `docs/fase-1-analisis.md` §6 y en el campo `pendiente` de cada curso. Sin respuesta todavía.
-  - Fotos provisorias de Unsplash (créditos en `src/assets/img/CREDITOS.md`) y escudo SVG calcado: se reemplazan cuando el instituto entregue material.
+  - Las dudas para la dueña están en `docs/fase-1-analisis.md` §6 y en el campo `pendiente` de cada curso. Sin respuesta todavía. Sumar: código postal y coordenadas de cada sede para el JSON-LD.
+  - Validar el JSON-LD con validator.schema.org y la prueba de resultados enriquecidos de Google cuando el dominio esté publicado.
+  - Fotos provisorias de Unsplash (créditos en `src/assets/img/CREDITOS.md`): se reemplazan cuando el instituto entregue material.
   - La máquina tiene Node 23 (versión impar, no soportada oficialmente por Astro 7); build y check pasan igual.
-- **Cómo verificar:** `npm run build` y `npx astro check` deben pasar sin errores. El skill `browser-automation` sirve para comprobar consola, scroll horizontal y capturas en 390 px y 1280 px. Astro 7 deja corriendo `astro preview` y `astro dev` como daemons (`npx astro preview stop` / `npx astro dev stop`).
+- **Cómo verificar:** `npm run build` y `npx astro check` deben pasar sin errores. El skill `browser-automation` sirve para comprobar consola, scroll horizontal y capturas en 390, 768, 1024 y 1280 px (para recorrer la página en un script usar `scrollTo` con `behavior: 'instant'`, porque el `scroll-behavior: smooth` del sitio hace que un scroll rápido no llegue abajo y los reveals no se disparen). Lighthouse: `npx -y lighthouse@latest http://localhost:4321/ --preset=desktop` con `CHROME_PATH` apuntando a Google Chrome. Astro 7 deja corriendo `astro preview` y `astro dev` como daemons (`npx astro preview stop` / `npx astro dev stop`).

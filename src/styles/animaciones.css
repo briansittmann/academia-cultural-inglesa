@@ -283,7 +283,7 @@ header[data-compacto] {
   transform: translate(-50%, -100%);
   background: linear-gradient(180deg, transparent, var(--color-verde-700) 40%, var(--color-dorado-600) 70%, transparent);
 }
-@media (min-width: 48rem) {
+@media (min-width: 64rem) {
   .conector::before,
   .haz {
     inset: 50% 0 auto 0;
@@ -300,7 +300,7 @@ header[data-compacto] {
   animation: haz-baja 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
   animation-delay: calc(var(--i, 1) * 600ms - 250ms);
 }
-@media (min-width: 48rem) {
+@media (min-width: 64rem) {
   [data-visible] .haz {
     animation-name: haz-cruza;
   }
@@ -348,11 +348,21 @@ header[data-compacto] {
     animation: solo-opacidad 400ms var(--ease-out) both;
     animation-delay: var(--retraso-titulo, 0ms);
   }
+  /* El hero entra solo con opacidad (sin máscara, zoom ni desplazamientos). */
   .hero-eyebrow,
   .hero-bajada,
   .hero-ctas,
-  .hero-foto-mascara,
-  .hero-foto-img,
+  .hero-foto-mascara {
+    animation: solo-opacidad 400ms var(--ease-out) both;
+  }
+  .hero-bajada,
+  .hero-ctas {
+    animation-delay: 150ms;
+  }
+  .hero-foto-img {
+    animation: none;
+  }
+  /* El haz que recorre el riel no tiene versión suave: no se muestra. */
   [data-visible] .haz {
     animation: none;
     opacity: 0;

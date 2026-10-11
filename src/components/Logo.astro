@@ -1,10 +1,12 @@
 ---
 /**
- * Escudo del instituto. PROVISORIO: SVG calcado del PNG (ver src/assets/logo/escudo.svg).
- * Se sirve como <img> (no inline) porque el calco pesa 40 KB: así se cachea una sola vez
- * y no se repite en header y footer.
+ * Logo del instituto (escudo con los dos leones). Hoy es el PNG que entregó el
+ * instituto (src/assets/logo/logo.png, 1254 px); se usa la versión recortada sin
+ * márgenes transparentes y se sirve como <img> optimizada por astro:assets, a 2x
+ * para pantallas retina. Cuando llegue el SVG original, se reemplaza acá.
  */
-import escudo from '../assets/logo/escudo.svg';
+import { Image } from 'astro:assets';
+import logo from '../assets/logo/logo-recortado.png';
 
 interface Props {
   size?: number; // alto en px
@@ -12,7 +14,7 @@ interface Props {
   alt?: string; // vacío cuando va junto al nombre del instituto
 }
 const { size = 40, class: className, alt = '' } = Astro.props;
-const width = Math.round((size * escudo.width) / escudo.height);
+const width = Math.round((size * logo.width) / logo.height);
 ---
 
-<img src={escudo.src} width={width} height={size} alt={alt} class={className} loading="eager" decoding="async" />
+<Image src={logo} width={width} height={size} densities={[1, 2]} alt={alt} class={className} loading="eager" decoding="async" />

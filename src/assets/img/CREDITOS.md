@@ -12,5 +12,6 @@ implementan las secciones.
 | `cursos-adultos.jpg` | Cursos: adultos | Brooke Cagle | https://unsplash.com/photos/three-people-sitting-in-front-of-table-laughing-together-g1Kr4Ozfoac |
 | `cursos-verano.jpg` | Cursos: verano | Joseph Chan | https://unsplash.com/photos/two-women-walking-with-luggage-bags-FcLh4pcidIk |
 
-El escudo (`src/assets/logo/escudo.svg`) es un calco provisorio con vtracer del PNG
-`content/imagenes/marca/logo-escudo.png`, hasta que el instituto entregue el vector.
+El logo (`src/assets/logo/logo.png`, y `logo-recortado.png` sin márgenes) es el PNG que
+entregó el instituto. Cuando llegue el SVG original se reemplaza en `Logo.astro` y se vuelven
+a derivar los favicons y `public/og.jpg` (ver `docs/fase-5-cierre.md`).

@@ -3,7 +3,7 @@
  * Cómo empezar: tres pasos como cards conectadas por un haz de luz que viaja
  * de una a la siguiente (port a CSS del "animated beam" de Magic UI: recorre
  * una sola vez al entrar en pantalla, no en loop). Fondo con patrón de puntos
- * (port del "dot pattern"). En mobile las cards se apilan y el haz baja.
+ * (port del "dot pattern"). Hasta 1023 px las cards se apilan y el haz baja.
  */
 import { getEntry } from 'astro:content';
 import { Icon } from 'astro-icon/components';
@@ -23,12 +23,12 @@ const { testDeNivel, formularios } = instituto.data;
       </p>
     </div>
 
-    <ol class="mt-12 grid items-stretch gap-0 md:grid-cols-[1fr_3.5rem_1fr_3.5rem_1fr]" data-reveal>
+    <ol class="mt-12 grid items-stretch gap-0 lg:grid-cols-[1fr_3.5rem_1fr_3.5rem_1fr]" data-reveal>
       {
         testDeNivel.pasos.map((paso, i) => (
           <>
             {i > 0 && (
-              <li class="conector relative h-12 md:h-auto" aria-hidden="true" style={`--i: ${i}`}>
+              <li class="conector relative h-12 lg:h-auto" aria-hidden="true" style={`--i: ${i}`}>
                 <span class="haz" />
               </li>
             )}
