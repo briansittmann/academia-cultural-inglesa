@@ -1,0 +1,114 @@
+---
+/**
+ * Cursos: tabs Niños / Adolescentes / Adultos / Verano (sin "Todos"), un panel
+ * por público con la progresión real de niveles. Las anclas #ninos, #adolescentes,
+ * #adultos y #verano activan la pestaña correspondiente. El indicador animado
+ * (receta "tab indicator") se agrega en la fase 4.
+ */
+import { getCollection, getEntry } from 'astro:content';
+import CursosPanel from './CursosPanel.astro';
+
+const instituto = await getEntry('instituto', 'instituto');
+if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+
+const publicos = (await getCollection('publicos', ({ data }) => data.enTabs)).sort((a, b) => a.data.orden - b.data.orden);
+const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<section id="cursos" class="scroll-mt-16 bg-verde-50/60 py-16 lg:py-24">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <h2 class="text-3xl sm:text-4xl">Cursos por edad</h2>
+    <p class="mt-3 max-w-[60ch] text-lg text-tinta-suave">
+      Elegí tu grupo y mirá la progresión de niveles, la carga horaria y las fechas de cada curso.
+    </p>
+
+    <div
+      role="tablist"
+      aria-label="Públicos"
+      class="mt-8 -mx-4 flex gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      data-tabs
+    >
+      {
+        publicos.map((p, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`tab-${p.data.ancla}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            aria-controls={p.data.ancla}
+            tabindex={i === 0 ? 0 : -1}
+            class="tab shrink-0 snap-start rounded-full border border-borde bg-white px-5 py-2.5 text-sm font-semibold text-tinta-suave hover:border-verde-700 hover:text-verde-900 aria-selected:border-verde-700 aria-selected:bg-verde-700 aria-selected:text-white"
+            data-tab
+          >
+            {p.data.nombre}
+          </button>
+        ))
+      }
+    </div>
+
+    <div class="mt-8 lg:mt-10">
+      {
+        publicos.map((p, i) => (
+          <CursosPanel
+            publico={p}
+            cursos={cursos.filter((c) => c.data.publico.id === p.id)}
+            testDeNivelUrl={instituto.data.formularios.testDeNivel}
+            activo={i === 0}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-panel]'));
+
+  function activar(id: string, enfocar = false) {
+    tabs.forEach((t) => {
+      const sel = t.getAttribute('aria-controls') === id;
+      t.setAttribute('aria-selected', String(sel));
+      t.tabIndex = sel ? 0 : -1;
+      if (sel) {
+        t.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        if (enfocar) t.focus();
+      }
+    });
+    panels.forEach((p) => (p.hidden = p.id !== id));
+  }
+
+  tabs.forEach((t) =>
+    t.addEventListener('click', () => {
+      const id = t.getAttribute('aria-controls')!;
+      activar(id);
+      history.replaceState(null, '', `#${id}`);
+    }),
+  );
+
+  // Navegación con flechas dentro del tablist.
+  document.querySelector('[data-tabs]')?.addEventListener('keydown', (e) => {
+    const ev = e as KeyboardEvent;
+    const i = tabs.findIndex((t) => t === document.activeElement);
+    if (i < 0) return;
+    let j = i;
+    if (ev.key === 'ArrowRight') j = (i + 1) % tabs.length;
+    else if (ev.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+    else if (ev.key === 'Home') j = 0;
+    else if (ev.key === 'End') j = tabs.length - 1;
+    else return;
+    ev.preventDefault();
+    activar(tabs[j].getAttribute('aria-controls')!, true);
+  });
+
+  // #ninos, #adolescentes, #adultos, #verano activan su pestaña (y sirven para las redirecciones 301).
+  function desdeHash() {
+    const id = location.hash.slice(1);
+    if (panels.some((p) => p.id === id)) {
+      activar(id);
+      document.getElementById('cursos')?.scrollIntoView();
+    }
+  }
+  window.addEventListener('hashchange', desdeHash);
+  desdeHash();
+</script>

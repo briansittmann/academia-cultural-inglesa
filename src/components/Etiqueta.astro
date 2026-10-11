@@ -1,0 +1,18 @@
+---
+/** Pill corta para niveles, modalidad o etiquetas de curso. */
+interface Props {
+  tono?: 'verde' | 'dorado' | 'claro' | 'borde';
+  class?: string;
+}
+const { tono = 'verde', class: className } = Astro.props;
+const tonos = {
+  verde: 'bg-verde-100 text-verde-900',
+  dorado: 'bg-dorado-600/15 text-dorado-800',
+  claro: 'bg-white/15 text-white',
+  borde: 'border border-borde/80 bg-white text-tinta-suave',
+};
+---
+
+<span class:list={['inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold whitespace-nowrap', tonos[tono], className]}>
+  <slot />
+</span>

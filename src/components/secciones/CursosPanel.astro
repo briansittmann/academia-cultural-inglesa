@@ -1,0 +1,160 @@
+---
+/**
+ * Panel de un público: foto, descripción, progresión real de niveles y CTA
+ * "Pedir información". Recibe el público y sus cursos ya ordenados.
+ */
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { getEntry } from 'astro:content';
+import Boton from '../Boton.astro';
+import Etiqueta from '../Etiqueta.astro';
+
+interface Props {
+  publico: CollectionEntry<'publicos'>;
+  cursos: CollectionEntry<'cursos'>[];
+  testDeNivelUrl: string;
+  activo: boolean;
+}
+const { publico, cursos, testDeNivelUrl, activo } = Astro.props;
+
+// Nombres de sedes para mostrar (solo cuando el curso las declara).
+const sedesPorCurso = new Map<string, string[]>();
+for (const c of cursos) {
+  const nombres = (await Promise.all(c.data.sedes.map((ref) => getEntry(ref)))).flatMap((s) => (s ? [s.data.nombre] : []));
+  sedesPorCurso.set(c.id, nombres);
+}
+
+function meta(c: CollectionEntry<'cursos'>) {
+  const partes: string[] = [];
+  if (c.data.frecuencia) partes.push(c.data.frecuencia);
+  if (c.data.duracionClase) partes.push(`clases de ${c.data.duracionClase}`);
+  if (c.data.periodo) partes.push(c.data.periodo.toLowerCase());
+  return partes;
+}
+const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
+---
+
+<div
+  id={publico.data.ancla}
+  role="tabpanel"
+  aria-labelledby={`tab-${publico.data.ancla}`}
+  tabindex="0"
+  hidden={!activo}
+  class="scroll-mt-32 grid gap-8 lg:grid-cols-12 lg:gap-10"
+  data-panel
+>
+  <div class="lg:col-span-5">
+    {
+      publico.data.foto && (
+        <Image
+          src={publico.data.foto}
+          alt={publico.data.fotoAlt ?? ''}
+          widths={[480, 800, 1200]}
+          sizes="(min-width: 1024px) 40vw, 100vw"
+          loading="lazy"
+          class="aspect-[4/3] w-full rounded-card object-cover shadow-card lg:aspect-[4/5]"
+        />
+      )
+    }
+    <h3 class="mt-6 text-2xl">{publico.data.titulo}</h3>
+    <p class="mt-3 leading-relaxed text-tinta-suave">{publico.data.descripcion}</p>
+    {
+      algunoConTest && (
+        <p class="mt-3 text-sm text-tinta-suave">
+          Para ubicarte en el nivel correcto, primero hacé el{' '}
+          <a href={testDeNivelUrl} target="_blank" rel="noopener" class="font-semibold text-verde-700 underline underline-offset-4 hover:text-verde-900">
+            test de nivel online gratuito</a>.
+        </p>
+      )
+    }
+    {
+      publico.data.formulario && (
+        <div class="mt-6 hidden lg:block">
+          <Boton href={publico.data.formulario} variante="primario" icono="material-symbols:open-in-new-rounded" externo>
+            Pedir información
+          </Boton>
+        </div>
+      )
+    }
+  </div>
+
+  <ol class="lg:col-span-7 lg:border-l lg:border-borde/70 lg:pl-10">
+    {
+      cursos.map((c, i) => {
+        const sedes = sedesPorCurso.get(c.id) ?? [];
+        return (
+          <li class:list={['relative py-6', i > 0 && 'border-t border-borde/60']}>
+            <span class="absolute top-7 -left-[calc(2.5rem+5px)] hidden size-2.5 rounded-full bg-verde-700 ring-4 ring-crema lg:block" aria-hidden="true" />
+            <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+              <h4 class="text-lg">{c.data.nombre}</h4>
+              {c.data.etiqueta && <Etiqueta>{c.data.etiqueta}</Etiqueta>}
+            </div>
+            <p class="mt-1 text-sm font-medium text-verde-700">{c.data.para}</p>
+            <p class="mt-2 leading-relaxed text-tinta-suave">{c.data.descripcion}</p>
+            {c.data.niveles.length > 1 && (
+              <ul class="mt-3 flex flex-wrap gap-1.5" aria-label="Niveles">
+                {c.data.niveles.map((n) => (
+                  <li>
+                    <Etiqueta tono="borde">{n}</Etiqueta>
+                  </li>
+                ))}
+              </ul>
+            )}
+            <dl class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-tinta-suave">
+              {meta(c).map((m) => (
+                <div>
+                  <dt class="sr-only">Cursada</dt>
+                  <dd>{m}</dd>
+                </div>
+              ))}
+              {c.data.horasSemanales && (
+                <div>
+                  <dt class="sr-only">Carga horaria</dt>
+                  <dd class="font-semibold text-verde-900">{c.data.horasSemanales} h por semana</dd>
+                </div>
+              )}
+              {c.data.modalidad === 'presencial-y-online' && (
+                <div>
+                  <dt class="sr-only">Modalidad</dt>
+                  <dd>presencial u online</dd>
+                </div>
+              )}
+              {c.data.modalidad === 'online' && (
+                <div>
+                  <dt class="sr-only">Modalidad</dt>
+                  <dd>online</dd>
+                </div>
+              )}
+              {sedes.length > 0 && (
+                <div>
+                  <dt class="sr-only">Sede</dt>
+                  <dd>Sede {sedes.join(' y ')}</dd>
+                </div>
+              )}
+            </dl>
+            {c.data.formulario && c.data.formulario !== publico.data.formulario && (
+              <a
+                href={c.data.formulario}
+                target="_blank"
+                rel="noopener"
+                class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-verde-700 underline underline-offset-4 hover:text-verde-900"
+              >
+                Pedir información
+              </a>
+            )}
+          </li>
+        );
+      })
+    }
+  </ol>
+
+  {
+    publico.data.formulario && (
+      <div class="lg:hidden">
+        <Boton href={publico.data.formulario} variante="primario" icono="material-symbols:open-in-new-rounded" externo class="w-full sm:w-auto">
+          Pedir información
+        </Boton>
+      </div>
+    )
+  }
+</div>
