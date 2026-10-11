@@ -2,8 +2,9 @@
 /**
  * Cursos: tabs Niños / Adolescentes / Adultos / Verano (sin "Todos"), un panel
  * por público con la progresión real de niveles. Las anclas #ninos, #adolescentes,
- * #adultos y #verano activan la pestaña correspondiente. El indicador animado
- * (receta "tab indicator") se agrega en la fase 4.
+ * #adultos y #verano activan la pestaña correspondiente. Indicador animado con la
+ * receta "tab indicator": una copia de la lista en estado activo, recortada con
+ * clip-path hasta la pestaña elegida.
  */
 import { getCollection, getEntry } from 'astro:content';
 import CursosPanel from './CursosPanel.astro';
@@ -17,33 +18,44 @@ const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.d
 
 <section id="cursos" class="scroll-mt-16 bg-verde-50/60 py-16 lg:py-24">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
+    <div data-reveal>
     <h2 class="text-3xl sm:text-4xl">Cursos por edad</h2>
     <p class="mt-3 max-w-[60ch] text-lg text-tinta-suave">
       Elegí tu grupo y mirá la progresión de niveles, la carga horaria y las fechas de cada curso.
     </p>
+    </div>
 
-    <div
-      role="tablist"
-      aria-label="Públicos"
-      class="mt-8 -mx-4 flex gap-2 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      data-tabs
-    >
-      {
-        publicos.map((p, i) => (
-          <button
-            type="button"
-            role="tab"
-            id={`tab-${p.data.ancla}`}
-            aria-selected={i === 0 ? 'true' : 'false'}
-            aria-controls={p.data.ancla}
-            tabindex={i === 0 ? 0 : -1}
-            class="tab shrink-0 snap-start rounded-full border border-borde bg-white px-5 py-2.5 text-sm font-semibold text-tinta-suave hover:border-verde-700 hover:text-verde-900 aria-selected:border-verde-700 aria-selected:bg-verde-700 aria-selected:text-white"
-            data-tab
-          >
-            {p.data.nombre}
-          </button>
-        ))
-      }
+    <div class="mt-8 -mx-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-tabs-scroll>
+      <div class="relative inline-flex" data-tabs-wrap>
+        <div role="tablist" aria-label="Públicos" class="flex gap-2" data-tabs>
+          {
+            publicos.map((p, i) => (
+              <button
+                type="button"
+                role="tab"
+                id={`tab-${p.data.ancla}`}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                aria-controls={p.data.ancla}
+                tabindex={i === 0 ? 0 : -1}
+                class="shrink-0 rounded-full border border-borde bg-white px-5 py-2.5 text-sm font-semibold text-tinta-suave hover:border-verde-700 hover:text-verde-900 aria-selected:border-verde-700 aria-selected:bg-verde-700 aria-selected:text-white [.js_&]:aria-selected:border-borde [.js_&]:aria-selected:bg-white [.js_&]:aria-selected:text-tinta-suave"
+                data-tab
+              >
+                {p.data.nombre}
+              </button>
+            ))
+          }
+        </div>
+        {/* Copia en estado activo, solo visual; el recorte la limita a la pestaña elegida. */}
+        <div class="tabs-copia pointer-events-none absolute inset-0 hidden gap-2 [.js_&]:flex" aria-hidden="true" data-tabs-copia>
+          {
+            publicos.map((p) => (
+              <span class="shrink-0 rounded-full border border-verde-700 bg-verde-700 px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-white">
+                {p.data.nombre}
+              </span>
+            ))
+          }
+        </div>
+      </div>
     </div>
 
     <div class="mt-8 lg:mt-10">
@@ -62,53 +74,86 @@ const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.d
 </section>
 
 <script>
-  const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-tab]'));
-  const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-panel]'));
+  function iniciarTabs() {
+    const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-tab]'));
+    const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-panel]'));
+    const wrap = document.querySelector<HTMLElement>('[data-tabs-wrap]');
+    const copia = document.querySelector<HTMLElement>('[data-tabs-copia]');
+    if (tabs.length === 0 || !wrap || !copia || wrap.dataset.listo) return;
+    wrap.dataset.listo = 'true';
 
-  function activar(id: string, enfocar = false) {
-    tabs.forEach((t) => {
-      const sel = t.getAttribute('aria-controls') === id;
-      t.setAttribute('aria-selected', String(sel));
-      t.tabIndex = sel ? 0 : -1;
-      if (sel) {
-        t.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-        if (enfocar) t.focus();
-      }
-    });
-    panels.forEach((p) => (p.hidden = p.id !== id));
-  }
-
-  tabs.forEach((t) =>
-    t.addEventListener('click', () => {
-      const id = t.getAttribute('aria-controls')!;
-      activar(id);
-      history.replaceState(null, '', `#${id}`);
-    }),
-  );
-
-  // Navegación con flechas dentro del tablist.
-  document.querySelector('[data-tabs]')?.addEventListener('keydown', (e) => {
-    const ev = e as KeyboardEvent;
-    const i = tabs.findIndex((t) => t === document.activeElement);
-    if (i < 0) return;
-    let j = i;
-    if (ev.key === 'ArrowRight') j = (i + 1) % tabs.length;
-    else if (ev.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
-    else if (ev.key === 'Home') j = 0;
-    else if (ev.key === 'End') j = tabs.length - 1;
-    else return;
-    ev.preventDefault();
-    activar(tabs[j].getAttribute('aria-controls')!, true);
-  });
-
-  // #ninos, #adolescentes, #adultos, #verano activan su pestaña (y sirven para las redirecciones 301).
-  function desdeHash() {
-    const id = location.hash.slice(1);
-    if (panels.some((p) => p.id === id)) {
-      activar(id);
-      document.getElementById('cursos')?.scrollIntoView();
+    function moverIndicador(tab: HTMLElement) {
+      const izq = tab.offsetLeft;
+      const der = wrap!.clientWidth - (tab.offsetLeft + tab.offsetWidth);
+      copia!.style.setProperty('--clip-izq', `${izq}px`);
+      copia!.style.setProperty('--clip-der', `${der}px`);
     }
+
+    function activar(id: string, opciones: { enfocar?: boolean; animarLista?: boolean } = {}) {
+      tabs.forEach((t) => {
+        const sel = t.getAttribute('aria-controls') === id;
+        t.setAttribute('aria-selected', String(sel));
+        t.tabIndex = sel ? 0 : -1;
+        if (sel) {
+          moverIndicador(t);
+          t.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+          if (opciones.enfocar) t.focus();
+        }
+      });
+      panels.forEach((p) => {
+        const mostrar = p.id === id;
+        if (mostrar && p.hidden && opciones.animarLista) {
+          // Stagger de los cursos: se reinicia quitando y volviendo a poner el atributo.
+          p.removeAttribute('data-entrando');
+          void p.offsetWidth;
+          p.setAttribute('data-entrando', '');
+        }
+        p.hidden = !mostrar;
+      });
+    }
+
+    tabs.forEach((t) =>
+      t.addEventListener('click', () => {
+        const id = t.getAttribute('aria-controls')!;
+        activar(id, { animarLista: true });
+        history.replaceState(null, '', `#${id}`);
+      }),
+    );
+
+    document.querySelector('[data-tabs]')?.addEventListener('keydown', (e) => {
+      const ev = e as KeyboardEvent;
+      const i = tabs.findIndex((t) => t === document.activeElement);
+      if (i < 0) return;
+      let j = i;
+      if (ev.key === 'ArrowRight') j = (i + 1) % tabs.length;
+      else if (ev.key === 'ArrowLeft') j = (i - 1 + tabs.length) % tabs.length;
+      else if (ev.key === 'Home') j = 0;
+      else if (ev.key === 'End') j = tabs.length - 1;
+      else return;
+      ev.preventDefault();
+      activar(tabs[j].getAttribute('aria-controls')!, { enfocar: true, animarLista: true });
+    });
+
+    function desdeHash() {
+      const id = location.hash.slice(1);
+      if (panels.some((p) => p.id === id)) {
+        activar(id, { animarLista: true });
+        document.getElementById('cursos')?.scrollIntoView();
+      }
+    }
+    window.addEventListener('hashchange', desdeHash);
+    window.addEventListener('resize', () => {
+      const activa = tabs.find((t) => t.getAttribute('aria-selected') === 'true');
+      if (activa) moverIndicador(activa);
+    });
+
+    // Estado inicial sin transición: el indicador aparece ya en su lugar.
+    copia.style.transition = 'none';
+    desdeHash();
+    const activa = tabs.find((t) => t.getAttribute('aria-selected') === 'true');
+    if (activa) moverIndicador(activa);
+    void copia.offsetWidth;
+    copia.style.transition = '';
   }
-  window.addEventListener('hashchange', desdeHash);
-  desdeHash();
+  document.addEventListener('astro:page-load', iniciarTabs);
 </script>

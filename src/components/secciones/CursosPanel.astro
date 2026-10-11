@@ -40,7 +40,7 @@ const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
   aria-labelledby={`tab-${publico.data.ancla}`}
   tabindex="0"
   hidden={!activo}
-  class="scroll-mt-32 grid gap-8 lg:grid-cols-12 lg:gap-10"
+  class="panel-cursos scroll-mt-32 grid gap-8 lg:grid-cols-12 lg:gap-10"
   data-panel
 >
   <div class="lg:col-span-5">
@@ -83,7 +83,7 @@ const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
       cursos.map((c, i) => {
         const sedes = sedesPorCurso.get(c.id) ?? [];
         return (
-          <li class:list={['relative py-6', i > 0 && 'border-t border-borde/60']}>
+          <li class:list={['curso-item relative py-6', i > 0 && 'border-t border-borde/60']} style={`--i: ${i}`}>
             <span class="absolute top-7 -left-[calc(2.5rem+5px)] hidden size-2.5 rounded-full bg-verde-700 ring-4 ring-crema lg:block" aria-hidden="true" />
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
               <h4 class="text-lg">{c.data.nombre}</h4>

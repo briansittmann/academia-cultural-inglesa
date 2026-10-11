@@ -6,6 +6,7 @@
 import '@fontsource-variable/plus-jakarta-sans';
 import '../styles/global.css';
 import { getEntry } from 'astro:content';
+import { ClientRouter } from 'astro:transitions';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 
@@ -65,7 +66,10 @@ const ogImageUrl = new URL(ogImage, Astro.site);
     <meta name="twitter:image" content={ogImageUrl} />
 
     <meta name="generator" content={Astro.generator} />
+    <ClientRouter />
     <slot name="head" />
+    {/* Marca que hay JS: los estados iniciales de las animaciones dependen de esta clase. */}
+    <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
   <body class="flex min-h-dvh flex-col">
     <a
@@ -79,5 +83,28 @@ const ogImageUrl = new URL(ogImage, Astro.site);
       <slot />
     </main>
     <Footer />
+    <script>
+      // Scroll reveal (receta de motion-skills): una sola vez por elemento.
+      function iniciarReveal() {
+        const elementos = document.querySelectorAll<HTMLElement>('[data-reveal]:not([data-visible])');
+        if (elementos.length === 0) return;
+        if (!('IntersectionObserver' in window)) {
+          elementos.forEach((el) => el.setAttribute('data-visible', ''));
+          return;
+        }
+        const io = new IntersectionObserver(
+          (entradas) => {
+            entradas.forEach((e) => {
+              if (!e.isIntersecting) return;
+              e.target.setAttribute('data-visible', '');
+              io.unobserve(e.target);
+            });
+          },
+          { rootMargin: '0px 0px -10% 0px', threshold: 0.1 },
+        );
+        elementos.forEach((el) => io.observe(el));
+      }
+      document.addEventListener('astro:page-load', iniciarReveal);
+    </script>
   </body>
 </html>

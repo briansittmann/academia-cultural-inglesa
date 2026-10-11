@@ -13,7 +13,7 @@ const { testDeNivel, formularios } = instituto.data;
 
 <section id="test-de-nivel" class="scroll-mt-16 border-y border-borde/50 bg-white py-16 lg:py-24">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
-    <div class="max-w-[60ch]">
+    <div class="max-w-[60ch]" data-reveal>
       <h2 class="text-3xl sm:text-4xl">Cómo empezar</h2>
       <p class="mt-4 text-lg leading-relaxed text-tinta-suave">
         Si no sabés en qué nivel anotarte, el test online gratuito te lo dice. Son {testDeNivel.preguntas} preguntas y el
@@ -24,7 +24,7 @@ const { testDeNivel, formularios } = instituto.data;
     <ol class="mt-10 grid gap-8 md:grid-cols-3 md:gap-6">
       {
         testDeNivel.pasos.map((paso, i) => (
-          <li class="relative border-t-2 border-verde-700 pt-5">
+          <li class="relative border-t-2 border-verde-700 pt-5" data-reveal style={`--reveal-delay: ${i * 80}ms`}>
             <span class="text-4xl font-bold leading-none text-dorado-800" aria-hidden="true">
               {i + 1}
             </span>

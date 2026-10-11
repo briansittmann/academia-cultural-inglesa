@@ -12,21 +12,29 @@ const sedes = (await getCollection('sedes')).sort((a, b) => a.data.orden - b.dat
 
 <section id="sedes" class="scroll-mt-16 bg-verde-50/60 py-16 lg:py-24">
   <div class="mx-auto max-w-6xl px-4 sm:px-6">
-    <div class="max-w-[60ch]">
+    <div class="max-w-[60ch]" data-reveal>
       <h2 class="text-3xl sm:text-4xl">Sedes</h2>
       <p class="mt-4 text-lg leading-relaxed text-tinta-suave">
         Dos sedes en el barrio. Pasá a conocernos o escribinos por WhatsApp a la que te quede más cerca.
       </p>
     </div>
     <div class="mt-10 grid gap-6 md:grid-cols-2 lg:gap-8">
-      {sedes.map((sede) => <SedeCard sede={sede} horarioAtencion={instituto.data.horarioAtencion} />)}
+      {
+        sedes.map((sede, i) => (
+          <div data-reveal style={`--reveal-delay: ${i * 80}ms`}>
+            <SedeCard sede={sede} horarioAtencion={instituto.data.horarioAtencion} />
+          </div>
+        ))
+      }
     </div>
   </div>
 </section>
 
 <script>
   // Carga diferida del mapa: el iframe de Google se inserta recién al pedirlo.
-  document.querySelectorAll<HTMLElement>('[data-mapa]').forEach((caja) => {
+  function iniciarMapas() {
+    document.querySelectorAll<HTMLElement>('[data-mapa]:not([data-listo])').forEach((caja) => {
+      caja.dataset.listo = 'true';
     caja.querySelector('[data-mapa-boton]')?.addEventListener('click', () => {
       const iframe = document.createElement('iframe');
       iframe.src = caja.dataset.src ?? '';
@@ -40,5 +48,7 @@ const sedes = (await getCollection('sedes')).sort((a, b) => a.data.orden - b.dat
       caja.querySelector<HTMLElement>('[data-mapa-placeholder]')?.setAttribute('hidden', '');
       caja.appendChild(iframe);
     });
-  });
+    });
+  }
+  document.addEventListener('astro:page-load', iniciarMapas);
 </script>

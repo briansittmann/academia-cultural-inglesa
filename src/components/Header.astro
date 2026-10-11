@@ -1,8 +1,8 @@
 ---
 /**
  * Header fijo de 64 px: escudo + nombre, 4 anclas, un solo CTA (WhatsApp).
- * En mobile, hamburguesa que abre un panel con las mismas anclas y el CTA.
- * La transición del panel (receta accordion) se agrega en la fase 4.
+ * En mobile, hamburguesa que abre un panel con las mismas anclas y el CTA
+ * (receta accordion: altura medida en JS, 200 ms, ease-out).
  */
 import { getEntry } from 'astro:content';
 import { Icon } from 'astro-icon/components';
@@ -63,8 +63,8 @@ const anclas = [
     </button>
   </div>
 
-  <div id="menu-mobile" class="hidden border-t border-borde/50 bg-crema md:hidden" data-menu-panel>
-    <nav aria-label="Secciones" class="mx-auto flex max-w-6xl flex-col px-4 py-3 sm:px-6">
+  <div id="menu-mobile" class="menu-panel border-borde/50 bg-crema md:hidden" inert data-menu-panel>
+    <nav aria-label="Secciones" class="mx-auto flex max-w-6xl flex-col border-t border-borde/50 px-4 py-3 sm:px-6">
       {
         anclas.map((a) => (
           <a href={a.href} class="rounded-control px-3 py-3 text-base font-semibold text-verde-900 hover:bg-verde-100" data-menu-link>
@@ -82,27 +82,34 @@ const anclas = [
 </header>
 
 <script>
-  const boton = document.querySelector<HTMLButtonElement>('[data-menu-boton]');
-  const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
-  const abrir = document.querySelector<SVGElement>('[data-icono-abrir]');
-  const cerrar = document.querySelector<SVGElement>('[data-icono-cerrar]');
+  function iniciarMenu() {
+    const boton = document.querySelector<HTMLButtonElement>('[data-menu-boton]');
+    const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
+    const abrir = document.querySelector<SVGElement>('[data-icono-abrir]');
+    const cerrar = document.querySelector<SVGElement>('[data-icono-cerrar]');
+    if (!boton || !panel || !abrir || !cerrar || boton.dataset.listo) return;
+    boton.dataset.listo = 'true';
 
-  function setAbierto(abierto: boolean) {
-    if (!boton || !panel || !abrir || !cerrar) return;
-    boton.setAttribute('aria-expanded', String(abierto));
-    boton.querySelector('.sr-only')!.textContent = abierto ? 'Cerrar menú' : 'Abrir menú';
-    panel.classList.toggle('hidden', !abierto);
-    abrir.classList.toggle('hidden', abierto);
-    cerrar.classList.toggle('hidden', !abierto);
+    function setAbierto(abierto: boolean) {
+      boton!.setAttribute('aria-expanded', String(abierto));
+      boton!.querySelector('.sr-only')!.textContent = abierto ? 'Cerrar menú' : 'Abrir menú';
+      abrir!.classList.toggle('hidden', abierto);
+      cerrar!.classList.toggle('hidden', !abierto);
+      // Accordion: se anima a la altura medida, nunca a "auto".
+      panel!.style.height = abierto ? `${panel!.scrollHeight}px` : '0px';
+      panel!.toggleAttribute('data-abierto', abierto);
+      if (abierto) panel!.removeAttribute('inert');
+      else panel!.setAttribute('inert', '');
+    }
+
+    boton.addEventListener('click', () => setAbierto(boton.getAttribute('aria-expanded') !== 'true'));
+    panel.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setAbierto(false)));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') setAbierto(false);
+    });
+    window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
+      if (e.matches) setAbierto(false);
+    });
   }
-
-  boton?.addEventListener('click', () => setAbierto(boton.getAttribute('aria-expanded') !== 'true'));
-  panel?.querySelectorAll('[data-menu-link], a').forEach((a) => a.addEventListener('click', () => setAbierto(false)));
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') setAbierto(false);
-  });
-  // Si se pasa a escritorio con el menú abierto, se cierra.
-  window.matchMedia('(min-width: 768px)').addEventListener('change', (e) => {
-    if (e.matches) setAbierto(false);
-  });
+  document.addEventListener('astro:page-load', iniciarMenu);
 </script>
