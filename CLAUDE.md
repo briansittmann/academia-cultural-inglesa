@@ -89,3 +89,18 @@ Ajustes para este proyecto (la guía está escrita pensando en React):
 
 - Contenido del sitio en español (Argentina).
 - Commits en español.
+
+## Estado del proyecto
+
+Actualizado el 2026-10-12. Mantener esta sección al cerrar cada entrega.
+
+- **Fases 1 a 4: hechas y commiteadas** (sin push). Notas en `docs/fase-1-analisis.md`, `fase-2-setup.md`, `fase-3-secciones.md` y `fase-4-animaciones.md`. Leerlas antes de tocar algo de esas fases.
+- **Sigue: fase 5 (cierre).** Datos estructurados `EducationalOrganization` / `LocalBusiness` con las dos sedes, revisar sitemap y robots, prueba responsive y de accesibilidad (teclado, contraste, lectores de pantalla), Lighthouse en mobile y escritorio, pasada final con el skill Taste (Pre-Flight Check de la sección 14). Después, fase 6 (Keystatic).
+- **Animaciones:** dial de motion 5 (el dueño pidió "más carácter" el 2026-10-12; la primera versión con el mismo fundido en todo se descartó). Un efecto distinto por sección, documentado en `docs/fase-4-animaciones.md`. Magic UI solo como referencia para portar efectos a CSS y JS nativo; su MCP está en `.mcp.json` y hay que aprobarlo con `/mcp`. `astro-component-kit` descartado.
+- **Pendientes concretos:**
+  - Medir el LCP del hero: la foto está enmascarada 200 ms y se revela en 900 ms; si Lighthouse lo penaliza, acortar la máscara en `src/styles/animaciones.css`.
+  - Decidir si Apoyo escolar va en Niños o Adultos (`src/content/cursos/apoyo-escolar.yaml`).
+  - Las dudas para la dueña están en `docs/fase-1-analisis.md` §6 y en el campo `pendiente` de cada curso. Sin respuesta todavía.
+  - Fotos provisorias de Unsplash (créditos en `src/assets/img/CREDITOS.md`) y escudo SVG calcado: se reemplazan cuando el instituto entregue material.
+  - La máquina tiene Node 23 (versión impar, no soportada oficialmente por Astro 7); build y check pasan igual.
+- **Cómo verificar:** `npm run build` y `npx astro check` deben pasar sin errores. El skill `browser-automation` sirve para comprobar consola, scroll horizontal y capturas en 390 px y 1280 px. Astro 7 deja corriendo `astro preview` y `astro dev` como daemons (`npx astro preview stop` / `npx astro dev stop`).
