@@ -1,0 +1,27 @@
+nombre: Intensivo Adultos
+publico: adultos
+orden: 1
+para: Adultos de nivel inicial a avanzado
+descripcion: >-
+  Módulos por nivel, de Starter a Advanced, para mejorar el inglés de forma rápida y con
+  la mejor calidad. Al finalizar cada módulo se entrega el certificado del nivel cursado.
+niveles:
+  - Starter
+  - Elementary
+  - Pre-Intermediate
+  - Intermediate
+  - Upper-Intermediate
+  - Advanced
+frecuencia: 1 vez por semana
+duracionClase: 2 h
+horasSemanales: 2
+periodo: Agosto a diciembre
+modalidad: presencial
+sedes:
+  - villa-urquiza
+certificado: Certificado por nivel cursado
+requiereTestDeNivel: true
+formulario: https://forms.gle/Hi2zMZGY3HdmrjdT9
+pendiente: >-
+  Confirmar si hay opción online o solo presencial en Villa Urquiza, y si en marzo
+  arranca otro módulo (la web solo publica el de agosto a diciembre).

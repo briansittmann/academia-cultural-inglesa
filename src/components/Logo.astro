@@ -1,0 +1,18 @@
+---
+/**
+ * Escudo del instituto. PROVISORIO: SVG calcado del PNG (ver src/assets/logo/escudo.svg).
+ * Se sirve como <img> (no inline) porque el calco pesa 40 KB: así se cachea una sola vez
+ * y no se repite en header y footer.
+ */
+import escudo from '../assets/logo/escudo.svg';
+
+interface Props {
+  size?: number; // alto en px
+  class?: string;
+  alt?: string; // vacío cuando va junto al nombre del instituto
+}
+const { size = 40, class: className, alt = '' } = Astro.props;
+const width = Math.round((size * escudo.width) / escudo.height);
+---
+
+<img src={escudo.src} width={width} height={size} alt={alt} class={className} loading="eager" decoding="async" />

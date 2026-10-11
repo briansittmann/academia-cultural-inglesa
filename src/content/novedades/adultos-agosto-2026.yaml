@@ -1,0 +1,55 @@
+titulo: Intensivos Adultos, agosto a diciembre 2026
+tipo: cohorte
+vigente: false
+orden: 21
+resumen: >-
+  Módulos de agosto a diciembre 2026 en Villa Urquiza. Se guarda como referencia para
+  cargar la próxima cohorte.
+periodo: Agosto a diciembre 2026
+desde: 2026-08-03
+hasta: 2026-12-15
+cursos:
+  - intensivo-adultos
+  - english-in-action
+  - pack-intensivo-conversacion
+horarios:
+  - nombre: Módulo Starter (Starter B)
+    sede: villa-urquiza
+    dias: Martes
+    horas: 19:30 a 21:30
+    fechas: 11/08 al 15/12
+  - nombre: Módulo 2 (Elementary B)
+    sede: villa-urquiza
+    dias: Miércoles
+    horas: 19:30 a 21:30
+    fechas: 12/08 al 9/12
+  - nombre: Módulo 4 (Pre-Intermediate B)
+    sede: villa-urquiza
+    dias: Lunes
+    horas: 19:30 a 21:30
+    fechas: 3/08 al 14/12
+  - nombre: Módulo 6 (Intermediate B)
+    sede: villa-urquiza
+    dias: Jueves
+    horas: 19:30 a 21:30
+    fechas: 13/08 al 10/12
+  - nombre: Módulo 8 (Upper-Intermediate B)
+    sede: villa-urquiza
+    dias: Miércoles
+    horas: 19:30 a 21:30
+    fechas: 12/08 al 9/12
+  - nombre: Módulo 10 (Advanced B)
+    sede: villa-urquiza
+    dias: Martes
+    horas: 19:30 a 21:30
+    fechas: 11/08 al 15/12
+  - nombre: English in Action, Level 1 (Pre-Intermediate / Intermediate)
+    sede: villa-urquiza
+    dias: Martes
+    horas: 19:30 a 21:30
+    fechas: 11/08 al 15/12
+  - nombre: English in Action, Level 2 (Upper-Intermediate / Advanced)
+    sede: villa-urquiza
+    dias: Jueves
+    horas: 19:30 a 21:00
+    fechas: 13/08 al 10/12

@@ -1,0 +1,20 @@
+---
+/**
+ * Header: placeholder mínimo para la fase 2. En la fase 3 se completa con las
+ * anclas, el menú mobile (receta accordion) y el CTA de WhatsApp.
+ */
+import { getEntry } from 'astro:content';
+import Logo from './Logo.astro';
+
+const instituto = await getEntry('instituto', 'instituto');
+if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+---
+
+<header class="border-b border-borde/60 bg-crema/95">
+  <div class="mx-auto flex h-16 max-w-6xl items-center gap-3 px-4 sm:px-6">
+    <a href="/#inicio" class="flex items-center gap-3 rounded-control">
+      <Logo size={40} alt="" />
+      <span class="font-bold leading-tight text-verde-900">{instituto.data.nombre}</span>
+    </a>
+  </div>
+</header>

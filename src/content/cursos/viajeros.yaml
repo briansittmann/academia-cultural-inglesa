@@ -1,0 +1,17 @@
+nombre: Inglés para viajeros
+publico: verano
+orden: 2
+etiqueta: Presencial u online
+para: Adultos que quieren viajar y comunicarse sin miedo
+descripcion: >-
+  Práctica inmediata para desenvolverte en aeropuertos, hoteles, restaurantes y
+  cualquier situación de viaje. Presencial en Villa del Parque, dos veces por semana,
+  u online una vez por semana.
+frecuencia: 2 veces por semana (presencial) o 1 vez por semana (online)
+periodo: Febrero
+modalidad: presencial-y-online
+sedes:
+  - villa-del-parque
+requiereTestDeNivel: true
+formulario: https://forms.gle/Z4ugMqYDv2azFNBs5
+pendiente: Confirmar fechas de febrero 2027.

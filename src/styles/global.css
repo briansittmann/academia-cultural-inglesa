@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+/*
+  Tokens de diseño de la Academia Cultural Inglesa (ver docs/fase-1-analisis.md §7).
+  Solo modo claro. Los componentes usan estas utilidades, nunca valores sueltos.
+*/
+@theme {
+  /* Paleta propia: se desactiva la de Tailwind para que no se cuelen colores ajenos. */
+  --color-*: initial;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  --color-verde-900: #1B4321; /* títulos, banda Cambridge, footer */
+  --color-verde-700: #2E6B34; /* primario: botones, links, íconos */
+  --color-verde-100: #E5F1E4; /* tinte de sección, chips */
+  --color-verde-50: #F1FDEF;  /* tinte suave */
+  --color-crema: #FBFBF9;     /* fondo de página */
+  --color-dorado-600: #C69214; /* acento en fondos y detalles */
+  --color-dorado-800: #7B5800; /* texto dorado (contraste AA) */
+  --color-tinta: #141E16;        /* texto principal */
+  --color-tinta-suave: #41493F;  /* texto secundario */
+  --color-borde: #C0C9BC;        /* bordes, divisores */
+  --color-whatsapp: #25D366;     /* solo botones de WhatsApp */
+
+  /* Tipografía: una sola familia, variable, alojada en el proyecto (Fontsource). */
+  --font-*: initial;
+  --font-sans: "Plus Jakarta Sans Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* Radios: controles 8 px, cards 16 px, pills solo para etiquetas. */
+  --radius-*: initial;
+  --radius-control: 0.5rem;
+  --radius-card: 1rem;
+  --radius-full: calc(infinity * 1px);
+
+  /* Curvas (motion-skills): nunca ease-in. */
+  --ease-*: initial;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+
+  /* Sombras tintadas de verde, no negras. */
+  --shadow-*: initial;
+  --shadow-card: 0 4px 16px rgba(46, 107, 52, 0.06);
+  --shadow-card-hover: 0 8px 24px rgba(46, 107, 52, 0.10);
+
+  /* Duraciones: UI por debajo de 300 ms. */
+  --default-transition-duration: 200ms;
+  --default-transition-timing-function: var(--ease-out);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    @apply bg-crema font-sans text-tinta antialiased;
+    font-optical-sizing: auto;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-bold text-verde-900 tracking-tight text-balance;
+  }
+
+  p {
+    @apply text-pretty;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-verde-700;
+  }
+
+  ::selection {
+    @apply bg-verde-100 text-verde-900;
+  }
+}

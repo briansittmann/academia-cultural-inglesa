@@ -1,0 +1,16 @@
+nombre: Intermediate
+publico: adolescentes
+orden: 2
+para: Adolescentes que completaron Pre-Intermediate
+descripcion: >-
+  Tres niveles con más carga horaria para intensificar la conversación. Análisis de
+  películas, listening y reading para ampliar el vocabulario y mejorar la comprensión.
+niveles:
+  - Intermediate 1
+  - Intermediate 2
+  - Intermediate 3
+frecuencia: 2 veces por semana
+duracionClase: 2 h
+horasSemanales: 4
+periodo: Marzo a diciembre
+pendiente: Confirmar en qué sedes se dicta.

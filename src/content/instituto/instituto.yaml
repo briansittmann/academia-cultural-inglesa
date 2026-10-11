@@ -1,0 +1,47 @@
+nombre: Academia Cultural Inglesa
+siglas: ACI
+fundacion: 1979
+bajada: Inglés para niños, adolescentes y adultos en Villa Urquiza y Villa del Parque, desde 1979.
+descripcion: >-
+  La Academia Cultural Inglesa enseña inglés en el barrio desde 1979. Es una empresa
+  familiar que está cerca de sus alumnos y acompaña a las familias: seguimos el progreso
+  de cada chico y mantenemos una comunicación fluida con los padres. Nuestro staff es
+  estable y está formado por docentes egresados de Profesorados Nacionales Superiores de
+  Inglés, con material en constante actualización. Queremos que nuestros alumnos confíen
+  en sus capacidades y disfruten de aprender.
+hechos:
+  - Desde 1979 en el barrio
+  - Empresa familiar, cerca de sus alumnos
+  - Staff estable, egresado de Profesorados Nacionales Superiores de Inglés
+  - Seguimiento del progreso y comunicación con los padres
+  - Sede de los exámenes Cambridge B2 First y C1 Advanced
+cargaHoraria:
+  titulo: Más meses de clase por año que en la zona
+  detalle:
+    - horasSemanales: 3
+      mesesExtra: 2
+    - horasSemanales: 4
+      mesesExtra: 3
+  fuente: Flyer "Por qué nos destacamos" (content/imagenes/flyers/por-que-nos-destacamos.jpg)
+email: academiaculturalinglesainfo@gmail.com
+redes:
+  facebook: https://www.facebook.com/CulturalVDP/
+whatsappPrincipal: villa-urquiza
+horarioAtencion:
+  dias: Lunes a viernes
+  horas: 15:30 a 20:30
+  confirmar: true
+formularios:
+  consultaGeneral: https://docs.google.com/forms/d/e/1FAIpQLSel4t4Y3Rq4crfxrmPUxc1NbqpaO2anLAELX4ajbbrWd4BbdA/viewform
+  testDeNivel: https://forms.gle/a1fv2p9kFMgfcy3d9
+testDeNivel:
+  preguntas: 124
+  pasos:
+    - Completá tus datos y respondé el test online. Son 124 preguntas; si no sabés una, marcá "No sabe / No contesta".
+    - Recibís por mail el resultado con tu nivel.
+    - Escribinos por WhatsApp o pedí información para reservar tu lugar.
+seo:
+  titulo: Academia Cultural Inglesa | Inglés en Villa Urquiza y Villa del Parque
+  descripcion: >-
+    Instituto de inglés desde 1979 en Villa Urquiza y Villa del Parque. Cursos para
+    niños, adolescentes y adultos. Sede de los exámenes Cambridge FCE y CAE.

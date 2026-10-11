@@ -1,0 +1,29 @@
+titulo: Verano 2026
+tipo: verano
+vigente: false
+orden: 20
+resumen: Edición de febrero 2026. Se guarda como referencia para cargar la de 2027.
+periodo: Febrero 2026
+desde: 2025-12-01
+hasta: 2026-03-03
+cursos:
+  - english-in-action-verano
+  - viajeros
+horarios:
+  - nombre: English in Action, Pre-Intermediate / Intermediate
+    dias: Lunes y miércoles
+    horas: 18:30 a 20:00
+    fechas: 4/02 al 2/03
+  - nombre: English in Action, Upper-Intermediate / Advanced
+    dias: Martes y jueves
+    horas: 18:30 a 20:00
+    fechas: 5/02 al 3/03
+  - nombre: Inglés para viajeros, presencial
+    sede: villa-del-parque
+    dias: Lunes y miércoles
+    horas: 18:30 a 20:00
+    fechas: 4/02, 9/02, 11/02, 18/02, 23/02 y 25/02 (6 clases)
+  - nombre: Inglés para viajeros, online
+    dias: Viernes
+    horas: 18:00 a 20:00
+    fechas: 6/02, 13/02, 20/02 y 27/02 (4 clases)

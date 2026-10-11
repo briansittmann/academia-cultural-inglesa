@@ -1,0 +1,15 @@
+nombre: Villa Urquiza
+orden: 1
+direccion: Bucarelli 2288
+barrio: Villa Urquiza
+ciudad: CABA
+telefonos:
+  - numero: 011 4523-7660
+    tel: "+541145237660"
+  - numero: 011 4521-7391
+    tel: "+541145217391"
+email: academiainglesavu@gmail.com
+whatsapp:
+  numero: 11 2838-2068
+  internacional: "5491128382068"
+  mensaje: Hola, vi la página de la Academia Cultural Inglesa y quiero hacer una consulta.

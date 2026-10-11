@@ -1,0 +1,17 @@
+nombre: Elementary
+publico: ninos
+orden: 2
+para: Chicos de segundo grado en adelante
+descripcion: >-
+  Cuatro niveles pensados para la primaria. Con libros de texto originales y recursos
+  visuales, los alumnos ganan soltura y confianza para expresarse en inglés.
+niveles:
+  - Elementary 1
+  - Elementary 2
+  - Elementary 3
+  - Elementary 4
+frecuencia: 2 veces por semana
+duracionClase: 1 h 30
+horasSemanales: 3
+periodo: Marzo a diciembre
+pendiente: Confirmar en qué sedes se dicta.

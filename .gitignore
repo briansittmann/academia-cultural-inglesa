@@ -4,3 +4,6 @@ dist/
 .astro/
 .env
 .env.*
+.netlify/
+.vercel/
+.wrangler/

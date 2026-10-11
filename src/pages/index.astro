@@ -1,0 +1,71 @@
+---
+/**
+ * Landing. En la fase 2 es un esqueleto que solo comprueba que las collections
+ * estén cargadas; las secciones reales llegan en la fase 3.
+ */
+import { getCollection, getEntry } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const instituto = await getEntry('instituto', 'instituto');
+if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+
+const publicos = (await getCollection('publicos')).sort((a, b) => a.data.orden - b.data.orden);
+const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.data.orden);
+const novedades = (await getCollection('novedades', ({ data }) => data.vigente)).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
+const inscripciones = novedades.find((n) => n.data.tipo === 'inscripciones');
+---
+
+<Base>
+  <section id="inicio" class="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+    {inscripciones?.data.eyebrow && (
+      <p class="mb-4 inline-block rounded-full bg-verde-100 px-3 py-1 text-sm font-semibold text-verde-900">
+        {inscripciones.data.eyebrow}
+      </p>
+    )}
+    <h1 class="max-w-2xl text-4xl sm:text-5xl">Inglés para niños, adolescentes y adultos, desde {instituto.data.fundacion}</h1>
+    <p class="mt-4 max-w-xl text-lg text-tinta-suave">{instituto.data.bajada}</p>
+  </section>
+
+  {/* Esqueleto de fase 2: comprobación de que las collections cargan. Se reemplaza en la fase 3. */}
+  <section id="cursos" class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+    <h2 class="text-2xl">Cursos</h2>
+    <div class="mt-6 grid gap-6 md:grid-cols-2">
+      {
+        publicos.map((publico) => (
+          <article id={publico.data.ancla} class="rounded-card border border-borde/60 bg-white p-6 shadow-card">
+            <h3 class="text-xl">{publico.data.titulo}</h3>
+            <p class="mt-2 text-sm text-tinta-suave">{publico.data.descripcion}</p>
+            <ol class="mt-4 space-y-1 text-sm">
+              {cursos
+                .filter((c) => c.data.publico.id === publico.id)
+                .map((c) => (
+                  <li>
+                    <strong>{c.data.nombre}</strong>
+                    {c.data.horasSemanales && <span class="text-tinta-suave"> · {c.data.horasSemanales} h semanales</span>}
+                    {c.data.periodo && <span class="text-tinta-suave"> · {c.data.periodo}</span>}
+                  </li>
+                ))}
+            </ol>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+
+  {
+    novedades.length > 0 && (
+      <section class="mx-auto max-w-6xl px-4 pb-16 sm:px-6">
+        <h2 class="text-2xl">Novedades vigentes</h2>
+        <ul class="mt-4 space-y-2 text-sm">
+          {novedades.map((n) => (
+            <li>
+              <strong>{n.data.titulo}</strong> <span class="text-tinta-suave">({n.data.periodo})</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )
+  }
+</Base>
