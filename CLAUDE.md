@@ -71,6 +71,7 @@ Ajustes para este proyecto (la guía está escrita pensando en React):
 - `Referencias/`: diseño de Stitch.
 - `motion-skills/`: guías de animación (ver sección Animaciones).
 - `docs/`: análisis y decisiones por fase.
+- `docs/claude-project/`: instrucciones y contexto para el proyecto de claude.ai donde Brian hace brainstorming; las decisiones de esas charlas llegan acá con el formato "Para Claude Code". Actualizar `contexto.md` cuando el sitio cambie de forma importante.
 
 ## Forma de trabajo
 
@@ -95,17 +96,19 @@ Ajustes para este proyecto (la guía está escrita pensando en React):
 Actualizado el 2026-10-12. Mantener esta sección al cerrar cada entrega.
 
 - **Fases 1 a 7: hechas.** Notas en `docs/fase-1-analisis.md` a `fase-7-paginas.md`. Leerlas antes de tocar algo de esas fases.
-- **Sigue: puesta en producción**, que la hace el dueño del proyecto (pasos en `docs/fase-6-keystatic.md`): push a GitHub, importar el repo en Vercel, equipo y proyecto en Keystatic Cloud, variable `PUBLIC_KEYSTATIC_CLOUD_PROJECT` en Vercel, invitar a la dueña y probar el flujo completo. Después, dominio y redirecciones 301 desde las URLs viejas.
+- **Ajustes posteriores (2026-10-12), pedidos por Brian:** Cambridge con la escala del Marco Común Europeo en grilla (3 columnas, 6 entre 768 y 1023 px) y el nivel en dorado a la derecha de cada tarjeta; hover de los niveles de Cursos sin demora; "Más sobre el curso" pasa a botón relleno al pasar el mouse por el curso; período de Novedades como texto (desbordaba a 320 px); foto real de la fachada de Villa Urquiza en La Academia (grupo `academia` de `instituto.yaml`).
+- **Los push los hace Brian.** Commitear por entrega y avisar que queda pendiente de subir.
+- **Sigue: puesta en producción**, que la hace Brian (pasos en `docs/fase-6-keystatic.md`): sitio en Vercel, equipo y proyecto en Keystatic Cloud, variable `PUBLIC_KEYSTATIC_CLOUD_PROJECT` en Vercel, invitar a la dueña y probar el flujo completo, apuntar el dominio. Con el dominio publicado: probar las redirecciones 301 desde las URLs viejas, validar el JSON-LD y revisar el panel en producción. Las ideas abiertas para después (sección de resultados, fotos reales, vencimiento automático de novedades, SEO local) están en `docs/claude-project/contexto.md`.
 - **Panel:** `keystatic.config.ts` (raíz). Modo local en `astro dev` (`http://127.0.0.1:4321/keystatic`), Keystatic Cloud en producción. Si se agrega o renombra un campo, cambiarlo en `src/content.config.ts` y en `keystatic.config.ts` a la vez. El campo `cambridge` de los cursos es condicional en el panel y se aplana en el esquema de zod. Cursos y novedades son `.md` (frontmatter YAML más el cuerpo "Texto de la página"); el resto, `.yaml`.
-- **Fotos:** viven en `src/assets/img/<collection>/<slug>/<campo>.<ext>` (en el singleton, `instituto/<objeto>/<campo>`), que es la estructura que usa Keystatic. Si una foto no está ahí, el panel la saca del YAML al guardar. Siguen siendo provisorias de Unsplash (créditos en `src/assets/img/CREDITOS.md`).
+- **Fotos:** viven en `src/assets/img/<collection>/<slug>/<campo>.<ext>` (en el singleton, `instituto/<objeto>/<campo>`), que es la estructura que usa Keystatic. Si una foto no está ahí, el panel la saca del YAML al guardar. Si Brian deja una foto en otra ruta, moverla a esa estructura y avisarle. Son provisorias de Unsplash salvo la fachada de Villa Urquiza (`instituto/academia/foto.jpg`), que es real (créditos en `src/assets/img/CREDITOS.md`). Fotos de menores: solo con autorización escrita de padres o tutores.
 - **Logo:** `src/assets/logo/logo.png` es el PNG que entregó el instituto, oficial hasta que llegue el SVG; `Logo.astro` usa `logo-recortado.png` y de ahí salen favicons y `og.jpg`.
 - **Datos estructurados:** `src/lib/datos-estructurados.ts` + `src/components/DatosEstructurados.astro`. El horario de atención se escribe en español en `instituto.yaml` y se traduce al formato de schema.org al construir.
-- **Animaciones:** dial de motion 5, un efecto por sección (`docs/fase-4-animaciones.md`). Magic UI solo como referencia; su MCP está en `.mcp.json` y hay que aprobarlo con `/mcp`.
+- **Animaciones:** dial de motion 5, un efecto por sección (`docs/fase-4-animaciones.md`). Magic UI solo como referencia; su MCP está en `.mcp.json` y hay que aprobarlo con `/mcp`. Hover sobre un elemento que también tiene entrada escalonada: animar el hover con `translate` o `scale` (propiedad aparte, sin demora) y la entrada con `transform`; si comparten propiedad, la demora de la entrada se aplica al sacar el mouse.
 - **Páginas secundarias (fase 7):** `src/pages/cursos/[slug].astro` y `src/pages/novedades/[slug].astro` (solo novedades vigentes). La franja Novedades va debajo del hero. Las anclas del header y footer son `/#...` para funcionar desde esas páginas.
 - **Breakpoints:** la nav de escritorio y las tres cards de Cómo empezar aparecen desde `lg` (1024 px).
-- **Lighthouse (2026-10-12):** mobile 99 / 100 / 100 / 100, escritorio 100 en todo.
+- **Lighthouse (2026-10-12, después de los ajustes):** portada en mobile 99 / 100 / 100 / 100 (LCP 2,0 s), escritorio 100 en todo; página de curso en mobile 99 / 100 / 100 / 100.
 - **Pendientes concretos:**
-  - Decidir si Apoyo escolar va en Niños o Adultos (`src/content/cursos/apoyo-escolar.yaml`).
+  - Decidir si Apoyo escolar va en Niños o Adultos (`src/content/cursos/apoyo-escolar.md`).
   - Dudas para la dueña en `docs/fase-1-analisis.md` §6 y en el campo `pendiente` de cada curso (ahora editable desde el panel). Sumar código postal y coordenadas de cada sede.
   - Validar el JSON-LD con validator.schema.org cuando el dominio esté publicado.
   - `npm audit`: 3 altas (`path-to-regexp` dentro de `@vercel/routing-utils`, solo en el build); no afectan al sitio publicado. Revisar al actualizar `@astrojs/vercel`.
