@@ -8,6 +8,7 @@
  * cada guardado es un commit que dispara el deploy. El proyecto de Cloud se
  * configura con la variable PUBLIC_KEYSTATIC_CLOUD_PROJECT (ver .env.example).
  */
+import { createElement } from 'react';
 import { config, collection, singleton, fields } from '@keystatic/core';
 
 const proyectoCloud = import.meta.env.PUBLIC_KEYSTATIC_CLOUD_PROJECT as string | undefined;
@@ -96,7 +97,11 @@ export default config({
   ...(proyectoCloud ? { cloud: { project: proyectoCloud } } : {}),
   locale: 'es-ES',
   ui: {
-    brand: { name: 'Academia Cultural Inglesa' },
+    brand: {
+      name: 'Academia Cultural Inglesa',
+      // El escudo en lugar del rayo de Keystatic. Sale del favicon (public/).
+      mark: () => createElement('img', { src: '/favicon-96.png', alt: '', width: 24, height: 24 }),
+    },
     navigation: {
       Contenido: ['instituto', 'novedades', 'cursos'],
       Estructura: ['publicos', 'sedes'],
