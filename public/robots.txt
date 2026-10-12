@@ -1,5 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /keystatic
-
-Sitemap: https://academiaculturalinglesa.com/sitemap-index.xml
