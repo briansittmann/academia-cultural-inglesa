@@ -182,10 +182,14 @@ header[data-compacto] {
   }
 }
 .curso-item {
+  /* La entrada anima `transform` con demora escalonada; el hover usa `translate`,
+     una propiedad aparte con su propia transición sin demora. Si compartieran
+     propiedad, la demora de la entrada se aplicaría también al sacar el mouse y
+     el nivel que se deja volvería tarde (más tarde cuanto más abajo esté). */
   transition:
-    opacity 450ms var(--ease-out),
-    transform 600ms var(--ease-out);
-  transition-delay: calc(250ms + var(--i, 0) * 150ms);
+    opacity 450ms var(--ease-out) calc(250ms + var(--i, 0) * 150ms),
+    transform 600ms var(--ease-out) calc(250ms + var(--i, 0) * 150ms),
+    translate 200ms var(--ease-out) 0ms;
 }
 .curso-punto {
   transition:
@@ -205,13 +209,8 @@ header[data-compacto] {
   transform: scale(0.4);
 }
 @media (hover: hover) and (pointer: fine) {
-  .curso-item {
-    transition-property: opacity, transform;
-  }
   [data-visible] .curso-item:hover {
-    transition-delay: 0ms;
-    transition-duration: 200ms;
-    transform: translateX(4px);
+    translate: 4px 0;
   }
 }
 /* Indicador de tabs (receta): copia activa recortada con clip-path. */
@@ -396,6 +395,9 @@ header[data-compacto] {
   .panel-foto img,
   .tabs-copia {
     transition: none;
+  }
+  [data-visible] .curso-item:hover {
+    translate: none;
   }
   .menu-panel {
     transition: opacity 200ms var(--ease-out);
