@@ -57,11 +57,13 @@ const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
 const whatsappPorCurso = new Map(await Promise.all(cursos.map(async (c) => [c.id, await whatsappDelCurso(c)] as const)));
 ---
 
+{/* Sin tabindex: cada panel tiene links y botones, así que el teclado entra por ellos.
+    Con tabindex="0", al recargar con #ninos en la URL el navegador enfocaba el panel
+    y le dibujaba el contorno de foco. */}
 <div
   id={publico.data.ancla}
   role="tabpanel"
   aria-labelledby={`tab-${publico.data.ancla}`}
-  tabindex="0"
   hidden={!activo}
   class="panel-cursos scroll-mt-36 grid gap-8 lg:grid-cols-12 lg:gap-10"
   data-panel
