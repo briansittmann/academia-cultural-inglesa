@@ -103,29 +103,30 @@ const examenPorNivel = new Map(
             <div class="col-span-2 mt-5 sm:col-start-2 sm:mt-4">
               <p class="leading-relaxed text-tinta-suave">{curso.data.descripcion}</p>
 
+              {/* dt y dd son hijos directos del div (axe: dlitem); el ícono va dentro del dt. */}
               <dl class="mt-5 grid gap-3 border-t border-borde/60 pt-5 text-sm">
-                <div class="flex items-start gap-2.5">
-                  <Icon name="material-symbols:schedule-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
-                  <div>
-                    <dt class="font-semibold text-verde-900">Cursada</dt>
-                    <dd class="text-tinta-suave">
-                      {curso.data.frecuencia}, clases de {curso.data.duracionClase}
-                      {curso.data.horasSemanales && <> ({curso.data.horasSemanales} h por semana)</>}. {curso.data.periodo}.
-                    </dd>
-                  </div>
+                <div>
+                  <dt class="flex items-center gap-2.5 font-semibold text-verde-900">
+                    <Icon name="material-symbols:schedule-outline" class="size-5 shrink-0 text-verde-700" aria-hidden="true" />
+                    Cursada
+                  </dt>
+                  <dd class="pl-[1.875rem] text-tinta-suave">
+                    {curso.data.frecuencia}, clases de {curso.data.duracionClase}
+                    {curso.data.horasSemanales && <> ({curso.data.horasSemanales} h por semana)</>}. {curso.data.periodo}.
+                  </dd>
                 </div>
                 {horarios.length > 0 && (
-                  <div class="flex items-start gap-2.5">
-                    <Icon name="material-symbols:location-on-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
-                    <div>
-                      <dt class="font-semibold text-verde-900">{horarios.some((h) => h.sedeNombre) ? 'Horarios por sede' : 'Horario'}</dt>
-                      {horarios.map((h) => (
-                        <dd class="text-tinta-suave">
-                          {h.sedeNombre && <span class="font-medium text-tinta">{h.sedeNombre}: </span>}
-                          {h.dias} de {h.horas}
-                        </dd>
-                      ))}
-                    </div>
+                  <div>
+                    <dt class="flex items-center gap-2.5 font-semibold text-verde-900">
+                      <Icon name="material-symbols:location-on-outline" class="size-5 shrink-0 text-verde-700" aria-hidden="true" />
+                      {horarios.some((h) => h.sedeNombre) ? 'Horarios por sede' : 'Horario'}
+                    </dt>
+                    {horarios.map((h) => (
+                      <dd class="pl-[1.875rem] text-tinta-suave">
+                        {h.sedeNombre && <span class="font-medium text-tinta">{h.sedeNombre}: </span>}
+                        {h.dias} de {h.horas}
+                      </dd>
+                    ))}
                   </div>
                 )}
               </dl>
