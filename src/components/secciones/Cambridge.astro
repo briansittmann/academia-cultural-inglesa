@@ -55,28 +55,26 @@ const examenPorNivel = new Map(
         <figcaption class="sube text-sm font-semibold text-verde-100/80" style="--i: 3">
           Dónde se ubican en el Marco Común Europeo
         </figcaption>
-        <ol class="mcer mt-3 flex gap-1.5">
+        {/* Tres columnas (dos filas) en el celular y cuando la escala comparte fila con el
+            título (lg en adelante); seis en una fila entre md y lg, donde ocupa todo el ancho.
+            Así cada celda tiene lugar para el nombre del nivel sin desbordar. */}
+        <ol class="mcer mt-3 grid grid-cols-3 gap-2 md:grid-cols-6 lg:grid-cols-3">
           {
             escalaMcer.map((e, i) => {
               const examen = examenPorNivel.get(e.nivel);
               return (
                 <li
                   class:list={[
-                    'sube flex min-h-[4.5rem] min-w-0 flex-col justify-between rounded-control border px-2 py-2 sm:px-3',
-                    // Las celdas de los exámenes llevan más contenido y van más anchas.
-                    examen ? 'mcer-examen flex-[1.6] border-dorado-600 bg-white text-verde-900' : 'flex-1 border-white/15 bg-white/5 text-verde-100/80',
+                    'sube flex min-w-0 flex-col rounded-control border px-3 py-2.5',
+                    examen ? 'border-dorado-600 bg-white text-verde-900' : 'border-white/15 bg-white/5 text-verde-100',
                   ]}
                   style={`--i: ${3.5 + i * 0.5}`}
                 >
-                  <span class:list={['text-lg font-bold leading-none tabular-nums sm:text-xl', examen && 'text-dorado-800']}>
-                    {e.nivel}
+                  <span class:list={['text-xl font-bold leading-none tabular-nums', examen && 'text-dorado-800']}>{e.nivel}</span>
+                  <span class:list={['mt-1.5 text-xs leading-snug hyphens-auto', examen ? 'text-tinta-suave' : 'text-verde-100/80']}>
+                    {e.nombre}
                   </span>
-                  {/* En el celular solo entra el código de los niveles sin examen; el nombre va desde tablet. */}
-                  <span class:list={['text-[11px] leading-tight sm:text-xs', examen ? 'font-semibold' : 'hidden sm:block']}>
-                    {examen ?? e.nombre}
-                  </span>
-                  {!examen && <span class="sr-only">{e.nombre}</span>}
-                  {examen && <span class="sr-only">: nivel {e.nombre.toLowerCase()}, examen que se prepara en la Academia</span>}
+                  {examen && <span class="mt-auto pt-1.5 text-xs font-bold leading-snug text-verde-900">Examen {examen}</span>}
                 </li>
               );
             })
@@ -88,19 +86,22 @@ const examenPorNivel = new Map(
     <ol class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-2 lg:gap-6" data-reveal>
       {
         examenes.map(({ curso, horarios }, i) => (
-          <li class="sube grid grid-cols-[auto_1fr] gap-x-5 rounded-card bg-white p-6 text-tinta shadow-card sm:gap-x-7 sm:p-8" style={`--i: ${i * 1.2}`}>
-            <div class="sello flex h-[4.5rem] w-[4.5rem] flex-col items-center justify-center rounded-control bg-dorado-600/15 text-dorado-800" style={`--i: ${i}`} aria-hidden="true">
-              <span class="text-3xl font-bold leading-none tracking-tight tabular-nums">{curso.data.cambridge?.nivelMcer}</span>
-              <span class="mt-1 text-[10px] font-semibold tracking-wide uppercase">Nivel</span>
-            </div>
-            <div class="min-w-0">
-              <h3 class="text-2xl leading-tight">{curso.data.nombre}</h3>
-              <p class="mt-1 text-sm font-semibold text-tinta-suave">
-                <span class="sr-only">Examen: </span>{curso.data.cambridge?.examen}
-              </p>
+          <li class="sube flex flex-col rounded-card bg-white p-6 text-tinta shadow-card sm:p-8" style={`--i: ${i * 1.2}`}>
+            {/* Nombre a la izquierda y el nivel en dorado a la derecha; el texto usa todo el ancho. */}
+            <div class="flex items-start justify-between gap-4">
+              <div class="min-w-0">
+                <h3 class="text-2xl leading-tight">{curso.data.nombre}</h3>
+                <p class="mt-1 text-sm font-semibold text-tinta-suave">
+                  <span class="sr-only">Examen: </span>{curso.data.cambridge?.examen}
+                </p>
+              </div>
+              <div class="sello flex size-[4.5rem] shrink-0 flex-col items-center justify-center rounded-control bg-dorado-600/15 text-dorado-800" style={`--i: ${i}`} aria-hidden="true">
+                <span class="text-3xl font-bold leading-none tracking-tight tabular-nums">{curso.data.cambridge?.nivelMcer}</span>
+                <span class="mt-1 text-[10px] font-semibold tracking-wide uppercase">Nivel</span>
+              </div>
             </div>
 
-            <div class="col-span-2 mt-5 sm:col-start-2 sm:mt-4">
+            <div class="mt-5 flex flex-1 flex-col">
               <p class="leading-relaxed text-tinta-suave">{curso.data.descripcion}</p>
 
               {/* dt y dd son hijos directos del div (axe: dlitem); el ícono va dentro del dt. */}
@@ -131,7 +132,7 @@ const examenPorNivel = new Map(
                 )}
               </dl>
 
-              <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+              <div class="mt-auto flex flex-col gap-3 pt-6 sm:flex-row sm:items-center sm:gap-5">
                 {(curso.data.formulario ?? publico.data.formulario) && (
                   <Boton
                     href={curso.data.formulario ?? publico.data.formulario!}
