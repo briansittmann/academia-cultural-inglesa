@@ -3,8 +3,9 @@
  * Página privada con las preguntas para la dueña. No está enlazada desde ningún
  * lado, no se indexa (noindex) y queda fuera del sitemap (astro.config.mjs).
  * Va paso a paso, guarda lo escrito en el navegador (localStorage) para seguir
- * otro día y al final arma un mensaje para mandar por WhatsApp o copiar. No
- * guarda nada en ningún servidor. Las preguntas están en src/lib/preguntas-duena.ts.
+ * otro día y al final manda las respuestas por email con FormSubmit (formsubmit.co,
+ * sin cuenta ni servidor propio; elegido por Brian). Si el envío falla, quedan
+ * WhatsApp y copiar. Las preguntas están en src/lib/preguntas-duena.ts.
  */
 import { Icon } from 'astro-icon/components';
 import Base from '../layouts/Base.astro';
@@ -14,6 +15,11 @@ import { armarCuestionario } from '../lib/preguntas-duena';
 // Número de WhatsApp que recibe las respuestas, en formato internacional
 // (ej. "5491112345678"). Vacío: WhatsApp abre la lista para elegir el contacto.
 const WHATSAPP_DESTINO = '';
+
+// Email que recibe las respuestas vía FormSubmit. El primer envío no llega: FormSubmit
+// manda a esta casilla un mail con el link "Activate Form" y recién después entrega.
+// Al activar, FormSubmit da un alias aleatorio que puede reemplazar al email acá.
+const EMAIL_DESTINO = 'brianrebadj@gmail.com';
 
 const bloques = await armarCuestionario();
 const totalPreguntas = bloques.reduce((n, b) => n + b.preguntas.length, 0);
@@ -62,7 +68,7 @@ const opcion =
       </p>
     </noscript>
 
-    <form class="mt-8" data-cuestionario data-destino={WHATSAPP_DESTINO} novalidate>
+    <form class="mt-8" data-cuestionario data-destino={WHATSAPP_DESTINO} data-email={EMAIL_DESTINO} novalidate>
       <div class="sticky top-0 z-10 -mx-4 bg-crema/95 px-4 py-3 backdrop-blur-sm sm:-mx-6 sm:px-6" data-progreso hidden>
         <div class="flex items-baseline justify-between gap-4 text-sm">
           <span class="font-semibold text-verde-900 tabular-nums" data-paso-numero></span>
@@ -202,21 +208,27 @@ const opcion =
           <pre class="mt-3 max-h-[60vh] overflow-y-auto font-sans text-sm leading-relaxed whitespace-pre-wrap text-tinta-suave" data-vista></pre>
         </div>
 
-        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
-          <a href="https://wa.me/" target="_blank" rel="noopener" class="boton boton-whatsapp" data-enviar>
-            <Icon name="material-symbols:chat-rounded" class="size-5" aria-hidden="true" />
-            Mandar por WhatsApp
-          </a>
-          <button type="button" class="boton boton-secundario" data-copiar>
-            <Icon name="material-symbols:content-copy-outline" class="size-5" aria-hidden="true" />
-            Copiar respuestas
-          </button>
-        </div>
+        <button type="button" class="boton boton-primario mt-6 w-full sm:w-auto" data-enviar-email>
+          <Icon name="material-symbols:mail-outline" class="size-5" aria-hidden="true" />
+          <span data-enviar-email-texto>Mandar respuestas</span>
+        </button>
         <p class="mt-3 min-h-6 text-sm font-semibold text-verde-700" role="status" data-estado></p>
-        <p class="mt-1 text-sm leading-relaxed text-tinta-suave">
-          Si WhatsApp no se abre o el mensaje llega cortado, tocá "Copiar respuestas" y pegalo en el chat conmigo. Las
-          fotos mandámelas aparte.
-        </p>
+
+        <div class="mt-6 border-t border-borde/60 pt-5">
+          <p class="text-sm leading-relaxed text-tinta-suave">
+            Si no se puede mandar, pasámelo por WhatsApp o copialo y pegalo en el chat conmigo. Las fotos mandámelas aparte.
+          </p>
+          <div class="mt-3 flex flex-col gap-3 sm:flex-row">
+            <a href="https://wa.me/" target="_blank" rel="noopener" class="boton boton-secundario" data-enviar>
+              <Icon name="material-symbols:chat-rounded" class="size-5" aria-hidden="true" />
+              Mandar por WhatsApp
+            </a>
+            <button type="button" class="boton boton-secundario" data-copiar>
+              <Icon name="material-symbols:content-copy-outline" class="size-5" aria-hidden="true" />
+              Copiar respuestas
+            </button>
+          </div>
+        </div>
 
         <div class="navegacion mt-8 hidden in-[.js]:flex">
           <button type="button" class="boton boton-secundario" data-ir="-1">
@@ -246,8 +258,12 @@ const opcion =
       background-color 160ms var(--ease-out),
       border-color 160ms var(--ease-out);
   }
-  .boton:active {
+  .boton:active:not(:disabled) {
     transform: scale(0.97);
+  }
+  .boton:disabled {
+    cursor: default;
+    opacity: 0.7;
   }
   .boton-primario {
     background-color: var(--color-verde-700);
@@ -384,6 +400,7 @@ const opcion =
     function armarMensaje() {
       const fecha = new Date().toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
       const lineas = ['*Respuestas para la página nueva*', `Academia Cultural Inglesa, ${fecha}`];
+      const filas: Record<string, string> = {};
       let respondidas = 0;
       let total = 0;
       const valor = (nombre: string) => {
@@ -407,7 +424,9 @@ const opcion =
             bloque.push(`• ${resumen}:`);
             for (const f of p.querySelectorAll<HTMLElement>('[data-fila]')) {
               const marcadas = valor(`${id}__${f.dataset.fila}`);
-              bloque.push(`   ${f.dataset.nombre}: ${marcadas.length ? marcadas.join(' y ') : 'sin marcar'}`);
+              const texto = marcadas.length ? marcadas.join(' y ') : 'sin marcar';
+              bloque.push(`   ${f.dataset.nombre}: ${texto}`);
+              filas[`Sede de ${f.dataset.nombre}`] = texto;
             }
             continue;
           }
@@ -416,16 +435,19 @@ const opcion =
           if (tipo === 'opciones') partes.push(...valor(`${id}__detalle`));
           if (partes.length === 0) continue;
           respondidas++;
-          bloque.push(`• ${resumen}: ${sangria(partes.join(tipo === 'varias' ? ', ' : '. '))}`);
+          const respuesta = partes.join(tipo === 'varias' ? ', ' : '. ');
+          bloque.push(`• ${resumen}: ${sangria(respuesta)}`);
+          filas[resumen] = respuesta;
         }
         if (bloque.length) lineas.push('', `*${paso.dataset.titulo}*`, ...bloque);
       }
       if (respondidas < total) lineas.push('', `Sin responder: ${total - respondidas} de ${total}.`);
-      return { texto: lineas.join('\n'), respondidas, total };
+      return { texto: lineas.join('\n'), filas, respondidas, total };
     }
 
     function prepararFinal() {
-      const { texto, respondidas, total } = armarMensaje();
+      const mensaje = armarMensaje();
+      const { texto, respondidas, total } = mensaje;
       form!.querySelector('[data-vista]')!.textContent = texto;
       form!.querySelector('[data-contador]')!.textContent =
         respondidas === total
@@ -435,7 +457,7 @@ const opcion =
       form!.querySelector<HTMLAnchorElement>('[data-enviar]')!.href =
         `https://wa.me/${destino}?text=${encodeURIComponent(texto)}`;
       form!.querySelector('[data-estado]')!.textContent = '';
-      return texto;
+      return mensaje;
     }
 
     function mostrar(i: number, animar: boolean) {
@@ -465,13 +487,44 @@ const opcion =
         return;
       }
       if (objetivo.closest('[data-copiar]')) {
-        const texto = prepararFinal();
+        const { texto } = prepararFinal();
         const estado = form.querySelector('[data-estado]')!;
         try {
           await navigator.clipboard.writeText(texto);
           estado.textContent = 'Copiado. Ahora pegalo en el chat conmigo.';
         } catch {
           estado.textContent = 'No se pudo copiar solo. Mantené apretado el texto de arriba para copiarlo.';
+        }
+        return;
+      }
+      const botonEmail = objetivo.closest<HTMLButtonElement>('[data-enviar-email]');
+      if (botonEmail && !botonEmail.disabled) {
+        const { texto, filas, respondidas, total } = prepararFinal();
+        const estado = form.querySelector('[data-estado]')!;
+        const etiqueta = botonEmail.querySelector('[data-enviar-email-texto]')!;
+        botonEmail.disabled = true;
+        etiqueta.textContent = 'Mandando…';
+        try {
+          const r = await fetch(`https://formsubmit.co/ajax/${form.dataset.email}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+            body: JSON.stringify({
+              _subject: `Respuestas para la página nueva (${respondidas} de ${total})`,
+              _template: 'table',
+              _captcha: 'false',
+              ...filas,
+              'Texto completo': texto,
+            }),
+          });
+          const datos = await r.json().catch(() => ({}));
+          if (!r.ok || String(datos.success) !== 'true') throw new Error(datos.message ?? `HTTP ${r.status}`);
+          etiqueta.textContent = 'Enviado';
+          estado.textContent = 'Listo, ya me llegó. Gracias.';
+        } catch (error) {
+          console.warn('No se pudo mandar por email:', error);
+          botonEmail.disabled = false;
+          etiqueta.textContent = 'Mandar respuestas';
+          estado.textContent = 'No se pudo mandar. Probá de nuevo en un rato, o pasámelo por WhatsApp.';
         }
       }
     });
