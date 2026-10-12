@@ -2,7 +2,10 @@
 /**
  * Cursos: tabs Niños / Adolescentes / Adultos / Verano (sin "Todos"), un panel
  * por público con la progresión real de niveles. Las anclas #ninos, #adolescentes,
- * #adultos y #verano activan la pestaña correspondiente. Indicador animado con la
+ * #adultos y #verano activan la pestaña correspondiente. Las pestañas quedan fijas
+ * debajo del header mientras se recorre la sección (en el celular un panel ocupa
+ * varias pantallas) y, si se cambia de pestaña con la franja fija, la página sube
+ * al principio del panel nuevo. Indicador animado con la
  * receta "tab indicator": una copia de la lista en estado activo, recortada con
  * clip-path hasta la pestaña elegida.
  */
@@ -25,7 +28,11 @@ const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.d
     </p>
     </div>
 
-    <div class="mt-8 -mx-4 overflow-x-auto px-4 pb-2 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden" data-tabs-scroll>
+    {/* Franja fija: el fondo es el color que resulta del verde-50/60 de la sección sobre el crema. */}
+    <div
+      class="sticky top-16 z-30 mt-6 -mx-4 overflow-x-auto bg-[color-mix(in_oklab,var(--color-verde-50)_60%,var(--color-crema))] px-4 py-2 sm:-mx-6 sm:px-6 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      data-tabs-scroll
+    >
       <div class="relative inline-flex" data-tabs-wrap>
         <div role="tablist" aria-label="Públicos" class="flex gap-2" data-tabs>
           {
@@ -58,7 +65,7 @@ const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.d
       </div>
     </div>
 
-    <div class="mt-8 lg:mt-10">
+    <div class="mt-6 lg:mt-8" data-paneles>
       {
         publicos.map((p, i) => (
           <CursosPanel
@@ -114,11 +121,23 @@ const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.d
       });
     }
 
+    // Con la franja de pestañas fija, el panel nuevo puede quedar arriba, fuera de
+    // la vista (o ser más corto y dejar la página al final). Se sube a su principio.
+    const franja = document.querySelector<HTMLElement>('[data-tabs-scroll]');
+    const paneles = document.querySelector<HTMLElement>('[data-paneles]');
+    function subirSiHaceFalta(id: string) {
+      if (!franja || !paneles) return;
+      if (paneles.getBoundingClientRect().top < franja.getBoundingClientRect().bottom) {
+        document.getElementById(id)?.scrollIntoView({ block: 'start' });
+      }
+    }
+
     tabs.forEach((t) =>
       t.addEventListener('click', () => {
         const id = t.getAttribute('aria-controls')!;
         activar(id, { animarLista: true });
         history.replaceState(null, '', `#${id}`);
+        subirSiHaceFalta(id);
       }),
     );
 

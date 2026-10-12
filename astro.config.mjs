@@ -64,6 +64,7 @@ export default defineConfig({
           'mail-outline',
           'location-on-outline',
           'schedule-outline',
+          'stairs-outline',
           'school-outline',
           'menu-rounded',
           'close-rounded',

@@ -1,9 +1,12 @@
 ---
 /**
- * Panel de un público: foto, descripción, cifras del recorrido, progresión real
- * de niveles y CTA "Pedir información". Al entrar en pantalla o al cambiar de
- * pestaña: la foto entra desde la izquierda, las cifras cuentan, la línea del
- * recorrido se dibuja de arriba hacia abajo y cada nivel aparece a su turno.
+ * Panel de un público: foto (solo escritorio), descripción, progresión real de
+ * niveles y CTA "Pedir información". Cada curso muestra primero a quién va
+ * dirigido y después los datos para decidir (cursada, período, sede, niveles),
+ * con los mismos íconos que la página del curso. En el celular no hay foto, para
+ * que los cursos aparezcan apenas se elige la pestaña. Al entrar en pantalla o al
+ * cambiar de pestaña: la foto entra desde la izquierda, la línea del recorrido se
+ * dibuja de arriba hacia abajo y cada nivel aparece a su turno.
  */
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
@@ -11,6 +14,7 @@ import { getEntry } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Boton from '../Boton.astro';
 import Etiqueta from '../Etiqueta.astro';
+import { horas, resumirNiveles } from '../../lib/cursos';
 
 interface Props {
   publico: CollectionEntry<'publicos'>;
@@ -27,23 +31,26 @@ for (const c of cursos) {
   sedesPorCurso.set(c.id, nombres);
 }
 
-function meta(c: CollectionEntry<'cursos'>) {
-  const partes: string[] = [];
-  if (c.data.frecuencia) partes.push(c.data.frecuencia);
-  if (c.data.duracionClase) partes.push(`clases de ${c.data.duracionClase}`);
-  if (c.data.periodo) partes.push(c.data.periodo.toLowerCase());
-  return partes;
+const modalidades = { presencial: '', online: 'Online', 'presencial-y-online': 'Presencial u online' } as const;
+
+// Datos para decidir, en el orden en que se escanean. Las horas semanales se
+// omiten cuando hay una sola clase por semana (repetirían la duración).
+function datos(c: CollectionEntry<'cursos'>) {
+  const d = c.data;
+  // Espacios duros para que "1 h 30" y "3,5 h" no se corten entre renglones.
+  const cursada = [d.frecuencia, d.duracionClase && `clases de ${d.duracionClase.replaceAll(' ', '\u00a0')}`].filter(Boolean).join(', ');
+  const semanales = d.horasSemanales && !/^1\s/.test(d.frecuencia ?? '') ? `${horas(d.horasSemanales)}\u00a0h semanales` : '';
+  const sedes = sedesPorCurso.get(c.id) ?? [];
+  const lugar = [modalidades[d.modalidad], sedes.length > 0 && `sede ${sedes.join(' y ')}`].filter(Boolean).join(', ');
+  const niveles = resumirNiveles(d.niveles);
+  return [
+    { etiqueta: 'Cursada', icono: 'material-symbols:schedule-outline', texto: cursada && semanales ? `${cursada} (${semanales})` : cursada || semanales },
+    { etiqueta: 'Período', icono: 'material-symbols:event-available-outline', texto: d.periodo ?? '' },
+    { etiqueta: 'Modalidad y sede', icono: 'material-symbols:location-on-outline', texto: lugar.charAt(0).toUpperCase() + lugar.slice(1) },
+    { etiqueta: 'Niveles', icono: 'material-symbols:stairs-outline', texto: niveles },
+  ].filter((x) => x.texto);
 }
 const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
-
-// Cifras del recorrido (se cuentan de 0 al valor al entrar).
-const nivelesTotal = cursos.reduce((n, c) => n + Math.max(1, c.data.niveles.length), 0);
-const horasMax = Math.max(0, ...cursos.map((c) => c.data.horasSemanales ?? 0));
-const cifras = [
-  { valor: cursos.length, etiqueta: cursos.length === 1 ? 'curso' : 'cursos' },
-  { valor: nivelesTotal, etiqueta: nivelesTotal === 1 ? 'nivel' : 'niveles' },
-  ...(horasMax > 0 ? [{ valor: horasMax, etiqueta: 'h por semana' }] : []),
-];
 ---
 
 <div
@@ -52,45 +59,30 @@ const cifras = [
   aria-labelledby={`tab-${publico.data.ancla}`}
   tabindex="0"
   hidden={!activo}
-  class="panel-cursos scroll-mt-32 grid gap-8 lg:grid-cols-12 lg:gap-10"
+  class="panel-cursos scroll-mt-36 grid gap-8 lg:grid-cols-12 lg:gap-10"
   data-panel
   data-reveal
 >
   <div class="lg:col-span-5">
     {
       publico.data.foto && (
-        <div class="panel-foto izq aspect-[4/3] overflow-hidden rounded-card shadow-card lg:aspect-[4/5]">
+        <div class="panel-foto izq hidden aspect-[4/5] overflow-hidden rounded-card shadow-card lg:block">
           <Image
             src={publico.data.foto}
             alt={publico.data.fotoAlt ?? ''}
             widths={[480, 800, 1200]}
-            sizes="(min-width: 1024px) 40vw, 100vw"
+            sizes="40vw"
             loading="lazy"
             class="h-full w-full object-cover"
           />
         </div>
       )
     }
-    <h3 class="sube mt-6 text-2xl" style="--i: 1">{publico.data.titulo}</h3>
+    <h3 class="sube text-2xl lg:mt-6" style="--i: 1">{publico.data.titulo}</h3>
     <p class="sube mt-3 leading-relaxed text-tinta-suave" style="--i: 1.5">{publico.data.descripcion}</p>
-    <dl class="mt-5 flex flex-wrap gap-x-6 gap-y-3">
-      {
-        cifras.map((c, i) => (
-          <div class="sube" style={`--i: ${2 + i * 0.6}`}>
-            <dt class="sr-only">{c.etiqueta}</dt>
-            <dd class="flex items-baseline gap-1.5 whitespace-nowrap">
-              <span class="text-3xl font-bold leading-none text-verde-900 tabular-nums" data-cifra={c.valor}>
-                {c.valor}
-              </span>
-              <span class="text-sm text-tinta-suave">{c.etiqueta}</span>
-            </dd>
-          </div>
-        ))
-      }
-    </dl>
     {
       algunoConTest && (
-        <p class="mt-3 text-sm text-tinta-suave">
+        <p class="mt-4 text-sm text-tinta-suave">
           Para ubicarte en el nivel correcto, primero hacé el{' '}
           <a href={testDeNivelUrl} target="_blank" rel="noopener" class="font-semibold text-verde-700 underline underline-offset-4 hover:text-verde-900">
             test de nivel online gratuito</a>.
@@ -111,57 +103,30 @@ const cifras = [
   <ol class="recorrido relative lg:col-span-7 lg:pl-10">
     {
       cursos.map((c, i) => {
-        const sedes = sedesPorCurso.get(c.id) ?? [];
+        const filas = datos(c);
         return (
-          <li class:list={['curso-item group relative py-6', i > 0 && 'border-t border-borde/60']} style={`--i: ${i}`}>
+          <li class:list={['curso-item group relative py-6 max-lg:first:pt-0', i > 0 && 'border-t border-borde/60']} style={`--i: ${i}`}>
             <span class="curso-punto absolute top-7 -left-[calc(2.5rem+5px)] hidden size-2.5 rounded-full bg-verde-700 ring-4 ring-crema lg:block" aria-hidden="true" />
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-              <h4 class="text-lg">{c.data.nombre}</h4>
+              <h4 class="text-xl">{c.data.nombre}</h4>
               {c.data.etiqueta && <Etiqueta>{c.data.etiqueta}</Etiqueta>}
             </div>
-            <p class="mt-1 text-sm font-medium text-verde-700">{c.data.para}</p>
-            <p class="mt-2 leading-relaxed text-tinta-suave">{c.data.descripcion}</p>
-            {c.data.niveles.length > 1 && (
-              <ul class="mt-3 flex flex-wrap gap-1.5" aria-label="Niveles">
-                {c.data.niveles.map((n) => (
-                  <li>
-                    <Etiqueta tono="borde">{n}</Etiqueta>
-                  </li>
+            <p class="mt-1 font-semibold text-verde-700">{c.data.para}</p>
+            {/* En el celular, tres líneas; el texto completo está en la página del curso. */}
+            <p class="mt-2 leading-relaxed text-tinta-suave max-lg:line-clamp-3">{c.data.descripcion}</p>
+            {filas.length > 0 && (
+              <dl class="mt-4 flex flex-col gap-x-6 gap-y-2 text-[15px] text-tinta sm:flex-row sm:flex-wrap">
+                {filas.map((f) => (
+                  <div>
+                    <dt class="sr-only">{f.etiqueta}</dt>
+                    <dd class="flex gap-2">
+                      <Icon name={f.icono} class="mt-0.5 size-[1.125rem] shrink-0 text-verde-700" aria-hidden="true" />
+                      {f.texto}
+                    </dd>
+                  </div>
                 ))}
-              </ul>
+              </dl>
             )}
-            <dl class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-tinta-suave">
-              {meta(c).map((m) => (
-                <div>
-                  <dt class="sr-only">Cursada</dt>
-                  <dd>{m}</dd>
-                </div>
-              ))}
-              {c.data.horasSemanales && (
-                <div>
-                  <dt class="sr-only">Carga horaria</dt>
-                  <dd class="font-semibold text-verde-900">{c.data.horasSemanales} h por semana</dd>
-                </div>
-              )}
-              {c.data.modalidad === 'presencial-y-online' && (
-                <div>
-                  <dt class="sr-only">Modalidad</dt>
-                  <dd>presencial u online</dd>
-                </div>
-              )}
-              {c.data.modalidad === 'online' && (
-                <div>
-                  <dt class="sr-only">Modalidad</dt>
-                  <dd>online</dd>
-                </div>
-              )}
-              {sedes.length > 0 && (
-                <div>
-                  <dt class="sr-only">Sede</dt>
-                  <dd>Sede {sedes.join(' y ')}</dd>
-                </div>
-              )}
-            </dl>
             {/* "Más sobre el curso" es un link en reposo y un botón relleno cuando el mouse
                 pasa por el curso (group-hover, solo en dispositivos con hover) o cuando
                 recibe el foco del teclado. En reposo el margen negativo alinea el texto con
@@ -169,7 +134,7 @@ const cifras = [
                 aparte del transform de la entrada) para que el fondo quede dentro del margen.
                 Con movimiento reducido se acomoda sin deslizarse. El gap deja lugar al
                 desplazamiento cuando hay un segundo link al lado. */}
-            <div class="mt-1.5 flex flex-wrap items-center gap-x-9 gap-y-1 text-sm font-semibold">
+            <div class="mt-3 flex flex-wrap items-center gap-x-9 gap-y-1 text-sm font-semibold">
               <a
                 href={`/cursos/${c.id}`}
                 class="-mx-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-verde-700 underline underline-offset-4 transition-[background-color,color,translate] duration-200 ease-out group-hover:translate-x-3 group-hover:bg-verde-700 group-hover:text-white group-hover:no-underline focus-visible:translate-x-3 focus-visible:bg-verde-700 focus-visible:text-white focus-visible:no-underline motion-reduce:transition-[background-color,color]"

@@ -10,6 +10,7 @@ import { getCollection, getEntry } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Boton from '../Boton.astro';
 import TituloAnimado from '../TituloAnimado.astro';
+import { horas } from '../../lib/cursos';
 
 const publico = await getEntry('publicos', 'cambridge');
 if (!publico) throw new Error('Falta src/content/publicos/cambridge.yaml');
@@ -113,7 +114,7 @@ const examenPorNivel = new Map(
                   </dt>
                   <dd class="pl-[1.875rem] text-tinta-suave">
                     {curso.data.frecuencia}, clases de {curso.data.duracionClase}
-                    {curso.data.horasSemanales && <> ({curso.data.horasSemanales} h por semana)</>}. {curso.data.periodo}.
+                    {curso.data.horasSemanales && <> ({horas(curso.data.horasSemanales)} h por semana)</>}. {curso.data.periodo}.
                   </dd>
                 </div>
                 {horarios.length > 0 && (

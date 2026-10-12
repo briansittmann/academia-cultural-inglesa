@@ -8,6 +8,7 @@
  */
 import { getCollection, getEntry, render } from 'astro:content';
 import { Icon } from 'astro-icon/components';
+import { horas } from '../../lib/cursos';
 import Base from '../../layouts/Base.astro';
 import Boton from '../../components/Boton.astro';
 import Etiqueta from '../../components/Etiqueta.astro';
@@ -38,7 +39,7 @@ const novedades = (await getCollection('novedades', ({ data }) => data.vigente &
 const formulario = d.formulario ?? publico.data.formulario ?? instituto.data.formularios.consultaGeneral;
 const whatsappUrl = `https://wa.me/${sedeWhatsapp.data.whatsapp.internacional}?text=${encodeURIComponent(sedeWhatsapp.data.whatsapp.mensaje ?? '')}`;
 const modalidad = { presencial: 'Presencial', online: 'Online', 'presencial-y-online': 'Presencial u online' }[d.modalidad];
-const cursada = [d.frecuencia, d.duracionClase && `clases de ${d.duracionClase}`, d.horasSemanales && `${d.horasSemanales} h por semana`]
+const cursada = [d.frecuencia, d.duracionClase && `clases de ${d.duracionClase}`, d.horasSemanales && `${horas(d.horasSemanales)} h por semana`]
   .filter(Boolean)
   .join(', ');
 
