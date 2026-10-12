@@ -2,6 +2,7 @@
  * Textos derivados de los datos de un curso, compartidos entre la sección
  * Cursos de la portada y la página de cada curso.
  */
+import { getEntry, type CollectionEntry } from 'astro:content';
 
 /** Horas con coma decimal: 3.5 → "3,5". */
 export function horas(n: number) {
@@ -23,4 +24,18 @@ export function resumirNiveles(niveles: string[]) {
   }
   if (niveles.length === 2) return `${niveles[0]} y ${niveles[1]}`;
   return `De ${niveles[0]} a ${niveles.at(-1)} (${niveles.length} niveles)`;
+}
+
+/**
+ * Link de WhatsApp con el mensaje ya escrito para consultar por un curso. Va al
+ * número de la sede del curso si tiene una sola; si no, al WhatsApp principal.
+ */
+export async function whatsappDelCurso(curso: CollectionEntry<'cursos'>) {
+  const instituto = await getEntry('instituto', 'instituto');
+  if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+  const ref = curso.data.sedes.length === 1 ? curso.data.sedes[0] : instituto.data.whatsappPrincipal;
+  const sede = await getEntry(ref);
+  if (!sede) throw new Error(`La sede del WhatsApp de ${curso.id} no existe`);
+  const texto = `Hola, vi la página de la ${instituto.data.nombre} y quiero información sobre el curso ${curso.data.nombre}.`;
+  return `https://wa.me/${sede.data.whatsapp.internacional}?text=${encodeURIComponent(texto)}`;
 }

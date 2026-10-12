@@ -1,7 +1,10 @@
 ---
 /**
- * Panel de un público: foto (solo escritorio), descripción, progresión real de
- * niveles y CTA "Pedir información". Cada curso muestra primero a quién va
+ * Panel de un público: foto (solo escritorio), descripción y progresión real de
+ * niveles. Cada curso tiene su botón "Escribir por WhatsApp" con el mensaje ya
+ * armado (la vía principal de consulta) y el link a su página; "Pedir
+ * información" (formulario del público) queda como opción secundaria al pie del
+ * panel, para quien prefiera dejar sus datos. Cada curso muestra primero a quién va
  * dirigido y después los datos para decidir (cursada, período, sede, niveles),
  * con los mismos íconos que la página del curso. En el celular no hay foto, para
  * que los cursos aparezcan apenas se elige la pestaña. Al entrar en pantalla o al
@@ -14,7 +17,7 @@ import { getEntry } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Boton from '../Boton.astro';
 import Etiqueta from '../Etiqueta.astro';
-import { horas, resumirNiveles } from '../../lib/cursos';
+import { horas, resumirNiveles, whatsappDelCurso } from '../../lib/cursos';
 
 interface Props {
   publico: CollectionEntry<'publicos'>;
@@ -51,6 +54,7 @@ function datos(c: CollectionEntry<'cursos'>) {
   ].filter((x) => x.texto);
 }
 const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
+const whatsappPorCurso = new Map(await Promise.all(cursos.map(async (c) => [c.id, await whatsappDelCurso(c)] as const)));
 ---
 
 <div
@@ -92,7 +96,8 @@ const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
     {
       publico.data.formulario && (
         <div class="mt-6 hidden lg:block">
-          <Boton href={publico.data.formulario} variante="primario" icono="material-symbols:open-in-new-rounded" externo>
+          <p class="text-sm text-tinta-suave">¿Preferís dejar tus datos?</p>
+          <Boton href={publico.data.formulario} variante="secundario" icono="material-symbols:open-in-new-rounded" externo class="mt-2">
             Pedir información
           </Boton>
         </div>
@@ -127,31 +132,17 @@ const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
                 ))}
               </dl>
             )}
-            {/* "Más sobre el curso" es un link en reposo y un botón relleno cuando el mouse
-                pasa por el curso (group-hover, solo en dispositivos con hover) o cuando
-                recibe el foco del teclado. En reposo el margen negativo alinea el texto con
-                el resto del curso; al volverse botón se desliza 12 px (translate, propiedad
-                aparte del transform de la entrada) para que el fondo quede dentro del margen.
-                Con movimiento reducido se acomoda sin deslizarse. El gap deja lugar al
-                desplazamiento cuando hay un segundo link al lado. */}
-            <div class="mt-3 flex flex-wrap items-center gap-x-9 gap-y-1 text-sm font-semibold">
+            <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
+              <Boton href={whatsappPorCurso.get(c.id)!} variante="whatsapp" icono="material-symbols:chat-rounded" externo>
+                Escribir por WhatsApp
+              </Boton>
               <a
                 href={`/cursos/${c.id}`}
-                class="-mx-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-verde-700 underline underline-offset-4 transition-[background-color,color,translate] duration-200 ease-out group-hover:translate-x-3 group-hover:bg-verde-700 group-hover:text-white group-hover:no-underline focus-visible:translate-x-3 focus-visible:bg-verde-700 focus-visible:text-white focus-visible:no-underline motion-reduce:transition-[background-color,color]"
+                class="inline-flex items-center gap-1 text-sm font-semibold text-verde-700 underline underline-offset-4 hover:text-verde-900"
               >
                 Más sobre el curso
                 <Icon name="material-symbols:arrow-forward-rounded" class="size-4" aria-hidden="true" />
               </a>
-              {c.data.formulario && c.data.formulario !== publico.data.formulario && (
-                <a
-                  href={c.data.formulario}
-                  target="_blank"
-                  rel="noopener"
-                  class="inline-flex items-center gap-1 text-verde-700 underline underline-offset-4 hover:text-verde-900"
-                >
-                  Pedir información
-                </a>
-              )}
             </div>
           </li>
         );
@@ -161,8 +152,9 @@ const algunoConTest = cursos.some((c) => c.data.requiereTestDeNivel);
 
   {
     publico.data.formulario && (
-      <div class="lg:hidden">
-        <Boton href={publico.data.formulario} variante="primario" icono="material-symbols:open-in-new-rounded" externo class="w-full sm:w-auto">
+      <div class="border-t border-borde/60 pt-6 lg:hidden">
+        <p class="text-sm text-tinta-suave">¿Preferís dejar tus datos?</p>
+        <Boton href={publico.data.formulario} variante="secundario" icono="material-symbols:open-in-new-rounded" externo class="mt-2 w-full sm:w-auto">
           Pedir información
         </Boton>
       </div>
