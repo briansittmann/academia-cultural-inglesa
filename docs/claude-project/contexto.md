@@ -62,7 +62,7 @@ Reemplaza la web vieja en WordPress.com (academiaculturalinglesa.com), que viví
 1. **Header** fijo: logo, Cursos, Cambridge, Sedes, Nosotros y botón "Escribir por WhatsApp". En el celular, menú hamburguesa.
 2. **Portada (hero):** "Inscripciones abiertas 2027", título "Inglés para todas las edades, desde 1979", bajada con los barrios y Cambridge, botones WhatsApp y "Ver cursos", foto de aula (provisoria).
 3. **Novedades:** tarjetas de las campañas vigentes (flyer, período, título, resumen). Cada una abre su página.
-4. **Cursos por edad:** pestañas Niños, Adolescentes, Adultos y Verano. Cada pestaña muestra foto, descripción, cifras (cursos, niveles, horas) y el recorrido de niveles; cada curso tiene "Más sobre el curso" (se vuelve botón al pasar el mouse) y abre su página.
+4. **Cursos por edad:** pestañas Niños, Adolescentes, Adultos y Verano. Cada pestaña muestra foto (no en el celular), descripción y el recorrido de niveles. Cada curso destaca a quién va dirigido, muestra cursada, período, sede y niveles en una línea, y tiene "Escribir por WhatsApp" (con el mensaje armado con el nombre del curso) y el link "Más sobre el curso" a su página. Al pie, "Pedir información" como opción secundaria.
 5. **Cambridge:** banda verde oscura, la única del sitio. Escala del Marco Común Europeo (A1 a C2) con B2 y C1 marcados, y una tarjeta por examen con horarios.
 6. **La Academia:** texto de quiénes somos, lista de hechos, bloque "Más meses de clase por año que en la zona" (+2 / +3) y la foto de la fachada de Villa Urquiza.
 7. **Cómo empezar:** tres pasos (test online, resultado por mail, reservar lugar) y botones al test y a "Pedir información".
@@ -73,7 +73,7 @@ Reemplaza la web vieja en WordPress.com (academiaculturalinglesa.com), que viví
 - **Una por curso** (13), con el texto largo migrado de la web vieja y una ficha con cursada, período, sede, horarios, niveles y botones.
 - **Una por novedad vigente**, con texto, días y horarios, cursos incluidos y el flyer.
 
-**Panel de administración (Keystatic):** la dueña entra en `/keystatic` con una cuenta de Keystatic Cloud (sin GitHub) y edita: datos del instituto, textos de portada, cursos (incluido el texto largo de su página), públicos, sedes y novedades (con flyer y casilla "Vigente"). Cada guardado publica el sitio solo en uno o dos minutos. Lo que no edita: el diseño, el orden de las secciones y la estructura de las páginas.
+**Panel de administración (Keystatic):** funcionando en producción desde el 2026-10-12 (falta invitar a la dueña). Ella entra en `/keystatic` con una cuenta de Keystatic Cloud (sin GitHub) y edita: datos del instituto, textos de portada, cursos (incluido el texto largo de su página), públicos, sedes y novedades (con flyer y casilla "Vigente"). Cada guardado publica el sitio solo en uno o dos minutos. Lo que no edita: el diseño, el orden de las secciones y la estructura de las páginas.
 
 **Técnica en una línea:** sitio estático hecho con Astro y Tailwind, alojado en Vercel, sin base de datos. Lighthouse en el celular: 99 de rendimiento, 100 en accesibilidad, buenas prácticas y SEO. Datos estructurados para Google (organización educativa con las dos sedes y cada curso), sitemap y redirecciones 301 desde las URLs viejas.
 
@@ -112,6 +112,7 @@ Reemplaza la web vieja en WordPress.com (academiaculturalinglesa.com), que viví
 - **Novedades:** hoy vencen a mano (casilla "Vigente"). Se puede automatizar por fecha. También pueden servir para eventos, clases abiertas o resultados de exámenes.
 - **Campañas:** cómo encarar Inscripciones 2027 y Verano 2027 en el sitio y en redes, y qué flyers hacer.
 - **SEO local:** perfil de Google Business por sede, reseñas, palabras clave por barrio.
+- **Estadísticas y SEO a la vista:** el panel de Keystatic no admite pantallas propias (solo nombre, logo y orden del menú). Opciones: Google Search Console (búsquedas, clics, indexación), Vercel Web Analytics (visitas, sin cookies) y Google Business Profile (llamadas, pedidos de cómo llegar). Hay que decidir qué ve la dueña y cuánto le sirve.
 - **WhatsApp:** botón flotante en el celular (se evaluó en el análisis inicial y no se hizo).
 - **Instagram** si existe o si conviene abrirlo.
 

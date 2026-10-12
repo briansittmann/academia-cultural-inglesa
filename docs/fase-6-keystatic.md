@@ -23,16 +23,28 @@ Fecha: 2026-10-12. Versiones verificadas con Context7 y npm: `@keystatic/core` 0
 
 Todas las entradas de prueba se borraron después.
 
-## Lo que falta para que la dueña entre (lo hace el dueño del proyecto)
+## Puesta en producción (2026-10-12)
 
-1. Subir el repo a GitHub (`git push`) e importar el repo en Vercel (framework Astro, detectado solo).
-2. En https://keystatic.cloud crear una cuenta, un equipo y un proyecto conectado al mismo repo. Copiar el nombre `equipo/proyecto`.
-3. En Vercel (Settings > Environment Variables), cargar `PUBLIC_KEYSTATIC_CLOUD_PROJECT` con ese valor y redesplegar.
-4. Invitar a la dueña al equipo de Keystatic Cloud (plan gratuito: hasta 3 usuarios por equipo). Entra con su cuenta de Keystatic, sin GitHub, en `https://<dominio>/keystatic`.
-5. Probar el flujo completo en producción: editar una novedad, subir una foto y ver el deploy automático.
+Hecho por Brian:
+
+1. Repo en GitHub e importado en Vercel: https://academia-cultural-inglesa.vercel.app/.
+2. En https://keystatic.cloud: equipo `academia-cultural` y proyecto `academia-web-page`, conectado al repo. Keystatic Cloud muestra un bloque de configuración con `storage: { kind: 'cloud' }` y `cloud: { project }`: no hace falta copiarlo, `keystatic.config.ts` ya arma eso a partir de la variable. "Project URL": `https://academia-cultural-inglesa.vercel.app` (cambiarlo al dominio cuando se apunte, porque es adonde vuelve el usuario después de iniciar sesión).
+3. En Vercel (Settings > Environment Variables): `PUBLIC_KEYSTATIC_CLOUD_PROJECT=academia-cultural/academia-web-page`, con visibilidad **Config**. Si se marca como secreta, Vercel no la guarda ("Environment variables with a public framework prefix cannot use `visibility: secret`"). Puede mostrar también un aviso porque el nombre contiene "KEY": no es un problema, el valor no es secreto. La variable se lee al construir, así que cada cambio pide redesplegar.
+4. Inicio de sesión y guardado probados en producción.
+
+**Error 500 en `/keystatic` y su arreglo.** Con `@astrojs/vercel` 11.0.13 la función del panel incluía un `import "rolldown"` (el empaquetador de Vite, que solo sirve en el build) y en Vercel no estaba su binario nativo: `FUNCTION_INVOCATION_FAILED`. La landing no se vio afectada porque es estática. La 11.0.14 lo corrige. Para reproducir un error de la función sin la CLI de Vercel: copiar `.vercel/output/functions/_render.func` fuera del repo con `cp -RL` (dentro del repo Node encuentra los paquetes del `node_modules` del proyecto y el error no aparece) e importar su `.vercel/output/server/entry.mjs`, que exporta `default.fetch(request)`.
+
+Falta:
+
+- Invitar a la dueña al equipo de Keystatic Cloud (plan gratuito: hasta 3 usuarios por equipo). Entra con su cuenta de Keystatic, sin GitHub, en `/keystatic`.
+- Apuntar el dominio y actualizar el "Project URL" de Keystatic Cloud.
+
+## Qué se puede cambiar de la interfaz del panel
+
+Keystatic no deja agregar pantallas propias (por ejemplo, un tablero de SEO o de estadísticas). Lo configurable es `ui.brand.name` (hoy "Academia Cultural Inglesa"), `ui.brand.mark` (un componente de React con el logo, que recibe `colorScheme`), `ui.navigation` (grupos y orden), y las etiquetas, ayudas y validaciones de cada campo. Las estadísticas y el SEO se miran con herramientas aparte (ver ideas abiertas en `docs/claude-project/contexto.md`).
 
 ## Pendientes y notas
 
-- `npm audit` marca 3 vulnerabilidades altas, todas `path-to-regexp` dentro de `@vercel/routing-utils`, que `@astrojs/vercel` usa solo en el build para generar la configuración de rutas. No corre en el sitio publicado. La corrección propuesta es bajar a `@astrojs/vercel` 8, incompatible con Astro 7; revisar cuando salga una versión del adaptador que la resuelva.
+- `npm audit` marca 3 vulnerabilidades altas (siguen con la 11.0.14), todas `path-to-regexp` dentro de `@vercel/routing-utils`, que `@astrojs/vercel` usa solo en el build para generar la configuración de rutas. No corre en el sitio publicado. La corrección propuesta es bajar a `@astrojs/vercel` 8, incompatible con Astro 7; revisar cuando salga una versión del adaptador que la resuelva.
 - Posts y eventos como páginas secundarias (fase 1 §8) no se modelaron todavía: la landing sigue siendo una sola página. Cuando se decidan, se agrega una collection `posts` en los dos lados (`content.config.ts` y `keystatic.config.ts`) y una ruta `src/pages/novedades/[slug].astro`.
 - Si se agrega o renombra un campo, hay que tocar `src/content.config.ts` y `keystatic.config.ts` a la vez.
