@@ -10,3 +10,6 @@ dist/
 
 # El ejemplo de variables sí se versiona.
 !.env.example
+
+# Video para la dueña: archivos pesados (MP4, voces, música), fuera del repo.
+Referencias/video/
