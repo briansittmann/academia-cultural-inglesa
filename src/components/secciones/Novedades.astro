@@ -1,8 +1,13 @@
 ---
 /**
  * Novedades vigentes, justo debajo de la portada: lo que la dueña carga desde
- * el panel con la casilla "Vigente" (flyer, título, período, resumen). Cada
- * tarjeta lleva a la página de la novedad. Si no hay vigentes, no se muestra.
+ * el panel con la casilla "Vigente" (foto o flyer, título, período, resumen).
+ * Cada tarjeta lleva a la página de la novedad. Si no hay vigentes, no se muestra.
+ *
+ * Entrada (al aparecer en pantalla, una vez): la tarjeta sube, la foto se
+ * descubre de abajo hacia arriba mientras el zoom se asienta y después entran
+ * período, título, resumen y "Ver más", uno detrás de otro. Al pasar el mouse,
+ * la foto se acerca y la flecha avanza. Estilos en animaciones.css (.novedad-*).
  */
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
@@ -20,39 +25,44 @@ const vigentes = (await getCollection('novedades', ({ data }) => data.vigente)).
             Novedades
           </h2>
           <ul class="mt-6 grid gap-4 md:grid-cols-2 lg:gap-6">
-            {vigentes.map((n, i) => (
-              <li class="sube" style={`--i: ${1 + i * 0.6}`}>
-                <a
-                  href={`/novedades/${n.id}`}
-                  class="tarjeta-link grid h-full grid-cols-[auto_1fr] gap-4 rounded-card border border-borde/60 bg-white p-4 shadow-card sm:gap-5 sm:p-5"
-                >
-                  {n.data.flyer ? (
-                    <Image
-                      src={n.data.flyer}
-                      alt=""
-                      width={320}
-                      densities={[1, 2]}
-                      class="aspect-[4/5] w-24 rounded-control object-cover sm:w-32"
-                    />
-                  ) : (
-                    <span class="flex aspect-[4/5] w-24 items-center justify-center rounded-control bg-verde-100 text-verde-700 sm:w-32" aria-hidden="true">
-                      <Icon name="material-symbols:event-available-outline" class="size-9" />
+            {vigentes.map((n, i) => {
+              const imagen = n.data.foto ?? n.data.flyer;
+              return (
+                <li class="sube" style={`--i: ${1 + i * 1.5}; --n: ${i}`}>
+                  <a
+                    href={`/novedades/${n.id}`}
+                    class="tarjeta-link novedad grid h-full grid-cols-[auto_1fr] gap-4 rounded-card border border-borde/60 bg-white p-4 shadow-card sm:gap-5 sm:p-5"
+                  >
+                    <span class="novedad-foto block aspect-[4/5] w-28 self-start overflow-hidden rounded-control bg-verde-100 sm:w-36 md:w-28 lg:w-40">
+                      {imagen ? (
+                        <Image src={imagen} alt="" width={160} densities={[1, 2]} class="h-full w-full object-cover" />
+                      ) : (
+                        <span class="flex h-full items-center justify-center text-verde-700" aria-hidden="true">
+                          <Icon name="material-symbols:event-available-outline" class="size-9" />
+                        </span>
+                      )}
                     </span>
-                  )}
-                  <span class="flex min-w-0 flex-col">
-                    {/* Texto y no pastilla: un período largo ("Ciclo 2027, de marzo a diciembre")
-                        tiene que poder partirse en dos líneas en pantallas de 320 px. */}
-                    <span class="text-xs font-semibold leading-snug text-dorado-800">{n.data.periodo}</span>
-                    <span class="mt-2 text-xl font-bold leading-tight text-verde-900">{n.data.titulo}</span>
-                    <span class="mt-1.5 line-clamp-3 text-sm leading-relaxed text-tinta-suave">{n.data.resumen}</span>
-                    <span class="mt-auto inline-flex items-center gap-1 pt-3 text-sm font-semibold text-verde-700">
-                      Ver más
-                      <Icon name="material-symbols:arrow-forward-rounded" class="size-4" aria-hidden="true" />
+                    <span class="flex min-w-0 flex-col">
+                      {/* Texto y no pastilla: un período largo ("Ciclo 2027, de marzo a diciembre")
+                          tiene que poder partirse en dos líneas en pantallas de 320 px. */}
+                      <span class="novedad-linea text-xs font-semibold leading-snug text-dorado-800" style="--j: 0">
+                        {n.data.periodo}
+                      </span>
+                      <span class="novedad-linea mt-2 text-xl font-bold leading-tight text-verde-900" style="--j: 1">
+                        {n.data.titulo}
+                      </span>
+                      <span class="novedad-linea mt-1.5 line-clamp-3 text-sm leading-relaxed text-tinta-suave" style="--j: 2">
+                        {n.data.resumen}
+                      </span>
+                      <span class="novedad-linea mt-auto inline-flex items-center gap-1 pt-3 text-sm font-semibold text-verde-700" style="--j: 3">
+                        Ver más
+                        <Icon name="material-symbols:arrow-forward-rounded" class="novedad-flecha size-4" aria-hidden="true" />
+                      </span>
                     </span>
-                  </span>
-                </a>
-              </li>
-            ))}
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

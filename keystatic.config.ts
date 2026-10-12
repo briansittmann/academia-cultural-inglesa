@@ -395,6 +395,7 @@ export default config({
           itemLabel: ({ value }) => value || 'Curso',
         }),
         horarios: horarios('Cohortes con fechas concretas.'),
+        foto: fotoNovedad('Foto de la tarjeta', 'Opcional. Se ve en la franja Novedades de la portada. Si no hay, se usa el flyer. Que no tenga fechas ni años.'),
         flyer: fotoNovedad('Flyer', 'Opcional.'),
         flyerAlt: fields.text({ label: 'Descripción del flyer' }),
         pendiente,

@@ -180,6 +180,7 @@ const novedades = defineCollection({
       hasta: z.coerce.date().optional(),
       cursos: z.array(reference('cursos')).default([]),
       horarios: z.array(horario).default([]), // cohortes con fechas concretas
+      foto: image().optional(), // foto de la tarjeta en la portada; si no hay, se usa el flyer
       flyer: image().optional(),
       flyerAlt: z.string().optional(),
       pendiente: z.string().optional(),

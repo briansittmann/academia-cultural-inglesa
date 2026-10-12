@@ -21,6 +21,8 @@ encontrarla y la borra del YAML al guardar.
 | Archivo | Uso | Origen |
 |---|---|---|
 | `instituto/academia/foto.jpg` | La Academia: fachada de la sede Villa Urquiza | Entregada por el dueño del proyecto (2026-10-12) |
+| `novedades/inscripciones-2027/foto.jpg` | Novedades: tarjeta de Inscripciones 2027 | Recorte del flyer "Inscripciones 2026" del sitio viejo (`content/imagenes/flyers/inscripcion-2026.jpg`), sin el año |
+| `novedades/verano-2027/foto.jpg` | Novedades: tarjeta de Verano 2027 | Recorte de la ilustración del flyer "Verano 2026" del sitio viejo (`content/imagenes/flyers/adultos-verano-2026.jpg`), sin año ni fechas |
 
 El logo (`src/assets/logo/logo.png`, y `logo-recortado.png` sin márgenes) es el PNG que
 entregó el instituto. Cuando llegue el SVG original se reemplaza en `Logo.astro` y se vuelven

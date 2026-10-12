@@ -18,6 +18,7 @@ cursos:
   - pre-first
   - fce
   - cae
+foto: ../../assets/img/novedades/inscripciones-2027/foto.jpg
 pendiente: Confirmar fecha de inicio de clases de marzo 2027 y de Kiddies (abril 2027).
 ---
 

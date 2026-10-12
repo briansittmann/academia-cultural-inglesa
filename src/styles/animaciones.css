@@ -231,6 +231,46 @@ header[data-compacto] {
   transform: scale(0.6);
 }
 
+/* ---------- Novedades: la tarjeta sube, la foto se descubre y el texto entra en cascada ---------- */
+/* Demoras según --n (orden de la tarjeta) y --j (línea dentro de la tarjeta). El hover
+   usa `scale` y `translate`, propiedades aparte de la entrada, para no heredar su demora. */
+.novedad-foto {
+  clip-path: inset(0 0 0 0 round var(--radius-control));
+  transition: clip-path 800ms var(--ease-in-out) calc(250ms + var(--n, 0) * 150ms);
+}
+.novedad-foto img {
+  transition:
+    transform 1100ms var(--ease-out) calc(250ms + var(--n, 0) * 150ms),
+    scale 500ms var(--ease-out) 0ms;
+}
+.novedad-linea {
+  transition:
+    opacity 450ms var(--ease-out),
+    transform 550ms var(--ease-out);
+  transition-delay: calc(450ms + var(--n, 0) * 150ms + var(--j, 0) * 70ms);
+}
+.novedad-flecha {
+  transition: translate 200ms var(--ease-out);
+}
+.js [data-reveal]:not([data-visible]) .novedad-foto {
+  clip-path: inset(100% 0 0 0 round var(--radius-control));
+}
+.js [data-reveal]:not([data-visible]) .novedad-foto img {
+  transform: scale(1.15);
+}
+.js [data-reveal]:not([data-visible]) .novedad-linea {
+  opacity: 0;
+  transform: translateY(10px);
+}
+@media (hover: hover) and (pointer: fine) {
+  .novedad:hover .novedad-foto img {
+    scale: 1.05;
+  }
+  .novedad:hover .novedad-flecha {
+    translate: 4px 0;
+  }
+}
+
 /* ---------- La Academia: foto del edificio que se revela como un telón ---------- */
 /* La entrada anima clip-path (contenedor) y transform (imagen) con demora; el hover
    usa `scale`, una propiedad aparte sin demora, para no heredar la demora de la entrada. */
@@ -435,6 +475,26 @@ header[data-compacto] {
   [data-visible] .foto-telon:hover img {
     transform: none;
     scale: none;
+  }
+  /* Novedades: la foto y el texto aparecen con un fundido, sin telón, cascada ni zoom. */
+  .novedad-foto {
+    transition: opacity 400ms var(--ease-out);
+  }
+  .novedad-linea {
+    transition: opacity 300ms var(--ease-out);
+  }
+  .js [data-reveal]:not([data-visible]) .novedad-foto {
+    clip-path: inset(0 0 0 0 round var(--radius-control));
+    opacity: 0;
+  }
+  .js [data-reveal]:not([data-visible]) :is(.novedad-foto img, .novedad-linea) {
+    transform: none;
+  }
+  .novedad:hover .novedad-foto img {
+    scale: none;
+  }
+  .novedad:hover .novedad-flecha {
+    translate: none;
   }
   .menu-panel {
     transition: opacity 200ms var(--ease-out);

@@ -13,6 +13,7 @@ hasta: 2027-03-05
 cursos:
   - english-in-action-verano
   - viajeros
+foto: ../../assets/img/novedades/verano-2027/foto.jpg
 pendiente: >-
   Faltan fechas y horarios de febrero 2027. Como referencia, la edición 2026 está en
   verano-2026.yaml.
