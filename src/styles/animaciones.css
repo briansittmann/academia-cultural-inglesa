@@ -231,6 +231,30 @@ header[data-compacto] {
   transform: scale(0.6);
 }
 
+/* ---------- La Academia: foto del edificio que se revela como un telón ---------- */
+/* La entrada anima clip-path (contenedor) y transform (imagen) con demora; el hover
+   usa `scale`, una propiedad aparte sin demora, para no heredar la demora de la entrada. */
+.foto-telon {
+  clip-path: inset(0 0 0 0 round var(--radius-card));
+  transition: clip-path 900ms var(--ease-in-out) 150ms;
+}
+.foto-telon img {
+  transition:
+    transform 1200ms var(--ease-out) 150ms,
+    scale 600ms var(--ease-out) 0ms;
+}
+.js [data-reveal]:not([data-visible]) .foto-telon {
+  clip-path: inset(100% 0 0 0 round var(--radius-card));
+}
+.js [data-reveal]:not([data-visible]) .foto-telon img {
+  transform: scale(1.08);
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-visible] .foto-telon:hover img {
+    scale: 1.03;
+  }
+}
+
 /* ---------- La Academia: barra dorada que crece ---------- */
 .cifra-bloque {
   position: relative;
@@ -398,6 +422,19 @@ header[data-compacto] {
   }
   [data-visible] .curso-item:hover {
     translate: none;
+  }
+  /* Foto de La Academia: aparece con un fundido, sin telón, zoom ni hover. */
+  .foto-telon {
+    transition: opacity 400ms var(--ease-out);
+  }
+  .js [data-reveal]:not([data-visible]) .foto-telon {
+    clip-path: inset(0 0 0 0 round var(--radius-card));
+    opacity: 0;
+  }
+  .js [data-reveal]:not([data-visible]) .foto-telon img,
+  [data-visible] .foto-telon:hover img {
+    transform: none;
+    scale: none;
   }
   .menu-panel {
     transition: opacity 200ms var(--ease-out);

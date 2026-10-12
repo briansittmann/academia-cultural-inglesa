@@ -16,6 +16,12 @@ encontrarla y la borra del YAML al guardar.
 | `publicos/adultos/foto.jpg` | Cursos: adultos | Brooke Cagle | https://unsplash.com/photos/three-people-sitting-in-front-of-table-laughing-together-g1Kr4Ozfoac |
 | `publicos/verano/foto.jpg` | Cursos: verano | Joseph Chan | https://unsplash.com/photos/two-women-walking-with-luggage-bags-FcLh4pcidIk |
 
+**Fotos reales del instituto**
+
+| Archivo | Uso | Origen |
+|---|---|---|
+| `instituto/academia/foto.jpg` | La Academia: fachada de la sede Villa Urquiza | Entregada por el dueño del proyecto (2026-10-12) |
+
 El logo (`src/assets/logo/logo.png`, y `logo-recortado.png` sin márgenes) es el PNG que
 entregó el instituto. Cuando llegue el SVG original se reemplaza en `Logo.astro` y se vuelven
 a derivar los favicons y `public/og.jpg` (ver `docs/fase-5-cierre.md`).

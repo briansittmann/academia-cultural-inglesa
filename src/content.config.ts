@@ -67,6 +67,15 @@ const instituto = defineCollection({
         foto: image(),
         fotoAlt: z.string(),
       }),
+      // Foto de la sección "La Academia", debajo de la cifra de carga horaria.
+      // Opcional: sin foto, la sección queda como antes. Con sede, muestra su dirección.
+      academia: z
+        .object({
+          foto: image().optional(),
+          fotoAlt: z.string().optional(),
+          sede: reference('sedes').optional(),
+        })
+        .optional(),
       seo: z.object({
         titulo: z.string(),
         descripcion: z.string().max(160),

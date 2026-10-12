@@ -203,6 +203,18 @@ export default config({
           },
           { label: 'Portada (hero)' },
         ),
+        academia: fields.object(
+          {
+            foto: fotoInstituto('Foto', 'Va debajo de la cifra de carga horaria. Horizontal, al menos 1600 px de ancho. Sin foto, no se muestra nada.'),
+            fotoAlt: fields.text({ label: 'Descripción de la foto', description: 'Para lectores de pantalla. Qué se ve en la foto.' }),
+            sede: fields.relationship({
+              label: 'Sede de la foto',
+              collection: 'sedes',
+              description: 'Opcional. Muestra la dirección de la sede debajo de la foto.',
+            }),
+          },
+          { label: 'Foto de "La Academia"' },
+        ),
         seo: fields.object(
           {
             titulo: fields.text({ label: 'Título para Google', description: 'Hasta 60 caracteres.', validation: { isRequired: true, length: { max: 70 } } }),
