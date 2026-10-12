@@ -3,6 +3,7 @@ orden: 1
 direccion: Bucarelli 2288
 barrio: Villa Urquiza
 ciudad: CABA
+codigoPostal: C1431DQP
 telefonos:
   - numero: 011 4523-7660
     tel: "+541145237660"
