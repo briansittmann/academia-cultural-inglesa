@@ -5,21 +5,17 @@ import icon from 'astro-icon';
 import sitemap from '@astrojs/sitemap';
 import react from '@astrojs/react';
 import keystatic from '@keystatic/astro';
-import netlify from '@astrojs/netlify';
+import vercel from '@astrojs/vercel';
 
-// Salida estática (dist/): la landing se prerenderiza. El adaptador de Netlify
-// solo sirve las rutas del panel de Keystatic (/keystatic y /api/keystatic),
-// que la integración inyecta con prerender: false. React se carga únicamente
-// en el panel; el sitio sigue sin React.
+// Salida estática: la landing se prerenderiza. El adaptador de Vercel solo
+// sirve las rutas del panel de Keystatic (/keystatic y /api/keystatic), que la
+// integración inyecta con prerender: false. React se carga únicamente en el
+// panel; el sitio sigue sin React. Las imágenes las procesa astro:assets en el
+// build (el adaptador no usa la optimización de imágenes de Vercel).
 export default defineConfig({
   site: 'https://academiaculturalinglesa.com',
   output: 'static',
-  adapter: netlify({
-    // Las imágenes las procesa astro:assets en el build; no hace falta el CDN de Netlify.
-    imageCDN: false,
-    // En desarrollo no se emulan Edge Functions (pide Deno y no se usan).
-    devFeatures: { edgeFunctions: false, images: false },
-  }),
+  adapter: vercel(),
   trailingSlash: 'ignore',
   compressHTML: true,
   integrations: [

@@ -6,7 +6,7 @@ Landing page informativa para un instituto de inglés. Sitio estático, sin base
 
 - **Astro** (sitio estático) + **Tailwind CSS**
 - **Sin React** en el sitio: todo con componentes `.astro`. La poca interactividad que haga falta (menú mobile, tabs de cursos) va con `<script>` nativo dentro del componente. (El panel de Keystatic trae su propio React, pero solo se carga en `/keystatic`.)
-- Build estático (`dist/`) deployable en Netlify, Vercel o Cloudflare Pages (ver Hosting en Forma de trabajo).
+- Build estático deployable en Vercel, con el adaptador solo para el panel (ver Hosting en Forma de trabajo).
 
 ## Diseño
 
@@ -81,7 +81,7 @@ Ajustes para este proyecto (la guía está escrita pensando en React):
   4. Animaciones según `motion-skills` (motion bajo).
   5. Cierre: datos estructurados, sitemap, prueba responsive y de accesibilidad, Lighthouse, pasada final de Taste.
   6. Panel de administración con **Keystatic** (`@keystatic/astro`, Keystatic Cloud para que la dueña entre sin cuenta de GitHub), campos con etiquetas en español, deploy automático desde Git. Detalle en `docs/fase-1-analisis.md` §8.
-- **Hosting:** uno que reconstruya desde Git y soporte funciones del lado del servidor para el login del panel (Netlify, Vercel o Cloudflare Pages). Salida estática; el adaptador solo para las rutas del panel.
+- **Hosting:** Vercel (reconstruye desde Git y da funciones para el panel). Salida estática; el adaptador `@astrojs/vercel` solo para las rutas del panel.
 - Antes de usar Astro, Tailwind o cualquier librería, consultar la documentación con Context7.
 - **Un commit en español por fase. No hacer push sin preguntar.**
 
@@ -95,7 +95,7 @@ Ajustes para este proyecto (la guía está escrita pensando en React):
 Actualizado el 2026-10-12. Mantener esta sección al cerrar cada entrega.
 
 - **Fases 1 a 6: hechas** (sin push). Notas en `docs/fase-1-analisis.md` a `fase-6-keystatic.md`. Leerlas antes de tocar algo de esas fases.
-- **Sigue: puesta en producción**, que la hace el dueño del proyecto (pasos en `docs/fase-6-keystatic.md`): push a GitHub, sitio en Netlify, equipo y proyecto en Keystatic Cloud, variable `PUBLIC_KEYSTATIC_CLOUD_PROJECT` en Netlify, invitar a la dueña y probar el flujo completo. Después, dominio y redirecciones 301 desde las URLs viejas.
+- **Sigue: puesta en producción**, que la hace el dueño del proyecto (pasos en `docs/fase-6-keystatic.md`): push a GitHub, importar el repo en Vercel, equipo y proyecto en Keystatic Cloud, variable `PUBLIC_KEYSTATIC_CLOUD_PROJECT` en Vercel, invitar a la dueña y probar el flujo completo. Después, dominio y redirecciones 301 desde las URLs viejas.
 - **Panel:** `keystatic.config.ts` (raíz). Modo local en `astro dev` (`http://127.0.0.1:4321/keystatic`), Keystatic Cloud en producción. Si se agrega o renombra un campo, cambiarlo en `src/content.config.ts` y en `keystatic.config.ts` a la vez. El campo `cambridge` de los cursos es condicional en el panel y se aplana en el esquema de zod.
 - **Fotos:** viven en `src/assets/img/<collection>/<slug>/<campo>.<ext>` (en el singleton, `instituto/<objeto>/<campo>`), que es la estructura que usa Keystatic. Si una foto no está ahí, el panel la saca del YAML al guardar. Siguen siendo provisorias de Unsplash (créditos en `src/assets/img/CREDITOS.md`).
 - **Logo:** `src/assets/logo/logo.png` es el PNG que entregó el instituto, oficial hasta que llegue el SVG; `Logo.astro` usa `logo-recortado.png` y de ahí salen favicons y `og.jpg`.
@@ -107,6 +107,6 @@ Actualizado el 2026-10-12. Mantener esta sección al cerrar cada entrega.
   - Decidir si Apoyo escolar va en Niños o Adultos (`src/content/cursos/apoyo-escolar.yaml`).
   - Dudas para la dueña en `docs/fase-1-analisis.md` §6 y en el campo `pendiente` de cada curso (ahora editable desde el panel). Sumar código postal y coordenadas de cada sede.
   - Validar el JSON-LD con validator.schema.org cuando el dominio esté publicado.
-  - `npm audit`: 13 altas en herramientas de desarrollo del adaptador de Netlify; no afectan al sitio publicado. Revisar al actualizar `@astrojs/netlify`.
+  - `npm audit`: 3 altas (`path-to-regexp` dentro de `@vercel/routing-utils`, solo en el build); no afectan al sitio publicado. Revisar al actualizar `@astrojs/vercel`.
   - La máquina tiene Node 23 (versión impar, no soportada oficialmente por Astro 7); build y check pasan igual.
-- **Cómo verificar:** `npm run build` y `npx astro check` deben pasar sin errores. Para el panel, `npx astro dev` y abrir `/keystatic`. El skill `browser-automation` sirve para consola, scroll horizontal y capturas en 390, 768, 1024 y 1280 px (en scripts usar `scrollTo` con `behavior: 'instant'`, porque el `scroll-behavior: smooth` del sitio hace que un scroll rápido no dispare los reveals). Lighthouse: `npx -y lighthouse@latest http://localhost:4321/ --preset=desktop` con `CHROME_PATH` apuntando a Google Chrome. Astro 7 deja corriendo `astro preview` y `astro dev` como daemons (`npx astro preview stop` / `npx astro dev stop`); si un puerto no responde, revisar `npx astro dev status` por si quedó uno de otra sesión.
+- **Cómo verificar:** `npm run build` y `npx astro check` deben pasar sin errores. Con el adaptador de Vercel la página estática queda en `dist/client/` y `astro preview` no funciona: servirla con `npx -y serve dist/client -l 4321`. Para el panel, `npx astro dev` y abrir `/keystatic`. El skill `browser-automation` sirve para consola, scroll horizontal y capturas en 390, 768, 1024 y 1280 px (en scripts usar `scrollTo` con `behavior: 'instant'`, porque el `scroll-behavior: smooth` del sitio hace que un scroll rápido no dispare los reveals). Lighthouse: `npx -y lighthouse@latest http://localhost:4321/ --preset=desktop` con `CHROME_PATH` apuntando a Google Chrome. Astro 7 deja corriendo `astro dev` como daemon (`npx astro dev stop`); si un puerto no responde, revisar `npx astro dev status` por si quedó uno de otra sesión.
