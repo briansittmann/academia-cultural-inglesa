@@ -1,3 +1,4 @@
+---
 nombre: Pre-First Certificate
 publico: adolescentes
 orden: 3
@@ -12,3 +13,12 @@ duracionClase: 2 h
 horasSemanales: 4
 periodo: Marzo a diciembre
 pendiente: Confirmar en qué sedes se dicta.
+---
+
+Brinda a los alumnos la posibilidad de terminar su ciclo de estudios con un excelente nivel oral y escrito. Es también el primer acercamiento al formato del examen First Certificate de la Universidad de Cambridge.
+
+## Cursada
+
+Dos veces por semana, clases de dos horas (cuatro horas semanales), de marzo a diciembre inclusive. Un nivel: Pre-First Certificate 1.
+
+Al terminar, el paso natural es el curso de preparación para el First Certificate.

@@ -17,17 +17,18 @@ if (!sede) throw new Error('La sede del WhatsApp principal no existe');
 
 const whatsappUrl = `https://wa.me/${sede.data.whatsapp.internacional}?text=${encodeURIComponent(sede.data.whatsapp.mensaje ?? '')}`;
 
+// Anclas con "/" adelante para que funcionen también desde /cursos/... y /novedades/...
 const anclas = [
-  { href: '#cursos', texto: 'Cursos' },
-  { href: '#cambridge', texto: 'Cambridge' },
-  { href: '#sedes', texto: 'Sedes' },
-  { href: '#nosotros', texto: 'Nosotros' },
+  { href: '/#cursos', texto: 'Cursos' },
+  { href: '/#cambridge', texto: 'Cambridge' },
+  { href: '/#sedes', texto: 'Sedes' },
+  { href: '/#nosotros', texto: 'Nosotros' },
 ];
 ---
 
 <header class="sticky top-0 z-40 border-b border-borde/50 bg-crema/90 backdrop-blur-md" data-header>
   <div class="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-    <a href="#inicio" class="flex min-w-0 items-center gap-3 rounded-control" aria-label={`${instituto.data.nombre}, ir al inicio`}>
+    <a href="/" class="flex min-w-0 items-center gap-3 rounded-control" aria-label={`${instituto.data.nombre}, ir al inicio`}>
       <span class="header-logo flex shrink-0"><Logo size={40} alt="" /></span>
       <span class="truncate text-[15px] font-bold leading-tight text-verde-900 sm:text-base">{instituto.data.nombre}</span>
     </a>

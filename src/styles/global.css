@@ -83,3 +83,58 @@
     @apply bg-verde-100 text-verde-900;
   }
 }
+
+@layer components {
+  /* Texto largo de las páginas de cursos y novedades (Markdown renderizado). */
+  .prosa {
+    @apply text-lg leading-relaxed text-tinta-suave;
+    max-width: 62ch;
+  }
+  .prosa > * + * {
+    margin-top: 1rem;
+  }
+  .prosa h2 {
+    @apply mt-9 text-2xl;
+  }
+  .prosa h3 {
+    @apply mt-7 text-xl;
+  }
+  .prosa ul,
+  .prosa ol {
+    padding-left: 1.4rem;
+  }
+  .prosa ul {
+    list-style: disc;
+  }
+  .prosa ol {
+    list-style: decimal;
+  }
+  .prosa li + li {
+    margin-top: 0.45rem;
+  }
+  .prosa li::marker {
+    @apply text-verde-700;
+  }
+  .prosa strong {
+    @apply font-semibold text-tinta;
+  }
+  .prosa a {
+    @apply font-semibold text-verde-700 underline underline-offset-4;
+  }
+  .prosa a:hover {
+    @apply text-verde-900;
+  }
+
+  /* Tarjetas que son un link entero: borde y sombra al pasar el mouse. */
+  .tarjeta-link {
+    transition:
+      box-shadow 200ms var(--ease-out),
+      border-color 200ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .tarjeta-link:hover {
+      border-color: var(--color-verde-700);
+      box-shadow: var(--shadow-card-hover);
+    }
+  }
+}

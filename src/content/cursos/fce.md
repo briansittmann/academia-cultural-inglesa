@@ -1,3 +1,4 @@
+---
 nombre: First Certificate
 publico: cambridge
 orden: 1
@@ -30,3 +31,19 @@ cambridge:
 pendiente: >-
   Confirmar si son sede de examen o centro preparador autorizado, y si sigue la
   modalidad online (martes y jueves de 19:30 a 21:30, página de 2021).
+---
+
+Somos sede de este examen internacional y contamos con un altísimo porcentaje de alumnos aprobados.
+
+## Qué es el First Certificate
+
+El First Certificate in English (FCE), hoy llamado B2 First, es uno de los exámenes de nivel de inglés de la Universidad de Cambridge. Acredita el nivel B2 del Marco Común Europeo: el de quien puede desenvolverse con soltura en situaciones cotidianas, de estudio y de trabajo. Lo reconocen universidades, empresas y organismos de todo el mundo.
+
+## Cursada
+
+Dos veces por semana, clases de dos horas (cuatro horas semanales), de marzo a diciembre inclusive. Modalidad presencial.
+
+## Horarios
+
+- Villa Urquiza: lunes y miércoles de 19:30 a 21:30.
+- Villa del Parque: martes y jueves de 16:00 a 18:00.

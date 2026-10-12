@@ -1,3 +1,4 @@
+---
 titulo: Intensivos Adultos, agosto a diciembre 2026
 tipo: cohorte
 vigente: false
@@ -53,3 +54,6 @@ horarios:
     dias: Jueves
     horas: 19:30 a 21:00
     fechas: 13/08 al 10/12
+---
+
+Cohorte de agosto a diciembre 2026, guardada como referencia para cargar la próxima. No está vigente y no se publica.

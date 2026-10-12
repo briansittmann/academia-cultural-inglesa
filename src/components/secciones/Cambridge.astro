@@ -130,8 +130,8 @@ const examenPorNivel = new Map(
                 )}
               </dl>
 
-              {(curso.data.formulario ?? publico.data.formulario) && (
-                <div class="mt-6">
+              <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
+                {(curso.data.formulario ?? publico.data.formulario) && (
                   <Boton
                     href={curso.data.formulario ?? publico.data.formulario!}
                     variante="primario"
@@ -141,8 +141,12 @@ const examenPorNivel = new Map(
                   >
                     Pedir información
                   </Boton>
-                </div>
-              )}
+                )}
+                <a href={`/cursos/${curso.id}`} class="inline-flex items-center gap-1 text-sm font-semibold text-verde-700 underline underline-offset-4 hover:text-verde-900">
+                  Más sobre el curso
+                  <Icon name="material-symbols:arrow-forward-rounded" class="size-4" aria-hidden="true" />
+                </a>
+              </div>
             </div>
           </li>
         ))

@@ -60,6 +60,31 @@ const horarios = (description: string) =>
 
 const url = (label: string, description?: string) => fields.url({ label, description });
 
+// Texto largo de la página propia de cada curso o novedad. Editor de texto
+// enriquecido limitado a lo que hace falta: párrafos, subtítulos, negrita,
+// listas y links. Se guarda como Markdown debajo del YAML, en el mismo archivo.
+const cuerpo = (description: string) =>
+  fields.markdoc({
+    label: 'Texto de la página',
+    description,
+    extension: 'md',
+    options: {
+      heading: [2, 3],
+      bold: true,
+      italic: true,
+      link: true,
+      orderedList: true,
+      unorderedList: true,
+      blockquote: false,
+      strikethrough: false,
+      code: false,
+      codeBlock: false,
+      table: false,
+      divider: false,
+      image: false,
+    },
+  });
+
 const pendiente = fields.text({
   label: 'Pendiente de confirmar',
   description: 'Notas internas. No se muestra en la web.',
@@ -274,7 +299,7 @@ export default config({
     cursos: collection({
       label: 'Cursos',
       path: 'src/content/cursos/*',
-      format: 'yaml',
+      format: { data: 'yaml', contentField: 'cuerpo' },
       slugField: 'nombre',
       columns: ['publico', 'orden'],
       schema: {
@@ -283,7 +308,8 @@ export default config({
         orden: fields.integer({ label: 'Orden dentro del público', defaultValue: 1, validation: { isRequired: true } }),
         etiqueta: fields.text({ label: 'Etiqueta', description: 'Pill corta. Ej.: "Promocional", "B2".' }),
         para: fields.text({ label: 'Para quién', description: 'Ej.: "Chicos de segundo grado en adelante".', validation: { isRequired: true } }),
-        descripcion: fields.text({ label: 'Descripción', multiline: true, validation: { isRequired: true } }),
+        descripcion: fields.text({ label: 'Descripción', description: 'Resumen corto para la portada.', multiline: true, validation: { isRequired: true } }),
+        cuerpo: cuerpo('Se muestra en la página del curso (/cursos/...). Los datos de cursada, sedes y horarios se cargan abajo y se muestran solos.'),
         niveles: fields.array(fields.text({ label: 'Nivel' }), {
           label: 'Niveles',
           description: 'Ej.: Elementary 1, Elementary 2…',
@@ -329,7 +355,7 @@ export default config({
     novedades: collection({
       label: 'Novedades',
       path: 'src/content/novedades/*',
-      format: 'yaml',
+      format: { data: 'yaml', contentField: 'cuerpo' },
       slugField: 'titulo',
       columns: ['tipo', 'vigente', 'periodo'],
       schema: {
@@ -347,7 +373,8 @@ export default config({
         vigente: fields.checkbox({ label: 'Vigente', description: 'Solo lo vigente se muestra en la web.' }),
         orden: fields.integer({ label: 'Orden', defaultValue: 0, validation: { isRequired: true } }),
         eyebrow: fields.text({ label: 'Etiqueta de la portada', description: 'Ej.: "Inscripciones abiertas 2027". Solo para la novedad de inscripciones.' }),
-        resumen: fields.text({ label: 'Resumen', multiline: true, validation: { isRequired: true } }),
+        resumen: fields.text({ label: 'Resumen', description: 'Una o dos líneas para la portada.', multiline: true, validation: { isRequired: true } }),
+        cuerpo: cuerpo('Se muestra en la página de la novedad (/novedades/...). Los horarios se cargan abajo y se muestran solos.'),
         periodo: fields.text({ label: 'Período', description: 'Como se muestra. Ej.: "Febrero 2027".', validation: { isRequired: true } }),
         desde: fields.date({ label: 'Desde' }),
         hasta: fields.date({ label: 'Hasta' }),

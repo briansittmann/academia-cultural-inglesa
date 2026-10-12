@@ -109,8 +109,11 @@ const publicos = defineCollection({
     }),
 });
 
+// Cursos y novedades son Markdown con frontmatter: el YAML de siempre más un
+// cuerpo de texto largo (editable como texto enriquecido en el panel) que se
+// muestra en la página propia de cada entrada.
 const cursos = defineCollection({
-  loader: glob({ pattern: '*.yaml', base: './src/content/cursos' }),
+  loader: glob({ pattern: '*.md', base: './src/content/cursos' }),
   schema: z.object({
     nombre: z.string(),
     publico: reference('publicos'),
@@ -154,7 +157,7 @@ const cursos = defineCollection({
 });
 
 const novedades = defineCollection({
-  loader: glob({ pattern: '*.yaml', base: './src/content/novedades' }),
+  loader: glob({ pattern: '*.md', base: './src/content/novedades' }),
   schema: ({ image }) =>
     z.object({
       titulo: z.string(), // "Inscripciones 2027"

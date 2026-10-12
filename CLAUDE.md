@@ -14,7 +14,7 @@ Landing page informativa para un instituto de inglés. Sitio estático, sin base
 - La auditoría y la estructura aprobada están en **`docs/fase-1-analisis.md`**: es la referencia para implementar las secciones.
 - **Identidad de marca que no se negocia:** verde y dorado del escudo, tono confiable y cálido, público de familias y adultos de barrio.
 - **Solo modo claro.** Esto pisa la regla del skill Taste de dark mode obligatorio.
-- **Landing de una sola página** (secciones y anclas). Las páginas por curso y las redirecciones 301 desde las URLs viejas quedan para más adelante. Los posts y eventos del panel de administración agregarán páginas secundarias de contenido, sin cambiar la landing.
+- **Landing de una sola página** (secciones y anclas) más páginas secundarias: una por curso (`/cursos/<slug>`) y una por novedad vigente (`/novedades/<slug>`), con texto largo editable desde el panel. Redirecciones 301 desde las URLs viejas en `astro.config.mjs`.
 - Definir colores, fuentes, radios y easings como tokens en el tema de Tailwind (`@theme`), no hardcodeados en los componentes.
 - **Fuentes** alojadas en el proyecto con **Fontsource**, nunca desde Google Fonts. Familia elegida: Plus Jakarta Sans (ver `docs/fase-1-analisis.md`).
 - **Contenido real:** usar los datos de `content/README.md` (direcciones, teléfonos, cursos). El diseño de Stitch tiene datos inventados; ver la sección "Datos del diseño de Stitch que no coinciden" en ese archivo. Los datos del instituto viven en **content collections de Astro** (`src/content/`), una sola fuente de verdad; los componentes nunca tienen datos hardcodeados. Esto deja el sitio listo para el panel de administración.
@@ -94,13 +94,14 @@ Ajustes para este proyecto (la guía está escrita pensando en React):
 
 Actualizado el 2026-10-12. Mantener esta sección al cerrar cada entrega.
 
-- **Fases 1 a 6: hechas** (sin push). Notas en `docs/fase-1-analisis.md` a `fase-6-keystatic.md`. Leerlas antes de tocar algo de esas fases.
+- **Fases 1 a 7: hechas.** Notas en `docs/fase-1-analisis.md` a `fase-7-paginas.md`. Leerlas antes de tocar algo de esas fases.
 - **Sigue: puesta en producción**, que la hace el dueño del proyecto (pasos en `docs/fase-6-keystatic.md`): push a GitHub, importar el repo en Vercel, equipo y proyecto en Keystatic Cloud, variable `PUBLIC_KEYSTATIC_CLOUD_PROJECT` en Vercel, invitar a la dueña y probar el flujo completo. Después, dominio y redirecciones 301 desde las URLs viejas.
-- **Panel:** `keystatic.config.ts` (raíz). Modo local en `astro dev` (`http://127.0.0.1:4321/keystatic`), Keystatic Cloud en producción. Si se agrega o renombra un campo, cambiarlo en `src/content.config.ts` y en `keystatic.config.ts` a la vez. El campo `cambridge` de los cursos es condicional en el panel y se aplana en el esquema de zod.
+- **Panel:** `keystatic.config.ts` (raíz). Modo local en `astro dev` (`http://127.0.0.1:4321/keystatic`), Keystatic Cloud en producción. Si se agrega o renombra un campo, cambiarlo en `src/content.config.ts` y en `keystatic.config.ts` a la vez. El campo `cambridge` de los cursos es condicional en el panel y se aplana en el esquema de zod. Cursos y novedades son `.md` (frontmatter YAML más el cuerpo "Texto de la página"); el resto, `.yaml`.
 - **Fotos:** viven en `src/assets/img/<collection>/<slug>/<campo>.<ext>` (en el singleton, `instituto/<objeto>/<campo>`), que es la estructura que usa Keystatic. Si una foto no está ahí, el panel la saca del YAML al guardar. Siguen siendo provisorias de Unsplash (créditos en `src/assets/img/CREDITOS.md`).
 - **Logo:** `src/assets/logo/logo.png` es el PNG que entregó el instituto, oficial hasta que llegue el SVG; `Logo.astro` usa `logo-recortado.png` y de ahí salen favicons y `og.jpg`.
 - **Datos estructurados:** `src/lib/datos-estructurados.ts` + `src/components/DatosEstructurados.astro`. El horario de atención se escribe en español en `instituto.yaml` y se traduce al formato de schema.org al construir.
 - **Animaciones:** dial de motion 5, un efecto por sección (`docs/fase-4-animaciones.md`). Magic UI solo como referencia; su MCP está en `.mcp.json` y hay que aprobarlo con `/mcp`.
+- **Páginas secundarias (fase 7):** `src/pages/cursos/[slug].astro` y `src/pages/novedades/[slug].astro` (solo novedades vigentes). La franja Novedades va debajo del hero. Las anclas del header y footer son `/#...` para funcionar desde esas páginas.
 - **Breakpoints:** la nav de escritorio y las tres cards de Cómo empezar aparecen desde `lg` (1024 px).
 - **Lighthouse (2026-10-12):** mobile 99 / 100 / 100 / 100, escritorio 100 en todo.
 - **Pendientes concretos:**

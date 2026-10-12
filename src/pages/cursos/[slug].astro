@@ -1,0 +1,218 @@
+---
+/**
+ * Página propia de cada curso: texto largo (cuerpo Markdown editable en el
+ * panel) y, al costado, la ficha con los datos estructurados de la entrada
+ * (cursada, período, sedes, horarios, niveles, certificado) y los CTAs.
+ * Si hay novedades vigentes que incluyen el curso, se enlazan como "Fechas y
+ * horarios". Una página por entrada de la collection `cursos`.
+ */
+import { getCollection, getEntry, render } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import Boton from '../../components/Boton.astro';
+import Etiqueta from '../../components/Etiqueta.astro';
+import TituloAnimado from '../../components/TituloAnimado.astro';
+
+export async function getStaticPaths() {
+  const cursos = await getCollection('cursos');
+  return cursos.map((curso) => ({ params: { slug: curso.id }, props: { curso } }));
+}
+const { curso } = Astro.props;
+const d = curso.data;
+
+const instituto = await getEntry('instituto', 'instituto');
+if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+const publico = await getEntry(d.publico);
+if (!publico) throw new Error(`El curso ${curso.id} apunta a un público que no existe`);
+const sedeWhatsapp = await getEntry(instituto.data.whatsappPrincipal);
+if (!sedeWhatsapp) throw new Error('La sede del WhatsApp principal no existe');
+
+const sedes = (await Promise.all(d.sedes.map((ref) => getEntry(ref)))).flatMap((s) => (s ? [s.data.nombre] : []));
+const horarios = await Promise.all(
+  d.horarios.map(async (h) => ({ ...h, sedeNombre: h.sede ? (await getEntry(h.sede))?.data.nombre : undefined })),
+);
+const novedades = (await getCollection('novedades', ({ data }) => data.vigente && data.cursos.some((c) => c.id === curso.id))).sort(
+  (a, b) => a.data.orden - b.data.orden,
+);
+
+const formulario = d.formulario ?? publico.data.formulario ?? instituto.data.formularios.consultaGeneral;
+const whatsappUrl = `https://wa.me/${sedeWhatsapp.data.whatsapp.internacional}?text=${encodeURIComponent(sedeWhatsapp.data.whatsapp.mensaje ?? '')}`;
+const modalidad = { presencial: 'Presencial', online: 'Online', 'presencial-y-online': 'Presencial u online' }[d.modalidad];
+const cursada = [d.frecuencia, d.duracionClase && `clases de ${d.duracionClase}`, d.horasSemanales && `${d.horasSemanales} h por semana`]
+  .filter(Boolean)
+  .join(', ');
+
+const { Content } = await render(curso);
+const title = `${d.nombre} | ${instituto.data.nombre}`;
+const description = d.descripcion.length > 160 ? `${d.descripcion.slice(0, 157).trimEnd()}...` : d.descripcion;
+if (!Astro.site) throw new Error('Falta `site` en astro.config.mjs');
+const cursoLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Course',
+  name: d.nombre,
+  description: d.descripcion,
+  url: new URL(Astro.url.pathname, Astro.site).href,
+  provider: { '@id': `${Astro.site.href}#organizacion` },
+  ...(d.cambridge ? { educationalCredentialAwarded: d.cambridge.examen } : {}),
+};
+---
+
+<Base title={title} description={description}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(cursoLd).replace(/<\//g, '<\\/')} />
+
+  <article>
+    <header class="border-b border-borde/50 bg-verde-50/60">
+      <div class="mx-auto max-w-6xl px-4 pt-8 pb-10 sm:px-6 lg:pt-12 lg:pb-14">
+        <a
+          href={`/#${publico.data.ancla}`}
+          class="hero-eyebrow inline-flex items-center gap-1 rounded-control text-sm font-semibold text-verde-700 hover:text-verde-900"
+        >
+          <Icon name="material-symbols:arrow-back-rounded" class="size-4" aria-hidden="true" />
+          {publico.data.titulo}
+        </a>
+        <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <TituloAnimado as="h1" texto={d.nombre} retraso={80} class="text-[2.25rem] leading-[1.05] sm:text-5xl" />
+          {/* Una sola pill: el nivel del examen en los cursos de Cambridge, la etiqueta en el resto. */}
+          {d.cambridge ? (
+            <Etiqueta tono="dorado" class="hero-bajada text-sm">Nivel {d.cambridge.nivelMcer}</Etiqueta>
+          ) : (
+            d.etiqueta && <Etiqueta tono="dorado" class="hero-bajada text-sm">{d.etiqueta}</Etiqueta>
+          )}
+        </div>
+        <p class="hero-bajada mt-4 max-w-[36rem] text-lg leading-relaxed text-tinta-suave sm:text-xl">{d.para}</p>
+      </div>
+    </header>
+
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:py-16">
+      <div class="lg:col-span-7" data-reveal>
+        <div class="prosa sube">
+          <Content />
+        </div>
+      </div>
+
+      <aside class="lg:col-span-5" data-reveal>
+        <div class="sube rounded-card border border-borde/60 bg-white p-6 shadow-card sm:p-8 lg:sticky lg:top-24" style="--i: 1">
+          <h2 class="text-xl">Datos del curso</h2>
+          <dl class="mt-4 grid gap-3 text-[15px]">
+            {
+              cursada && (
+                <div>
+                  <dt class="flex items-center gap-2.5 font-semibold text-verde-900">
+                    <Icon name="material-symbols:schedule-outline" class="size-5 shrink-0 text-verde-700" aria-hidden="true" />
+                    Cursada
+                  </dt>
+                  <dd class="pl-[1.875rem] text-tinta-suave">{cursada}</dd>
+                </div>
+              )
+            }
+            {
+              d.periodo && (
+                <div>
+                  <dt class="flex items-center gap-2.5 font-semibold text-verde-900">
+                    <Icon name="material-symbols:event-available-outline" class="size-5 shrink-0 text-verde-700" aria-hidden="true" />
+                    Período
+                  </dt>
+                  <dd class="pl-[1.875rem] text-tinta-suave">{d.periodo}</dd>
+                </div>
+              )
+            }
+            <div>
+              <dt class="flex items-center gap-2.5 font-semibold text-verde-900">
+                <Icon name="material-symbols:location-on-outline" class="size-5 shrink-0 text-verde-700" aria-hidden="true" />
+                Modalidad y sede
+              </dt>
+              <dd class="pl-[1.875rem] text-tinta-suave">{modalidad}{sedes.length > 0 ? `, sede ${sedes.join(' y ')}` : ''}</dd>
+            </div>
+            {
+              horarios.length > 0 && (
+                <div>
+                  <dt class="flex items-center gap-2.5 font-semibold text-verde-900">
+                    <Icon name="material-symbols:schedule-outline" class="size-5 shrink-0 text-verde-700" aria-hidden="true" />
+                    Horarios
+                  </dt>
+                  {horarios.map((h) => (
+                    <dd class="pl-[1.875rem] text-tinta-suave">
+                      {h.nombre && <span class="font-medium text-tinta">{h.nombre}: </span>}
+                      {h.sedeNombre && <span class="font-medium text-tinta">{h.sedeNombre}: </span>}
+                      {h.dias} de {h.horas}
+                      {h.fechas && ` (${h.fechas})`}
+                    </dd>
+                  ))}
+                </div>
+              )
+            }
+            {
+              d.certificado && (
+                <div>
+                  <dt class="flex items-center gap-2.5 font-semibold text-verde-900">
+                    <Icon name="material-symbols:school-outline" class="size-5 shrink-0 text-verde-700" aria-hidden="true" />
+                    Certificado
+                  </dt>
+                  <dd class="pl-[1.875rem] text-tinta-suave">{d.certificado}</dd>
+                </div>
+              )
+            }
+          </dl>
+          {
+            d.niveles.length > 1 && (
+              <div class="mt-4">
+                <p class="text-sm font-semibold text-verde-900">Niveles</p>
+                <ul class="mt-2 flex flex-wrap gap-1.5" aria-label="Niveles">
+                  {d.niveles.map((n) => (
+                    <li>
+                      <Etiqueta tono="borde">{n}</Etiqueta>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+
+          {
+            novedades.length > 0 && (
+              <div class="mt-5 border-t border-borde/60 pt-5">
+                <p class="text-sm font-semibold text-verde-900">Fechas y horarios</p>
+                <ul class="mt-2 grid gap-1.5 text-sm">
+                  {novedades.map((n) => (
+                    <li>
+                      <a href={`/novedades/${n.id}`} class="inline-flex items-center gap-1 font-semibold text-verde-700 underline underline-offset-4 hover:text-verde-900">
+                        {n.data.titulo}
+                        <Icon name="material-symbols:arrow-forward-rounded" class="size-4" aria-hidden="true" />
+                      </a>
+                      <span class="text-tinta-suave"> ({n.data.periodo})</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )
+          }
+
+          <div class="mt-6 flex flex-col gap-3">
+            <Boton href={formulario} variante="primario" icono="material-symbols:open-in-new-rounded" externo class="w-full">
+              Pedir información
+            </Boton>
+            <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo class="w-full">
+              Escribir por WhatsApp
+            </Boton>
+          </div>
+          {
+            d.requiereTestDeNivel && (
+              <p class="mt-4 text-sm text-tinta-suave">
+                Para ubicarte en el nivel correcto, primero hacé el{' '}
+                <a
+                  href={instituto.data.formularios.testDeNivel}
+                  target="_blank"
+                  rel="noopener"
+                  class="font-semibold text-verde-700 underline underline-offset-4 hover:text-verde-900"
+                >
+                  test de nivel online gratuito
+                </a>
+                .
+              </p>
+            )
+          }
+        </div>
+      </aside>
+    </div>
+  </article>
+</Base>

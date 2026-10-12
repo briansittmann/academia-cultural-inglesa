@@ -12,18 +12,19 @@ const sedes = (await getCollection('sedes')).sort((a, b) => a.data.orden - b.dat
 const anio = new Date().getFullYear();
 
 const anclas = [
-  { href: '#cursos', texto: 'Cursos' },
-  { href: '#cambridge', texto: 'Cambridge' },
-  { href: '#nosotros', texto: 'La Academia' },
-  { href: '#test-de-nivel', texto: 'Cómo empezar' },
-  { href: '#sedes', texto: 'Sedes' },
+  { href: '/#novedades', texto: 'Novedades' },
+  { href: '/#cursos', texto: 'Cursos' },
+  { href: '/#cambridge', texto: 'Cambridge' },
+  { href: '/#nosotros', texto: 'La Academia' },
+  { href: '/#test-de-nivel', texto: 'Cómo empezar' },
+  { href: '/#sedes', texto: 'Sedes' },
 ];
 ---
 
 <footer class="bg-verde-900 text-verde-100">
   <div class="mx-auto grid max-w-6xl gap-10 px-4 py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-12">
     <div class="lg:col-span-4">
-      <a href="#inicio" class="inline-flex items-center gap-3">
+      <a href="/" class="inline-flex items-center gap-3">
         <Logo size={48} alt="" />
         <span class="font-bold text-white">{instituto.data.nombre}</span>
       </a>

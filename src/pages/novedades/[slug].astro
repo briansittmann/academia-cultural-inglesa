@@ -1,0 +1,144 @@
+---
+/**
+ * Página propia de cada novedad vigente: flyer (si hay), texto largo, horarios
+ * cargados en la entrada y los cursos que incluye. Solo se generan las vigentes;
+ * al desmarcar "Vigente" en el panel la página deja de publicarse.
+ */
+import { getCollection, getEntry, render } from 'astro:content';
+import { Image, getImage } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import Base from '../../layouts/Base.astro';
+import Boton from '../../components/Boton.astro';
+import Etiqueta from '../../components/Etiqueta.astro';
+import TituloAnimado from '../../components/TituloAnimado.astro';
+
+export async function getStaticPaths() {
+  const novedades = await getCollection('novedades', ({ data }) => data.vigente);
+  return novedades.map((novedad) => ({ params: { slug: novedad.id }, props: { novedad } }));
+}
+const { novedad } = Astro.props;
+const d = novedad.data;
+
+const instituto = await getEntry('instituto', 'instituto');
+if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+const sedeWhatsapp = await getEntry(instituto.data.whatsappPrincipal);
+if (!sedeWhatsapp) throw new Error('La sede del WhatsApp principal no existe');
+
+const cursos = (await Promise.all(d.cursos.map((ref) => getEntry(ref)))).flatMap((c) => (c ? [c] : []));
+const horarios = await Promise.all(
+  d.horarios.map(async (h) => ({ ...h, sedeNombre: h.sede ? (await getEntry(h.sede))?.data.nombre : undefined })),
+);
+const publicos = new Map(
+  (await Promise.all(cursos.map(async (c) => [c.id, await getEntry(c.data.publico)] as const))).map(([id, p]) => [id, p]),
+);
+const formulario = cursos.find((c) => c.data.formulario)?.data.formulario ?? instituto.data.formularios.consultaGeneral;
+const whatsappUrl = `https://wa.me/${sedeWhatsapp.data.whatsapp.internacional}?text=${encodeURIComponent(sedeWhatsapp.data.whatsapp.mensaje ?? '')}`;
+
+const { Content } = await render(novedad);
+const title = `${d.titulo} | ${instituto.data.nombre}`;
+const description = d.resumen.length > 160 ? `${d.resumen.slice(0, 157).trimEnd()}...` : d.resumen;
+// Al compartir, va el flyer si lo hay; si no, la imagen con el logo.
+const og = d.flyer ? await getImage({ src: d.flyer, width: 1200, format: 'jpg' }) : undefined;
+---
+
+<Base
+  title={title}
+  description={description}
+  ogType="article"
+  ogImage={og?.src}
+  ogImageAncho={og?.attributes.width}
+  ogImageAlto={og?.attributes.height}
+  ogImageAlt={d.flyerAlt}
+>
+  <article>
+    <header class="border-b border-borde/50 bg-verde-50/60">
+      <div class="mx-auto max-w-6xl px-4 pt-8 pb-10 sm:px-6 lg:pt-12 lg:pb-14">
+        <a href="/#novedades" class="hero-eyebrow inline-flex items-center gap-1 rounded-control text-sm font-semibold text-verde-700 hover:text-verde-900">
+          <Icon name="material-symbols:arrow-back-rounded" class="size-4" aria-hidden="true" />
+          Novedades
+        </a>
+        <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+          <TituloAnimado as="h1" texto={d.titulo} retraso={80} class="text-[2.25rem] leading-[1.05] sm:text-5xl" />
+          <Etiqueta tono="dorado" class="hero-bajada text-sm">{d.periodo}</Etiqueta>
+        </div>
+        <p class="hero-bajada mt-4 max-w-[40rem] text-lg leading-relaxed text-tinta-suave sm:text-xl">{d.resumen}</p>
+      </div>
+    </header>
+
+    <div class="mx-auto grid max-w-6xl gap-10 px-4 py-10 sm:px-6 lg:grid-cols-12 lg:gap-14 lg:py-16">
+      <div class="lg:col-span-7" data-reveal>
+        <div class="prosa sube">
+          <Content />
+        </div>
+
+        {
+          horarios.length > 0 && (
+            <section class="sube mt-10" style="--i: 1" aria-labelledby="horarios">
+              <h2 id="horarios" class="text-2xl">Días y horarios</h2>
+              <ul class="mt-4 divide-y divide-borde/60 border-y border-borde/60">
+                {horarios.map((h) => (
+                  <li class="grid gap-x-6 gap-y-1 py-3 sm:grid-cols-[1fr_auto]">
+                    <div>
+                      {h.nombre && <p class="font-semibold text-verde-900">{h.nombre}</p>}
+                      <p class="text-tinta-suave">
+                        {h.sedeNombre && <span class="font-medium text-tinta">{h.sedeNombre}: </span>}
+                        {h.dias} de {h.horas}
+                      </p>
+                    </div>
+                    {h.fechas && <p class="text-sm text-tinta-suave sm:text-right">{h.fechas}</p>}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+
+        {
+          cursos.length > 0 && (
+            <section class="sube mt-10" style="--i: 2" aria-labelledby="cursos-incluidos">
+              <h2 id="cursos-incluidos" class="text-2xl">Cursos incluidos</h2>
+              <ul class="mt-4 grid gap-3 sm:grid-cols-2">
+                {cursos.map((c) => (
+                  <li>
+                    <a
+                      href={`/cursos/${c.id}`}
+                      class="tarjeta-link flex h-full flex-col rounded-card border border-borde/60 bg-white p-5 shadow-card"
+                    >
+                      <span class="text-xs font-semibold text-tinta-suave">{publicos.get(c.id)?.data.nombre}</span>
+                      <span class="mt-1 text-lg font-bold text-verde-900">{c.data.nombre}</span>
+                      <span class="mt-1 text-sm text-tinta-suave">{c.data.para}</span>
+                      <span class="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-verde-700">
+                        Más sobre el curso
+                        <Icon name="material-symbols:arrow-forward-rounded" class="size-4" aria-hidden="true" />
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </div>
+
+      <aside class="lg:col-span-5" data-reveal>
+        <div class="sube lg:sticky lg:top-24" style="--i: 1">
+          {
+            d.flyer && (
+              <figure class="overflow-hidden rounded-card border border-borde/60 bg-white shadow-card">
+                <Image src={d.flyer} alt={d.flyerAlt ?? ''} widths={[480, 800, 1200]} sizes="(min-width: 1024px) 40vw, 100vw" class="w-full" />
+              </figure>
+            )
+          }
+          <div class:list={['flex flex-col gap-3', d.flyer && 'mt-5']}>
+            <Boton href={formulario} variante="primario" icono="material-symbols:open-in-new-rounded" externo class="w-full">
+              Pedir información
+            </Boton>
+            <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo class="w-full">
+              Escribir por WhatsApp
+            </Boton>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </article>
+</Base>
