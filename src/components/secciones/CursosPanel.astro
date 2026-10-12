@@ -164,12 +164,15 @@ const cifras = [
             </dl>
             {/* "Más sobre el curso" es un link en reposo y un botón relleno cuando el mouse
                 pasa por el curso (group-hover, solo en dispositivos con hover) o cuando
-                recibe el foco del teclado. El padding y el margen negativo están siempre,
-                así el cambio no mueve nada: solo aparece el fondo. */}
-            <div class="mt-1.5 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm font-semibold">
+                recibe el foco del teclado. En reposo el margen negativo alinea el texto con
+                el resto del curso; al volverse botón se desliza 12 px (translate, propiedad
+                aparte del transform de la entrada) para que el fondo quede dentro del margen.
+                Con movimiento reducido se acomoda sin deslizarse. El gap deja lugar al
+                desplazamiento cuando hay un segundo link al lado. */}
+            <div class="mt-1.5 flex flex-wrap items-center gap-x-9 gap-y-1 text-sm font-semibold">
               <a
                 href={`/cursos/${c.id}`}
-                class="-mx-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-verde-700 underline underline-offset-4 transition-[background-color,color] duration-200 ease-out group-hover:bg-verde-700 group-hover:text-white group-hover:no-underline focus-visible:bg-verde-700 focus-visible:text-white focus-visible:no-underline"
+                class="-mx-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-verde-700 underline underline-offset-4 transition-[background-color,color,translate] duration-200 ease-out group-hover:translate-x-3 group-hover:bg-verde-700 group-hover:text-white group-hover:no-underline focus-visible:translate-x-3 focus-visible:bg-verde-700 focus-visible:text-white focus-visible:no-underline motion-reduce:transition-[background-color,color]"
               >
                 Más sobre el curso
                 <Icon name="material-symbols:arrow-forward-rounded" class="size-4" aria-hidden="true" />
