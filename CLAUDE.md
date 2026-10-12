@@ -111,7 +111,7 @@ Actualizado el 2026-10-12. Mantener esta sección al cerrar cada entrega.
 - **Preguntas para la dueña (2026-10-12):** página privada `/preguntas-xtda9nw9` (no enlazada, `noindex`, fuera del sitemap). Preguntas en `src/lib/preguntas-duena.ts`, armadas con los datos actuales de las collections; la página guarda lo escrito en el navegador y al final arma un mensaje para mandar por WhatsApp (`WHATSAPP_DESTINO` vacío: ella elige el contacto) o copiar. No guarda nada en servidores. Cuando lleguen las respuestas: pasarlas a las collections, rediseñar la sección Cursos (Brian la siente homogénea y difícil de escanear en el celular) y borrar la página.
 - **Pendientes concretos:**
   - Decidir si Apoyo escolar va en Niños o Adultos (`src/content/cursos/apoyo-escolar.md`).
-  - Dudas para la dueña en `docs/fase-1-analisis.md` §6 y en el campo `pendiente` de cada curso (ahora editable desde el panel). Sumar código postal de Villa del Parque (Villa Urquiza ya tiene el CPA C1431DQP, que pasó Brian) y coordenadas de cada sede.
+  - Dudas para la dueña en `docs/fase-1-analisis.md` §6 y en el campo `pendiente` de cada curso (ahora editable desde el panel). Sumar coordenadas de cada sede (los códigos postales ya están: CPA C1431DQP y C1417AAN, los pasó Brian).
   - Validar el JSON-LD con validator.schema.org cuando el dominio esté publicado.
   - `npm audit`: 3 altas (`path-to-regexp` dentro de `@vercel/routing-utils`, solo en el build); no afectan al sitio publicado. Revisar al actualizar `@astrojs/vercel`.
   - La máquina tiene Node 23 (versión impar, no soportada oficialmente por Astro 7); build y check pasan igual.

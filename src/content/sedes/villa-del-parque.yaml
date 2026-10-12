@@ -3,6 +3,7 @@ orden: 2
 direccion: Cuenca 2806
 barrio: Villa del Parque
 ciudad: CABA
+codigoPostal: C1417AAN
 telefonos:
   - numero: 011 4501-5566
     tel: "+541145015566"
