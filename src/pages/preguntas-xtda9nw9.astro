@@ -1,0 +1,483 @@
+---
+/**
+ * Página privada con las preguntas para la dueña. No está enlazada desde ningún
+ * lado, no se indexa (noindex) y queda fuera del sitemap (astro.config.mjs).
+ * Va paso a paso, guarda lo escrito en el navegador (localStorage) para seguir
+ * otro día y al final arma un mensaje para mandar por WhatsApp o copiar. No
+ * guarda nada en ningún servidor. Las preguntas están en src/lib/preguntas-duena.ts.
+ */
+import { Icon } from 'astro-icon/components';
+import Base from '../layouts/Base.astro';
+import Logo from '../components/Logo.astro';
+import { armarCuestionario } from '../lib/preguntas-duena';
+
+// Número de WhatsApp que recibe las respuestas, en formato internacional
+// (ej. "5491112345678"). Vacío: WhatsApp abre la lista para elegir el contacto.
+const WHATSAPP_DESTINO = '';
+
+const bloques = await armarCuestionario();
+const totalPreguntas = bloques.reduce((n, b) => n + b.preguntas.length, 0);
+
+const campo =
+  'campo mt-3 block w-full rounded-control border border-borde bg-white px-3.5 py-3 text-base text-tinta placeholder:text-tinta-suave/60 focus:border-verde-700';
+const opcion =
+  'opcion flex min-h-12 cursor-pointer items-center gap-3 rounded-control border border-borde bg-white px-4 py-3 has-checked:border-verde-700 has-checked:bg-verde-50 has-checked:font-semibold has-checked:text-verde-900 hover:border-verde-700/60';
+---
+
+<Base
+  title="Preguntas para la página | Academia Cultural Inglesa"
+  description="Preguntas internas para completar la página del instituto."
+  noindex
+  simple
+>
+  <div class="mx-auto max-w-2xl px-4 pt-6 pb-24 sm:px-6">
+    <div class="flex items-center gap-3">
+      <Logo size={44} />
+      <p class="leading-tight font-semibold text-verde-900">
+        Academia Cultural Inglesa
+        <span class="block text-sm font-normal text-tinta-suave">Preguntas para la página nueva</span>
+      </p>
+    </div>
+
+    <section class="mt-10" data-intro>
+      <h1 class="text-3xl leading-tight sm:text-4xl">Hola. Para terminar la página nos faltan datos que solo vos sabés.</h1>
+      <p class="mt-4 text-lg leading-relaxed text-tinta-suave">
+        Son {totalPreguntas} preguntas cortas en {bloques.length} partes. Si no sabés algo, dejalo en blanco y seguí.
+      </p>
+      <ul class="mt-6 space-y-3 text-tinta-suave">
+        <li class="flex gap-3">
+          <Icon name="material-symbols:lock-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
+          Lo que escribís se guarda en este celular o compu. Podés cerrar y seguir otro día.
+        </li>
+        <li class="flex gap-3">
+          <Icon name="material-symbols:chat-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
+          Al final, un botón te deja mandarme todo por WhatsApp.
+        </li>
+      </ul>
+    </section>
+
+    <noscript>
+      <p class="mt-6 rounded-card bg-dorado-600/15 p-4 text-dorado-800">
+        Para mandar las respuestas, esta página necesita JavaScript activado.
+      </p>
+    </noscript>
+
+    <form class="mt-8" data-cuestionario data-destino={WHATSAPP_DESTINO} novalidate>
+      <div class="sticky top-0 z-10 -mx-4 bg-crema/95 px-4 py-3 backdrop-blur-sm sm:-mx-6 sm:px-6" data-progreso hidden>
+        <div class="flex items-baseline justify-between gap-4 text-sm">
+          <span class="font-semibold text-verde-900 tabular-nums" data-paso-numero></span>
+        </div>
+        <div class="mt-2 h-1.5 overflow-hidden rounded-full bg-verde-100">
+          <div class="barra h-full rounded-full bg-verde-700"></div>
+        </div>
+      </div>
+
+      {
+        bloques.map((b, i) => (
+          <section class="paso pt-6" data-paso data-titulo={b.titulo} aria-labelledby={`paso-${b.id}`}>
+            <h2 id={`paso-${b.id}`} class="text-2xl sm:text-3xl" tabindex="-1">
+              {b.titulo}
+            </h2>
+            <p class="mt-2 leading-relaxed text-tinta-suave">{b.intro}</p>
+
+            <div class="mt-6 space-y-4">
+              {b.preguntas.map((p) => {
+                const hoy = p.hoy && (
+                  <p class="mt-3 rounded-control bg-verde-50 px-3.5 py-2.5 text-sm leading-relaxed text-tinta-suave">
+                    <span class="font-semibold text-verde-900">Hoy la página dice: </span>
+                    {p.hoy}
+                  </p>
+                );
+                const ayuda = p.ayuda && <p class="mt-2 text-sm leading-relaxed text-tinta-suave">{p.ayuda}</p>;
+                const tarjeta = 'rounded-card border border-borde/70 bg-white p-5 shadow-card sm:p-6';
+
+                if (p.tipo === 'texto' || p.tipo === 'largo') {
+                  return (
+                    <div class={tarjeta} data-pregunta={p.id} data-tipo={p.tipo} data-resumen={p.resumen}>
+                      <label for={`p-${p.id}`} class="block text-lg leading-snug font-semibold text-tinta">
+                        {p.titulo}
+                      </label>
+                      {ayuda}
+                      {hoy}
+                      {p.tipo === 'texto' ? (
+                        <input id={`p-${p.id}`} name={p.id} type="text" autocomplete="off" placeholder={p.placeholder} class={campo} />
+                      ) : (
+                        <textarea id={`p-${p.id}`} name={p.id} rows="3" placeholder={p.placeholder} class:list={[campo, 'min-h-24 [field-sizing:content]']} />
+                      )}
+                    </div>
+                  );
+                }
+
+                if (p.tipo === 'sedes') {
+                  return (
+                    <div class={tarjeta} data-pregunta={p.id} data-tipo={p.tipo} data-resumen={p.resumen}>
+                      <fieldset>
+                      <legend class="text-lg leading-snug font-semibold text-tinta">{p.titulo}</legend>
+                      {ayuda}
+                      <div class="mt-4">
+                        {p.filas.map((f, j) => (
+                          <>
+                            {(j === 0 || p.filas[j - 1].grupo !== f.grupo) && (
+                              <p class:list={['text-xs font-semibold tracking-wide text-dorado-800 uppercase', j > 0 && 'mt-5']}>{f.grupo}</p>
+                            )}
+                            <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-borde/50 py-3" data-fila={f.id} data-nombre={f.nombre}>
+                              <span class="font-medium text-tinta">{f.nombre}</span>
+                              <span class="flex flex-wrap gap-2">
+                                {p.sedes.map((s) => (
+                                  <label class="chip group/chip inline-flex min-h-10 cursor-pointer items-center gap-1.5 rounded-full border border-borde bg-white px-3.5 text-sm text-tinta-suave has-checked:border-verde-700 has-checked:bg-verde-700 has-checked:text-white has-focus-visible:outline-2 has-focus-visible:outline-offset-2 has-focus-visible:outline-verde-700 hover:border-verde-700/60">
+                                    <input
+                                      type="checkbox"
+                                      class="sr-only"
+                                      name={`${p.id}__${f.id}`}
+                                      value={s.nombre}
+                                      checked={f.marcadas.includes(s.id)}
+                                    />
+                                    <Icon name="material-symbols:check-rounded" class="hidden size-4 group-has-checked/chip:block" aria-hidden="true" />
+                                    {s.nombre}
+                                  </label>
+                                ))}
+                              </span>
+                            </div>
+                          </>
+                        ))}
+                      </div>
+                      </fieldset>
+                    </div>
+                  );
+                }
+
+                return (
+                  <div class={tarjeta} data-pregunta={p.id} data-tipo={p.tipo} data-resumen={p.resumen}>
+                    <fieldset>
+                    <legend class="text-lg leading-snug font-semibold text-tinta">{p.titulo}</legend>
+                    {ayuda}
+                    {hoy}
+                    {p.tipo === 'varias' && <p class="mt-3 text-sm text-tinta-suave">Podés marcar varias.</p>}
+                    <div class="mt-3 space-y-2">
+                      {(p.tipo === 'opciones' || p.tipo === 'varias') && p.opciones.map((o) => (
+                        <label class={opcion}>
+                          <input type={p.tipo === 'varias' ? 'checkbox' : 'radio'} name={p.id} value={o} class="size-5 shrink-0 accent-verde-700" />
+                          <span class="leading-snug">{o}</span>
+                        </label>
+                      ))}
+                    </div>
+                    {p.tipo === 'opciones' && p.detalle && (
+                      <>
+                        <label for={`p-${p.id}-detalle`} class="mt-4 block text-sm font-medium text-tinta-suave">
+                          {p.detalle} <span class="font-normal">(opcional)</span>
+                        </label>
+                        <textarea id={`p-${p.id}-detalle`} name={`${p.id}__detalle`} rows="2" class:list={[campo, 'mt-2 [field-sizing:content]']} />
+                      </>
+                    )}
+                    </fieldset>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div class="navegacion mt-8 hidden items-center justify-between gap-3 in-[.js]:flex">
+              {i > 0 ? (
+                <button type="button" class="boton boton-secundario" data-ir="-1">
+                  <Icon name="material-symbols:arrow-back-rounded" class="size-5" aria-hidden="true" />
+                  Anterior
+                </button>
+              ) : (
+                <span />
+              )}
+              <button type="button" class="boton boton-primario" data-ir="1">
+                {i === bloques.length - 1 ? 'Revisar y mandar' : 'Siguiente'}
+                <Icon name="material-symbols:arrow-forward-rounded" class="size-5" aria-hidden="true" />
+              </button>
+            </div>
+          </section>
+        ))
+      }
+
+      <section class="paso pt-6" data-paso data-titulo="Revisar y mandar" data-final aria-labelledby="paso-final">
+        <h2 id="paso-final" class="text-2xl sm:text-3xl" tabindex="-1">Listo. Revisá y mandámelo.</h2>
+        <p class="mt-2 leading-relaxed text-tinta-suave" data-contador></p>
+
+        <div class="mt-6 rounded-card border border-borde/70 bg-white p-5 shadow-card sm:p-6">
+          <p class="text-sm font-semibold text-verde-900">Así va a llegar el mensaje</p>
+          <pre class="mt-3 max-h-[60vh] overflow-y-auto font-sans text-sm leading-relaxed whitespace-pre-wrap text-tinta-suave" data-vista></pre>
+        </div>
+
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row">
+          <a href="https://wa.me/" target="_blank" rel="noopener" class="boton boton-whatsapp" data-enviar>
+            <Icon name="material-symbols:chat-rounded" class="size-5" aria-hidden="true" />
+            Mandar por WhatsApp
+          </a>
+          <button type="button" class="boton boton-secundario" data-copiar>
+            <Icon name="material-symbols:content-copy-outline" class="size-5" aria-hidden="true" />
+            Copiar respuestas
+          </button>
+        </div>
+        <p class="mt-3 min-h-6 text-sm font-semibold text-verde-700" role="status" data-estado></p>
+        <p class="mt-1 text-sm leading-relaxed text-tinta-suave">
+          Si WhatsApp no se abre o el mensaje llega cortado, tocá "Copiar respuestas" y pegalo en el chat conmigo. Las
+          fotos mandámelas aparte.
+        </p>
+
+        <div class="navegacion mt-8 hidden in-[.js]:flex">
+          <button type="button" class="boton boton-secundario" data-ir="-1">
+            <Icon name="material-symbols:arrow-back-rounded" class="size-5" aria-hidden="true" />
+            Volver a las preguntas
+          </button>
+        </div>
+      </section>
+    </form>
+  </div>
+</Base>
+
+<style>
+  .boton {
+    display: inline-flex;
+    min-height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: var(--radius-control);
+    padding-inline: 1.25rem;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      transform 160ms var(--ease-out),
+      background-color 160ms var(--ease-out),
+      border-color 160ms var(--ease-out);
+  }
+  .boton:active {
+    transform: scale(0.97);
+  }
+  .boton-primario {
+    background-color: var(--color-verde-700);
+    color: var(--color-white);
+  }
+  .boton-secundario {
+    border: 1px solid var(--color-borde);
+    background-color: var(--color-white);
+    color: var(--color-verde-900);
+  }
+  .boton-whatsapp {
+    background-color: var(--color-whatsapp);
+    color: var(--color-tinta);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .boton-primario:hover {
+      background-color: var(--color-verde-900);
+    }
+    .boton-secundario:hover {
+      border-color: var(--color-verde-700);
+      background-color: var(--color-verde-50);
+    }
+  }
+
+  .opcion,
+  .chip,
+  .campo {
+    transition:
+      background-color 160ms var(--ease-out),
+      border-color 160ms var(--ease-out),
+      color 160ms var(--ease-out);
+  }
+  .campo:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-verde-100);
+  }
+
+  /* Barra de progreso: solo transform. */
+  .barra {
+    transform-origin: left;
+    transform: scaleX(var(--progreso, 0));
+    transition: transform 250ms var(--ease-out);
+  }
+
+  /* Cambio de paso: entra con un leve desplazamiento hacia arriba. */
+  .paso.entra {
+    animation: paso-entra 240ms var(--ease-out) both;
+  }
+  @keyframes paso-entra {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .paso.entra {
+      animation-name: paso-aparece;
+    }
+    @keyframes paso-aparece {
+      from {
+        opacity: 0;
+      }
+    }
+    .barra {
+      transition-duration: 0ms;
+    }
+  }
+</style>
+
+<script>
+  const CLAVE = 'aci-preguntas-v1';
+
+  function leerGuardado(): Record<string, unknown> {
+    try {
+      return JSON.parse(localStorage.getItem(CLAVE) ?? '{}');
+    } catch {
+      return {};
+    }
+  }
+  function guardar(datos: Record<string, unknown>) {
+    try {
+      localStorage.setItem(CLAVE, JSON.stringify(datos));
+    } catch {
+      // Sin almacenamiento (modo privado): la página funciona igual, solo no recuerda.
+    }
+  }
+
+  function iniciar() {
+    const form = document.querySelector<HTMLFormElement>('[data-cuestionario]');
+    if (!form || form.dataset.listo) return;
+    form.dataset.listo = '';
+
+    const pasos = [...form.querySelectorAll<HTMLElement>('[data-paso]')];
+    const intro = document.querySelector<HTMLElement>('[data-intro]');
+    const progreso = form.querySelector<HTMLElement>('[data-progreso]')!;
+    const campos = [...form.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input, textarea')];
+    const reducido = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Guardar y restaurar: un valor por nombre (texto, opción elegida o lista de marcadas).
+    function leerFormulario() {
+      const datos: Record<string, string | string[]> = {};
+      for (const c of campos) {
+        if (c instanceof HTMLInputElement && c.type === 'checkbox') {
+          const lista = (datos[c.name] as string[] | undefined) ?? [];
+          if (c.checked) lista.push(c.value);
+          datos[c.name] = lista;
+        } else if (c instanceof HTMLInputElement && c.type === 'radio') {
+          if (c.checked) datos[c.name] = c.value;
+          else datos[c.name] ??= '';
+        } else {
+          datos[c.name] = c.value;
+        }
+      }
+      return datos;
+    }
+    const guardado = leerGuardado();
+    const respuestas = (guardado.respuestas ?? {}) as Record<string, string | string[]>;
+    for (const c of campos) {
+      const v = respuestas[c.name];
+      if (v === undefined) continue;
+      if (c instanceof HTMLInputElement && (c.type === 'checkbox' || c.type === 'radio')) {
+        c.checked = Array.isArray(v) ? v.includes(c.value) : v === c.value;
+      } else {
+        c.value = String(v);
+      }
+    }
+
+    let actual = Math.min(Math.max(0, Number(guardado.paso) || 0), pasos.length - 1);
+    const persistir = () => guardar({ respuestas: leerFormulario(), paso: actual });
+    form.addEventListener('input', persistir);
+    form.addEventListener('change', persistir);
+
+    // Mensaje: solo lo respondido, agrupado por parte.
+    function armarMensaje() {
+      const fecha = new Date().toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+      const lineas = ['*Respuestas para la página nueva*', `Academia Cultural Inglesa, ${fecha}`];
+      let respondidas = 0;
+      let total = 0;
+      const valor = (nombre: string) => {
+        const els = campos.filter((c) => c.name === nombre);
+        if (els[0] instanceof HTMLInputElement && (els[0].type === 'checkbox' || els[0].type === 'radio')) {
+          return els.filter((c) => (c as HTMLInputElement).checked).map((c) => c.value);
+        }
+        return els.map((c) => c.value.trim()).filter(Boolean);
+      };
+      const sangria = (t: string) => t.replace(/\n+/g, '\n   ');
+
+      for (const paso of pasos) {
+        const bloque: string[] = [];
+        for (const p of paso.querySelectorAll<HTMLElement>('[data-pregunta]')) {
+          const id = p.dataset.pregunta!;
+          const resumen = p.dataset.resumen!;
+          const tipo = p.dataset.tipo;
+          if (tipo === 'sedes') {
+            total++;
+            respondidas++;
+            bloque.push(`• ${resumen}:`);
+            for (const f of p.querySelectorAll<HTMLElement>('[data-fila]')) {
+              const marcadas = valor(`${id}__${f.dataset.fila}`);
+              bloque.push(`   ${f.dataset.nombre}: ${marcadas.length ? marcadas.join(' y ') : 'sin marcar'}`);
+            }
+            continue;
+          }
+          total++;
+          const partes = [...valor(id)];
+          if (tipo === 'opciones') partes.push(...valor(`${id}__detalle`));
+          if (partes.length === 0) continue;
+          respondidas++;
+          bloque.push(`• ${resumen}: ${sangria(partes.join(tipo === 'varias' ? ', ' : '. '))}`);
+        }
+        if (bloque.length) lineas.push('', `*${paso.dataset.titulo}*`, ...bloque);
+      }
+      if (respondidas < total) lineas.push('', `Sin responder: ${total - respondidas} de ${total}.`);
+      return { texto: lineas.join('\n'), respondidas, total };
+    }
+
+    function prepararFinal() {
+      const { texto, respondidas, total } = armarMensaje();
+      form!.querySelector('[data-vista]')!.textContent = texto;
+      form!.querySelector('[data-contador]')!.textContent =
+        respondidas === total
+          ? `Respondiste las ${total} preguntas.`
+          : `Respondiste ${respondidas} de ${total} preguntas. Lo que quedó en blanco lo vemos después.`;
+      const destino = form!.dataset.destino ?? '';
+      form!.querySelector<HTMLAnchorElement>('[data-enviar]')!.href =
+        `https://wa.me/${destino}?text=${encodeURIComponent(texto)}`;
+      form!.querySelector('[data-estado]')!.textContent = '';
+      return texto;
+    }
+
+    function mostrar(i: number, animar: boolean) {
+      actual = i;
+      pasos.forEach((p, j) => {
+        p.hidden = j !== i;
+        p.classList.toggle('entra', animar && j === i);
+      });
+      if (intro) intro.hidden = i > 0;
+      progreso.hidden = false;
+      progreso.querySelector('[data-paso-numero]')!.textContent =
+        i === pasos.length - 1 ? 'Último paso' : `Parte ${i + 1} de ${pasos.length - 1}`;
+      progreso.querySelector<HTMLElement>('.barra')!.style.setProperty('--progreso', String((i + 1) / pasos.length));
+      if (pasos[i].hasAttribute('data-final')) prepararFinal();
+      persistir();
+    }
+
+    form.addEventListener('click', async (e) => {
+      const objetivo = e.target as HTMLElement;
+      const ir = objetivo.closest<HTMLElement>('[data-ir]');
+      if (ir) {
+        const siguiente = Math.min(Math.max(0, actual + Number(ir.dataset.ir)), pasos.length - 1);
+        mostrar(siguiente, true);
+        const arriba = (intro && !intro.hidden ? intro : form).getBoundingClientRect().top + window.scrollY - 8;
+        window.scrollTo({ top: Math.max(0, arriba), behavior: reducido ? 'instant' : 'smooth' });
+        pasos[siguiente].querySelector<HTMLElement>('h2')?.focus({ preventScroll: true });
+        return;
+      }
+      if (objetivo.closest('[data-copiar]')) {
+        const texto = prepararFinal();
+        const estado = form.querySelector('[data-estado]')!;
+        try {
+          await navigator.clipboard.writeText(texto);
+          estado.textContent = 'Copiado. Ahora pegalo en el chat conmigo.';
+        } catch {
+          estado.textContent = 'No se pudo copiar solo. Mantené apretado el texto de arriba para copiarlo.';
+        }
+      }
+    });
+
+    mostrar(actual, false);
+  }
+
+  document.addEventListener('astro:page-load', iniciar);
+</script>

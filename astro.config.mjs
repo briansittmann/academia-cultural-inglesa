@@ -77,10 +77,15 @@ export default defineConfig({
           'quiz-outline',
           'mark-email-read-outline',
           'event-available-outline',
+          // Página privada de preguntas para la dueña.
+          'lock-outline',
+          'check-rounded',
+          'content-copy-outline',
         ],
       },
     }),
-    sitemap(),
+    // La página de preguntas para la dueña es privada: fuera del sitemap.
+    sitemap({ filter: (page) => !page.includes('/preguntas-') }),
     react(),
     keystatic(),
   ],

@@ -108,6 +108,7 @@ Actualizado el 2026-10-12. Mantener esta sección al cerrar cada entrega.
 - **Páginas secundarias (fase 7):** `src/pages/cursos/[slug].astro` y `src/pages/novedades/[slug].astro` (solo novedades vigentes). La franja Novedades va debajo del hero. Las anclas del header y footer son `/#...` para funcionar desde esas páginas.
 - **Breakpoints:** la nav de escritorio y las tres cards de Cómo empezar aparecen desde `lg` (1024 px).
 - **Lighthouse (2026-10-12, después de los ajustes):** portada en mobile 99 / 100 / 100 / 100 (LCP 2,0 s), escritorio 100 en todo; página de curso en mobile 99 / 100 / 100 / 100.
+- **Preguntas para la dueña (2026-10-12):** página privada `/preguntas-xtda9nw9` (no enlazada, `noindex`, fuera del sitemap). Preguntas en `src/lib/preguntas-duena.ts`, armadas con los datos actuales de las collections; la página guarda lo escrito en el navegador y al final arma un mensaje para mandar por WhatsApp (`WHATSAPP_DESTINO` vacío: ella elige el contacto) o copiar. No guarda nada en servidores. Cuando lleguen las respuestas: pasarlas a las collections, rediseñar la sección Cursos (Brian la siente homogénea y difícil de escanear en el celular) y borrar la página.
 - **Pendientes concretos:**
   - Decidir si Apoyo escolar va en Niños o Adultos (`src/content/cursos/apoyo-escolar.md`).
   - Dudas para la dueña en `docs/fase-1-analisis.md` §6 y en el campo `pendiente` de cada curso (ahora editable desde el panel). Sumar código postal y coordenadas de cada sede.

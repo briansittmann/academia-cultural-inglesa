@@ -20,6 +20,7 @@ interface Props {
   ogImageAlt?: string;
   ogType?: 'website' | 'article';
   noindex?: boolean;
+  simple?: boolean; // sin header, footer ni datos estructurados (páginas internas)
 }
 
 const instituto = await getEntry('instituto', 'instituto');
@@ -35,6 +36,7 @@ const {
   ogImageAlt = `Logo de ${nombre}`,
   ogType = 'website',
   noindex = false,
+  simple = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -49,7 +51,7 @@ const ogImageUrl = new URL(ogImage, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    {noindex && <meta name="robots" content="noindex" />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
 
     <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96" />
@@ -74,7 +76,7 @@ const ogImageUrl = new URL(ogImage, Astro.site);
     <meta name="twitter:image:alt" content={ogImageAlt} />
 
     <meta name="generator" content={Astro.generator} />
-    <DatosEstructurados />
+    {!simple && <DatosEstructurados />}
     <ClientRouter />
     <slot name="head" />
     {/* Marca que hay JS: los estados iniciales de las animaciones dependen de esta clase. */}
@@ -88,11 +90,11 @@ const ogImageUrl = new URL(ogImage, Astro.site);
       Ir al contenido
     </a>
     <div class="absolute top-0 left-0 h-px w-px" data-centinela aria-hidden="true"></div>
-    <Header />
+    {!simple && <Header />}
     <main id="contenido" class="flex-1">
       <slot />
     </main>
-    <Footer />
+    {!simple && <Footer />}
     <script>
       // Scroll reveal (receta de motion-skills): una sola vez por elemento.
       function revelar(el: Element) {
