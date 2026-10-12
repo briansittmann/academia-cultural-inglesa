@@ -7,7 +7,6 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
-import Etiqueta from '../Etiqueta.astro';
 
 const vigentes = (await getCollection('novedades', ({ data }) => data.vigente)).sort((a, b) => a.data.orden - b.data.orden);
 ---
@@ -41,7 +40,9 @@ const vigentes = (await getCollection('novedades', ({ data }) => data.vigente)).
                     </span>
                   )}
                   <span class="flex min-w-0 flex-col">
-                    <Etiqueta tono="dorado" class="self-start">{n.data.periodo}</Etiqueta>
+                    {/* Texto y no pastilla: un período largo ("Ciclo 2027, de marzo a diciembre")
+                        tiene que poder partirse en dos líneas en pantallas de 320 px. */}
+                    <span class="text-xs font-semibold leading-snug text-dorado-800">{n.data.periodo}</span>
                     <span class="mt-2 text-xl font-bold leading-tight text-verde-900">{n.data.titulo}</span>
                     <span class="mt-1.5 line-clamp-3 text-sm leading-relaxed text-tinta-suave">{n.data.resumen}</span>
                     <span class="mt-auto inline-flex items-center gap-1 pt-3 text-sm font-semibold text-verde-700">

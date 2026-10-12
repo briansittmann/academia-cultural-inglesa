@@ -113,7 +113,7 @@ const cifras = [
       cursos.map((c, i) => {
         const sedes = sedesPorCurso.get(c.id) ?? [];
         return (
-          <li class:list={['curso-item relative py-6', i > 0 && 'border-t border-borde/60']} style={`--i: ${i}`}>
+          <li class:list={['curso-item group relative py-6', i > 0 && 'border-t border-borde/60']} style={`--i: ${i}`}>
             <span class="curso-punto absolute top-7 -left-[calc(2.5rem+5px)] hidden size-2.5 rounded-full bg-verde-700 ring-4 ring-crema lg:block" aria-hidden="true" />
             <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
               <h4 class="text-lg">{c.data.nombre}</h4>
@@ -162,8 +162,15 @@ const cifras = [
                 </div>
               )}
             </dl>
-            <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm font-semibold">
-              <a href={`/cursos/${c.id}`} class="inline-flex items-center gap-1 text-verde-700 underline underline-offset-4 hover:text-verde-900">
+            {/* "Más sobre el curso" es un link en reposo y un botón relleno cuando el mouse
+                pasa por el curso (group-hover, solo en dispositivos con hover) o cuando
+                recibe el foco del teclado. El padding y el margen negativo están siempre,
+                así el cambio no mueve nada: solo aparece el fondo. */}
+            <div class="mt-1.5 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm font-semibold">
+              <a
+                href={`/cursos/${c.id}`}
+                class="-mx-3 inline-flex items-center gap-1 rounded-control px-3 py-1.5 text-verde-700 underline underline-offset-4 transition-[background-color,color] duration-200 ease-out group-hover:bg-verde-700 group-hover:text-white group-hover:no-underline focus-visible:bg-verde-700 focus-visible:text-white focus-visible:no-underline"
+              >
                 Más sobre el curso
                 <Icon name="material-symbols:arrow-forward-rounded" class="size-4" aria-hidden="true" />
               </a>
