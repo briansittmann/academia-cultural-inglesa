@@ -94,17 +94,19 @@ Ajustes para este proyecto (la guía está escrita pensando en React):
 
 Actualizado el 2026-10-12. Mantener esta sección al cerrar cada entrega.
 
-- **Fases 1 a 5: hechas** (sin push). Notas en `docs/fase-1-analisis.md`, `fase-2-setup.md`, `fase-3-secciones.md`, `fase-4-animaciones.md` y `fase-5-cierre.md`. Leerlas antes de tocar algo de esas fases.
-- **Sigue: fase 6 (Keystatic).** Instalar `@keystatic/core` y `@keystatic/astro`, mapear las collections a campos con etiquetas en español, Keystatic Cloud para el login de la dueña sin GitHub, adaptador del hosting solo para las rutas del panel y deploy automático desde Git. Detalle en `docs/fase-1-analisis.md` §8.
-- **Logo:** el instituto entregó `src/assets/logo/logo.png` (PNG con los dos leones). Es el logo oficial hasta que llegue el SVG; `Logo.astro` usa `logo-recortado.png` (sin márgenes) y de ahí salen favicons y `og.jpg` (ver `docs/fase-5-cierre.md`). El escudo calcado en SVG se borró.
-- **Datos estructurados:** `src/lib/datos-estructurados.ts` + `src/components/DatosEstructurados.astro` (EducationalOrganization con cada sede como LocalBusiness). El horario de atención se escribe en español en `instituto.yaml` y se traduce al formato de schema.org al construir.
-- **Animaciones:** dial de motion 5. Un efecto distinto por sección, documentado en `docs/fase-4-animaciones.md`. Magic UI solo como referencia para portar efectos a CSS y JS nativo; su MCP está en `.mcp.json` y hay que aprobarlo con `/mcp`.
-- **Breakpoints del header y de Cómo empezar:** la nav de escritorio y las tres cards en fila recién aparecen desde `lg` (1024 px); hasta ahí, hamburguesa y pasos apilados.
-- **Lighthouse (2026-10-12):** mobile 99 / 100 / 100 / 100, escritorio 100 en todo. LCP mobile 2,1 s (es el H1, no la foto).
+- **Fases 1 a 6: hechas** (sin push). Notas en `docs/fase-1-analisis.md` a `fase-6-keystatic.md`. Leerlas antes de tocar algo de esas fases.
+- **Sigue: puesta en producción**, que la hace el dueño del proyecto (pasos en `docs/fase-6-keystatic.md`): push a GitHub, sitio en Netlify, equipo y proyecto en Keystatic Cloud, variable `PUBLIC_KEYSTATIC_CLOUD_PROJECT` en Netlify, invitar a la dueña y probar el flujo completo. Después, dominio y redirecciones 301 desde las URLs viejas.
+- **Panel:** `keystatic.config.ts` (raíz). Modo local en `astro dev` (`http://127.0.0.1:4321/keystatic`), Keystatic Cloud en producción. Si se agrega o renombra un campo, cambiarlo en `src/content.config.ts` y en `keystatic.config.ts` a la vez. El campo `cambridge` de los cursos es condicional en el panel y se aplana en el esquema de zod.
+- **Fotos:** viven en `src/assets/img/<collection>/<slug>/<campo>.<ext>` (en el singleton, `instituto/<objeto>/<campo>`), que es la estructura que usa Keystatic. Si una foto no está ahí, el panel la saca del YAML al guardar. Siguen siendo provisorias de Unsplash (créditos en `src/assets/img/CREDITOS.md`).
+- **Logo:** `src/assets/logo/logo.png` es el PNG que entregó el instituto, oficial hasta que llegue el SVG; `Logo.astro` usa `logo-recortado.png` y de ahí salen favicons y `og.jpg`.
+- **Datos estructurados:** `src/lib/datos-estructurados.ts` + `src/components/DatosEstructurados.astro`. El horario de atención se escribe en español en `instituto.yaml` y se traduce al formato de schema.org al construir.
+- **Animaciones:** dial de motion 5, un efecto por sección (`docs/fase-4-animaciones.md`). Magic UI solo como referencia; su MCP está en `.mcp.json` y hay que aprobarlo con `/mcp`.
+- **Breakpoints:** la nav de escritorio y las tres cards de Cómo empezar aparecen desde `lg` (1024 px).
+- **Lighthouse (2026-10-12):** mobile 99 / 100 / 100 / 100, escritorio 100 en todo.
 - **Pendientes concretos:**
   - Decidir si Apoyo escolar va en Niños o Adultos (`src/content/cursos/apoyo-escolar.yaml`).
-  - Las dudas para la dueña están en `docs/fase-1-analisis.md` §6 y en el campo `pendiente` de cada curso. Sin respuesta todavía. Sumar: código postal y coordenadas de cada sede para el JSON-LD.
-  - Validar el JSON-LD con validator.schema.org y la prueba de resultados enriquecidos de Google cuando el dominio esté publicado.
-  - Fotos provisorias de Unsplash (créditos en `src/assets/img/CREDITOS.md`): se reemplazan cuando el instituto entregue material.
+  - Dudas para la dueña en `docs/fase-1-analisis.md` §6 y en el campo `pendiente` de cada curso (ahora editable desde el panel). Sumar código postal y coordenadas de cada sede.
+  - Validar el JSON-LD con validator.schema.org cuando el dominio esté publicado.
+  - `npm audit`: 13 altas en herramientas de desarrollo del adaptador de Netlify; no afectan al sitio publicado. Revisar al actualizar `@astrojs/netlify`.
   - La máquina tiene Node 23 (versión impar, no soportada oficialmente por Astro 7); build y check pasan igual.
-- **Cómo verificar:** `npm run build` y `npx astro check` deben pasar sin errores. El skill `browser-automation` sirve para comprobar consola, scroll horizontal y capturas en 390, 768, 1024 y 1280 px (para recorrer la página en un script usar `scrollTo` con `behavior: 'instant'`, porque el `scroll-behavior: smooth` del sitio hace que un scroll rápido no llegue abajo y los reveals no se disparen). Lighthouse: `npx -y lighthouse@latest http://localhost:4321/ --preset=desktop` con `CHROME_PATH` apuntando a Google Chrome. Astro 7 deja corriendo `astro preview` y `astro dev` como daemons (`npx astro preview stop` / `npx astro dev stop`).
+- **Cómo verificar:** `npm run build` y `npx astro check` deben pasar sin errores. Para el panel, `npx astro dev` y abrir `/keystatic`. El skill `browser-automation` sirve para consola, scroll horizontal y capturas en 390, 768, 1024 y 1280 px (en scripts usar `scrollTo` con `behavior: 'instant'`, porque el `scroll-behavior: smooth` del sitio hace que un scroll rápido no dispare los reveals). Lighthouse: `npx -y lighthouse@latest http://localhost:4321/ --preset=desktop` con `CHROME_PATH` apuntando a Google Chrome. Astro 7 deja corriendo `astro preview` y `astro dev` como daemons (`npx astro preview stop` / `npx astro dev stop`); si un puerto no responde, revisar `npx astro dev status` por si quedó uno de otra sesión.

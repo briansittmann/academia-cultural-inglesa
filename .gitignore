@@ -7,3 +7,6 @@ dist/
 .netlify/
 .vercel/
 .wrangler/
+
+# El ejemplo de variables sí se versiona.
+!.env.example

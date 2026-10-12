@@ -2,8 +2,9 @@ import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
-// Única fuente de verdad de los datos del instituto. Los componentes leen de acá;
-// en la fase 6 Keystatic edita estos mismos archivos.
+// Única fuente de verdad de los datos del instituto. Los componentes leen de acá
+// y el panel de Keystatic (keystatic.config.ts) edita estos mismos archivos: si se
+// agrega un campo, hay que sumarlo en los dos lados.
 
 const telefono = z.object({
   numero: z.string(), // tal como se muestra: "011 4523-7660"
@@ -127,13 +128,26 @@ const cursos = defineCollection({
     horarios: z.array(horario).default([]), // horarios estables (los que cambian por ciclo van en novedades)
     certificado: z.string().optional(), // "Certificado por nivel aprobado"
     requiereTestDeNivel: z.boolean().default(false),
-    cambridge: z
-      .object({
-        examen: z.string(), // "B2 First (FCE)"
-        nivelMcer: z.string(), // "B2"
-        afirmacion: z.string(), // lo que la web actual afirma sobre el examen
-      })
-      .optional(),
+    // En el panel es un campo condicional ("Prepara para un examen de Cambridge"),
+    // que Keystatic guarda como { discriminant, value }. Acá se aplana para que los
+    // componentes lean curso.data.cambridge?.examen. Se acepta también el objeto
+    // directo, por compatibilidad con archivos escritos a mano.
+    cambridge: z.preprocess(
+      (v) => {
+        if (v && typeof v === 'object' && 'discriminant' in v) {
+          const c = v as { discriminant: boolean; value?: unknown };
+          return c.discriminant ? c.value : undefined;
+        }
+        return v ?? undefined;
+      },
+      z
+        .object({
+          examen: z.string(), // "B2 First (FCE)"
+          nivelMcer: z.string(), // "B2"
+          afirmacion: z.string(), // lo que la web actual afirma sobre el examen
+        })
+        .optional(),
+    ),
     formulario: z.url().optional(), // pisa el del público
     pendiente: z.string().optional(), // dudas para confirmar con la dueña (no se muestra)
   }),

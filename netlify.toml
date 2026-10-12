@@ -1,0 +1,6 @@
+# Netlify: reconstruye desde Git con cada commit (incluidos los del panel).
+# Salida estática en dist/; el adaptador de Astro agrega la función para las
+# rutas del panel (/keystatic y /api/keystatic). Node según .node-version.
+[build]
+  command = "npm run build"
+  publish = "dist"

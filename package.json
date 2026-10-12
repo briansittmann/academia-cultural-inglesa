@@ -15,12 +15,18 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/netlify": "^8.2.9",
+    "@astrojs/react": "^7.0.1",
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@iconify-json/material-symbols": "^1.2.95",
+    "@keystatic/astro": "^6.0.0",
+    "@keystatic/core": "^0.6.9",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.8",
     "astro-icon": "^1.2.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "sharp": "^0.35.5",
     "tailwindcss": "^4.3.3"
   },

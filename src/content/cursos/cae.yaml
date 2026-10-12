@@ -15,7 +15,9 @@ horarios:
   - dias: Lunes y miércoles
     horas: 19:30 a 21:30
 cambridge:
-  examen: C1 Advanced (CAE)
-  nivelMcer: C1
-  afirmacion: Somos sede de este examen internacional y tenemos un altísimo porcentaje de alumnos aprobados.
+  discriminant: true
+  value:
+    examen: C1 Advanced (CAE)
+    nivelMcer: C1
+    afirmacion: Somos sede de este examen internacional y tenemos un altísimo porcentaje de alumnos aprobados.
 pendiente: Confirmar en qué sede se dicta.
