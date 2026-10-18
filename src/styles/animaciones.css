@@ -108,14 +108,7 @@
   }
 }
 
-/* ---------- Header: se compacta al hacer scroll ---------- */
-.header-logo {
-  transform-origin: left center;
-  transition: transform 250ms var(--ease-out);
-}
-header[data-compacto] .header-logo {
-  transform: scale(0.85);
-}
+/* ---------- Header: sombra al hacer scroll (el logo queda siempre del mismo tamaño) ---------- */
 header {
   transition: box-shadow 250ms var(--ease-out);
 }
@@ -438,7 +431,6 @@ header[data-compacto] {
       opacity: 1;
     }
   }
-  header[data-compacto] .header-logo,
   .js [data-reveal]:not([data-visible]) :is(.sube, .izq, .der, .zoom, .sello, .paso-icono, .curso-item, .curso-punto) {
     transform: none;
   }
