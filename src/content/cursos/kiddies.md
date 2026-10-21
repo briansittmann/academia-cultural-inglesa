@@ -36,6 +36,7 @@ pendiente: >-
 
 - Una vez por semana, de abril a fines de noviembre.
 - Se abona solo la matrícula de inscripción; el resto del año no se paga cuota mensual.
+- Festejos de Halloween.
 - Termina con una clase abierta para que los padres vean todo lo que aprendieron.
 
 Si tu hijo o hija empieza primer grado y querés que arranque a estudiar inglés formalmente, escribinos y te contamos cómo es la dinámica del grupo.
