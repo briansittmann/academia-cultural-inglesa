@@ -28,6 +28,7 @@ horarios:
     dias: Viernes
     horas: 18:00 a 20:00
     fechas: 6/02, 13/02, 20/02 y 27/02 (4 clases)
+foto: ../../assets/img/novedades/verano-2026/foto.png
+flyer: ../../assets/img/novedades/verano-2026/flyer.png
 ---
-
 Edición de febrero 2026, guardada como referencia para cargar la de 2027. No está vigente y no se publica.
