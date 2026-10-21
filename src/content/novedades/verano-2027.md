@@ -15,7 +15,7 @@ cursos:
   - english-in-action-verano
   - viajeros
 horarios: []
-flyer: ../../assets/img/novedades/verano-2027/flyer.png
+foto: ../../assets/img/novedades/verano-2027/foto.png
 pendiente: >-
   Faltan fechas y horarios de febrero 2027. Como referencia, la edición 2026
   está en verano-2026.yaml.
