@@ -1,10 +1,11 @@
 nombre: Verano
 orden: 4
 ancla: verano
-titulo: Cursos de verano
+enTabs: true
+titulo: Cursos de verano 2027
 descripcion: >-
-  Propuestas intensivas de febrero para activar el inglés en pocas semanas: conversación
-  e inglés para viajar, presencial u online.
+  Propuestas intensivas de febrero para activar el inglés en pocas semanas:
+  conversación e inglés para viajar, presencial u online.
 formulario: https://forms.gle/C66ruMBPgGZSJ2k5A
-foto: ../../assets/img/publicos/verano/foto.jpg
+foto: ../../assets/img/publicos/verano/foto.png
 fotoAlt: Dos personas caminan con sus valijas por un aeropuerto al atardecer.
