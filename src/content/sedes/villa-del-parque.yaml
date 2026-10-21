@@ -6,11 +6,15 @@ ciudad: CABA
 codigoPostal: C1417AAN
 telefonos:
   - numero: 011 4501-5566
-    tel: "+541145015566"
+    tel: '+541145015566'
   - numero: 011 4504-4484
-    tel: "+541145044484"
+    tel: '+541145044484'
 email: academiaculturalinglesa.vp@gmail.com
 whatsapp:
   numero: 11 3426-6404
-  internacional: "5491134266404"
-  mensaje: Hola, vi la página de la Academia Cultural Inglesa y quiero hacer una consulta.
+  internacional: '5491134266404'
+  mensaje: >-
+    Hola, vi la página de la Academia Cultural Inglesa y quiero hacer una
+    consulta.
+foto: ../../assets/img/sedes/villa-del-parque/foto.jpeg
+fotoAlt: Sede Villa del Parque
