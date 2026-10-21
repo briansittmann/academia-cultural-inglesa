@@ -20,6 +20,7 @@ cursos:
   - cae
 horarios: []
 foto: ../../assets/img/novedades/inscripciones-2027/foto.png
+flyer: ../../assets/img/novedades/inscripciones-2027/flyer.png
 pendiente: Confirmar fecha de inicio de clases de marzo 2027 y de Kiddies (abril 2027).
 ---
 Ya está abierta la inscripción para el ciclo 2027 en las dos sedes. Niveles para todas las edades: niños desde primer grado, adolescentes y adultos.
