@@ -4,8 +4,9 @@ publico: ninos
 orden: 2
 para: Chicos de segundo grado en adelante
 descripcion: >-
-  Cuatro niveles pensados para la primaria. Con libros de texto originales y recursos
-  visuales, los alumnos ganan soltura y confianza para expresarse en inglés.
+  Cuatro niveles pensados para alumnos en primaria. Con libros de texto
+  originales y recursos visuales, los alumnos ganan soltura y confianza para
+  expresarse en inglés.
 niveles:
   - Elementary 1
   - Elementary 2
@@ -15,9 +16,16 @@ frecuencia: 2 veces por semana
 duracionClase: 1 h 30
 horasSemanales: 3
 periodo: Marzo a diciembre
+modalidad: presencial
+sedes:
+  - villa-urquiza
+  - villa-del-parque
+horarios: []
+requiereTestDeNivel: false
+cambridge:
+  discriminant: false
 pendiente: Confirmar en qué sedes se dicta.
 ---
-
 ¿Tu hijo o hija está en la primaria y querés que empiece o siga estudiando inglés? Los cursos de Elementary abarcan cuatro niveles y están pensados para chicos de segundo grado en adelante.
 
 ## Cómo trabajamos
