@@ -19,7 +19,6 @@ cursos:
   - fce
   - cae
 horarios: []
-foto: ../../assets/img/novedades/inscripciones-2027/foto.png
 flyer: ../../assets/img/novedades/inscripciones-2027/flyer.png
 pendiente: Confirmar fecha de inicio de clases de marzo 2027 y de Kiddies (abril 2027).
 ---
