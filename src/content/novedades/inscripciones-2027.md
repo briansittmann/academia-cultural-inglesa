@@ -32,4 +32,4 @@ Ya está abierta la inscripción para el ciclo 2027 en nuestras sedes. Niveles p
 
 ## Cómo reservar tu lugar
 
-Escribinos por WhatsApp a la sede que te quede más cerca o pedí información con el formulario. Si no sabés en qué nivel anotarte, hacé el test de nivel online gratuito.
+Escribinos por WhatsApp a la sede que te quede más cerca o pedí información con el formulario. Si no sabés en qué nivel anotarte, comunícate con nosotros y concertamos una entrevista y un test de nivel gratuito.
