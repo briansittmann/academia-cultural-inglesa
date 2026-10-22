@@ -20,7 +20,12 @@ modalidad: presencial
 sedes:
   - villa-urquiza
   - villa-del-parque
-horarios: []
+horarios:
+  - nombre: Elementary 1
+    sede: villa-urquiza
+    dias: Lunes y Miercoles
+    horas: 18.00 a 19.30 hs
+    fechas: Inicio clases 03/03/2027
 requiereTestDeNivel: false
 cambridge:
   discriminant: false
