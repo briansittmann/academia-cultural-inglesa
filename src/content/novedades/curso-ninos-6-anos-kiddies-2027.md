@@ -13,7 +13,8 @@ resumen: >-
 periodo: Abril 2027 a Noviembre 2027
 desde: 2027-01-09
 hasta: 2027-11-20
-cursos: []
+cursos:
+  - kiddies
 horarios: []
 foto: ../../assets/img/novedades/curso-ninos-6-anos-kiddies-2027/foto.png
 flyer: ../../assets/img/novedades/curso-ninos-6-anos-kiddies-2027/flyer.png
