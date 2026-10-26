@@ -16,6 +16,7 @@ hasta: 2027-11-20
 cursos:
   - kiddies
 horarios: []
+foto: ../../assets/img/novedades/curso-ninos-6-anos-kiddies-2027/foto.png
 flyer: ../../assets/img/novedades/curso-ninos-6-anos-kiddies-2027/flyer.png
 flyerAlt: Descripción curso Kiddies
 ---
