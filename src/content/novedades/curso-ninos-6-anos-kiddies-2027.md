@@ -82,30 +82,3 @@ Trabajamos con grupos reducidos para brindar una atención personalizada y favor
 **Finalización:** Viernes 26 de noviembre de 2027.
 
 **Cupos:** Limitados.
-
-**Matrícula y formas de pago**
-
-**Valor total del curso: $300.000**
-
-Podés elegir entre dos modalidades:
-
-- Un único pago de $300.000.
-- Tres cuotas consecutivas de $100.000.
-
-**¡Sin cuota mensual!**
-
-**¡Inscripciones abiertas!**
-
-**¡Dales la oportunidad de descubrir el inglés jugando!**
-
-Los primeros encuentros con un idioma pueden despertar una pasión que los acompañe toda la vida.
-
-**¡Te esperamos en Kiddies 2027!**
-
-📍 **Academia Cultural Inglesa – Villa Urquiza**
-
-Bucarelli 2288, Villa Urquiza.
-
-📱 **Consultas e inscripciones:** [11 2838-2068](tel:11%202838-2068)
-
-📝 **Ficha de inscripción:** [https://forms.gle/nV81gjJimHoVbtB77](https://forms.gle/nV81gjJimHoVbtB77)
