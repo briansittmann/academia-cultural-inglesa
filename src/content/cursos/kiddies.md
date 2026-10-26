@@ -30,13 +30,66 @@ pendiente: >-
   Confirmar si sigue la promoción "solo matrícula, sin cuota mensual" en 2027,
   la frecuencia semanal y en qué sede se dicta.
 ---
-¿Qué mejor que acercar a los chicos al idioma desde pequeños? Kiddies es una propuesta pensada y diseñada exclusivamente para chicos que están cursando primer grado: aprenden y juegan, y el inglés se vuelve algo natural desde el principio.
+**KIDDIES 2027**
 
-## Cómo es el curso
+**¡Inglés desde chicos para un gran futuro!**
 
-- Una vez por semana, de abril a fines de noviembre.
-- Se abona solo la matrícula de inscripción; el resto del año no se paga cuota mensual.
-- Festejos de Halloween.
-- Termina con una clase abierta para que los padres vean todo lo que aprendieron.
+**Un comienzo divertido y significativo en el aprendizaje del inglés.**
 
-Si tu hijo o hija empieza primer grado y querés que arranque a estudiar inglés formalmente, escribinos y te contamos cómo es la dinámica del grupo.
+En **Academia Cultural Inglesa Villa Urquiza** sabemos que los primeros pasos en el aprendizaje de un idioma son fundamentales.
+
+Por eso, creamos **Kiddies**, un curso especialmente diseñado para **niños de 1er grado**, que propone un primer acercamiento al inglés de manera natural, divertida y estimulante.
+
+A través del juego, la música, los cuentos y las actividades creativas, los chicos comienzan a familiarizarse con el idioma, desarrollando la comprensión y la expresión oral, incorporando sus primeras palabras y expresiones en inglés y ganando confianza para comunicarse.
+
+Nuestro objetivo es que cada encuentro sea una experiencia positiva, que despierte la curiosidad y el entusiasmo por aprender.
+
+**¿Cómo aprendemos en Kiddies?**
+
+🎨 **Aprendizaje natural y divertido**
+
+Los chicos aprenden inglés jugando, cantando, escuchando cuentos y participando en actividades especialmente pensadas para su edad.
+
+🎵 **Actividades variadas y creativas**
+
+Combinamos canciones, juegos, manualidades y recursos visuales para mantener el interés, estimular la participación y favorecer la incorporación natural del idioma.
+
+👩‍🏫 **Docentes especializados**
+
+Contamos con profesores experimentados en la enseñanza de inglés a los más pequeños, que acompañan y respetan los tiempos de aprendizaje de cada niño.
+
+💻 **Google Classroom**
+
+Las familias cuentan con acceso a nuestra plataforma educativa, donde compartimos canciones, materiales y recursos para continuar practicando en casa.
+
+📚 **Material didáctico**
+
+Utilizamos libros, flashcards, recursos visuales y material lúdico especialmente seleccionado para esta etapa.
+
+**Una experiencia que va más allá del aula**
+
+En Kiddies buscamos que los chicos disfruten aprendiendo y desarrollen una relación positiva con el inglés desde sus primeros años.
+
+🎃 **¡Celebramos Halloween!**
+
+Durante el curso realizamos una actividad especial de Halloween, una experiencia divertida que permite acercarse a las tradiciones culturales del idioma inglés.
+
+⭐ **Grupos reducidos**
+
+Trabajamos con grupos reducidos para brindar una atención personalizada y favorecer la participación de todos los alumnos.
+
+**Información del curso 2027**
+
+**Destinatarios:** Niños de 1er grado.
+
+**Modalidad:** Presencial.
+
+**Frecuencia:** Una clase semanal.
+
+**Día y horario:** Viernes de 18:00 a 19:30 hs.
+
+**Inicio:** Viernes 9 de abril de 2027.
+
+**Finalización:** Viernes 26 de noviembre de 2027.
+
+**Cupos:** Limitados.
