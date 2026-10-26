@@ -1,7 +1,7 @@
 ---
 titulo: Curso Inglés Sala de 5 años
 tipo: inscripciones
-vigente: true
+vigente: false
 orden: 4
 eyebrow: Curso de inglés para niños de sala de 5 años
 resumen: >+
