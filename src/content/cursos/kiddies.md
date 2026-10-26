@@ -11,6 +11,7 @@ descripcion: >-
 niveles: []
 frecuencia: 1 vez por semana
 duracionClase: 1h 30 minutos
+horasSemanales: 0
 periodo: Abril a fines de noviembre
 modalidad: presencial
 sedes:
