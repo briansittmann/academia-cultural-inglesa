@@ -16,7 +16,6 @@ hasta: 2027-11-20
 cursos:
   - kiddies
 horarios: []
-foto: ../../assets/img/novedades/curso-ninos-6-anos-kiddies-2027/foto.png
 flyer: ../../assets/img/novedades/curso-ninos-6-anos-kiddies-2027/flyer.png
 flyerAlt: Descripción curso Kiddies
 ---
@@ -33,53 +32,3 @@ Por eso, creamos **Kiddies**, un curso especialmente diseñado para **niños de 
 A través del juego, la música, los cuentos y las actividades creativas, los chicos comienzan a familiarizarse con el idioma, desarrollando la comprensión y la expresión oral, incorporando sus primeras palabras y expresiones en inglés y ganando confianza para comunicarse.
 
 Nuestro objetivo es que cada encuentro sea una experiencia positiva, que despierte la curiosidad y el entusiasmo por aprender.
-
-**¿Cómo aprendemos en Kiddies?**
-
-🎨 **Aprendizaje natural y divertido**
-
-Los chicos aprenden inglés jugando, cantando, escuchando cuentos y participando en actividades especialmente pensadas para su edad.
-
-🎵 **Actividades variadas y creativas**
-
-Combinamos canciones, juegos, manualidades y recursos visuales para mantener el interés, estimular la participación y favorecer la incorporación natural del idioma.
-
-👩‍🏫 **Docentes especializados**
-
-Contamos con profesores experimentados en la enseñanza de inglés a los más pequeños, que acompañan y respetan los tiempos de aprendizaje de cada niño.
-
-💻 **Google Classroom**
-
-Las familias cuentan con acceso a nuestra plataforma educativa, donde compartimos canciones, materiales y recursos para continuar practicando en casa.
-
-📚 **Material didáctico**
-
-Utilizamos libros, flashcards, recursos visuales y material lúdico especialmente seleccionado para esta etapa.
-
-**Una experiencia que va más allá del aula**
-
-En Kiddies buscamos que los chicos disfruten aprendiendo y desarrollen una relación positiva con el inglés desde sus primeros años.
-
-🎃 **¡Celebramos Halloween!**
-
-Durante el curso realizamos una actividad especial de Halloween, una experiencia divertida que permite acercarse a las tradiciones culturales del idioma inglés.
-
-⭐ **Grupos reducidos**
-
-Trabajamos con grupos reducidos para brindar una atención personalizada y favorecer la participación de todos los alumnos.
-
-**Información del curso 2027**
-
-**Destinatarios:** Niños de 1er grado.
-
-**Modalidad:** Presencial.
-
-**Frecuencia:** Una clase semanal.
-
-**Día y horario:** Viernes de 18:00 a 19:30 hs.
-
-**Inicio:** Viernes 9 de abril de 2027.
-
-**Finalización:** Viernes 26 de noviembre de 2027.
-
-**Cupos:** Limitados.
