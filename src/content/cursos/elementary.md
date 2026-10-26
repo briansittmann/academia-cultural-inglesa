@@ -26,7 +26,20 @@ horarios:
     dias: Lunes y Miercoles
     horas: 18.00 a 19.30 hs
     fechas: Inicio clases 03/03/2027
-requiereTestDeNivel: false
+  - nombre: Elementary 1
+    sede: villa-del-parque
+    dias: Lunes y Miercoles
+    horas: '18.10 a 19.40 '
+  - nombre: Elementary 1
+    sede: villa-del-parque
+    dias: 'Martes y jueves '
+    horas: 16.20 a 17.50
+  - nombre: Elementary 2
+    sede: villa-urquiza
+    dias: 'Lunes y miércoles '
+    horas: 18.00 a 19.30
+certificado: Certificado por nivel aprobado
+requiereTestDeNivel: true
 cambridge:
   discriminant: false
 pendiente: Confirmar en qué sedes se dicta.
