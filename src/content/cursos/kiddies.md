@@ -18,11 +18,19 @@ sedes:
   - villa-urquiza
   - villa-del-parque
 horarios:
-  - nombre: Kiddies
+  - nombre: Kiddies A
     sede: villa-urquiza
     dias: 'Viernes '
     horas: 18.00 a 19.30 hs
     fechas: Inicio clases 09/04/2027
+  - nombre: Kiddies A
+    sede: villa-del-parque
+    dias: Viernes
+    horas: 16.30 a 17.50 hs
+  - nombre: Kiddies B
+    sede: villa-del-parque
+    dias: Viernes
+    horas: 18.00 a 19.20 hs
 certificado: Clase abierta para los padres al final del curso
 requiereTestDeNivel: false
 cambridge:
