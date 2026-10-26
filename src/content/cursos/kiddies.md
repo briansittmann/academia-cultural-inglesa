@@ -91,14 +91,4 @@ Trabajamos con grupos reducidos para brindar una atención personalizada y favor
 
 **Destinatarios:** Niños de 1er grado.
 
-**Modalidad:** Presencial.
-
-**Frecuencia:** Una clase semanal.
-
-**Día y horario:** Viernes de 18:00 a 19:30 hs.
-
-**Inicio:** Viernes 9 de abril de 2027.
-
-**Finalización:** Viernes 26 de noviembre de 2027.
-
 **Cupos:** Limitados.
