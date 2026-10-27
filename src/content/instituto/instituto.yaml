@@ -34,11 +34,12 @@ descripcion: >-
   Academia Cultural Inglesa — Desde 1979, formando generaciones y construyendo
   futuros.
 hechos:
-  - Desde 1979 en el barrio
-  - Empresa familiar, cerca de sus alumnos
-  - Staff estable, egresado de Profesorados Nacionales Superiores de Inglés
+  - Desde 1979 enseñando inglés a generaciones de alumnos
+  - Enseñanza personalizada, cerca de sus alumnos
+  - Staff estable,  de los Profesorados Nacionales Superiores de Inglés
   - Seguimiento del progreso y comunicación con los padres
   - Sede de los exámenes Cambridge B2 First y C1 Advanced
+  - Viajes estudiantiles a UK
 cargaHoraria:
   titulo: Por qué elegirnos ? Más meses de clase por año que en la zona
   detalle:
@@ -52,6 +53,7 @@ cargaHoraria:
 email: academiaculturalinglesainfo@gmail.com
 redes:
   facebook: https://www.facebook.com/CulturalVDP/
+  instagram: '@academiaculturalinglesa'
 whatsappPrincipal: villa-urquiza
 horarioAtencion:
   dias: Lunes a viernes
