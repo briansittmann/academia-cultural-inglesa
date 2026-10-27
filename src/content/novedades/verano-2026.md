@@ -3,7 +3,9 @@ titulo: Verano 2026
 tipo: verano
 vigente: false
 orden: 20
-resumen: Edición de febrero 2026. Se guarda como referencia para cargar la de 2027.
+resumen: |-
+  Cursos de Verano Febrero 2027
+  3 opciones diferentes para una inmersión intensiva en el idioma inglés 
 periodo: Febrero 2026
 desde: 2025-12-01
 hasta: 2026-03-03
