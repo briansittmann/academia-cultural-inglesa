@@ -44,6 +44,7 @@
   --shadow-*: initial;
   --shadow-card: 0 4px 16px rgba(46, 107, 52, 0.06);
   --shadow-card-hover: 0 8px 24px rgba(46, 107, 52, 0.10);
+  --shadow-flotante: 0 16px 48px rgba(20, 30, 22, 0.18); /* paneles que flotan sobre la página (selector de sede) */
 
   /* Duraciones: UI por debajo de 300 ms. */
   --default-transition-duration: 200ms;

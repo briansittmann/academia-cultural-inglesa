@@ -1,6 +1,7 @@
 ---
 /**
- * Header fijo de 64 px: logo + nombre, 4 anclas, un solo CTA (WhatsApp).
+ * Header fijo de 64 px: logo + nombre, 4 anclas, un solo CTA (WhatsApp, abre el
+ * selector de sede).
  * Hasta 1023 px (mobile y tablet), hamburguesa que abre un panel con las mismas
  * anclas y el CTA (receta accordion: altura medida en JS, 500 ms con curva de
  * cajón y links en cascada; ver animaciones.css).
@@ -48,7 +49,7 @@ const anclas = [
     </nav>
 
     <div class="hidden lg:block">
-      <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo class="min-h-10 px-4 text-sm">
+      <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo elegirSede class="min-h-10 px-4 text-sm">
         Escribir por WhatsApp
       </Boton>
     </div>
@@ -81,7 +82,7 @@ const anclas = [
         ))
       }
       <div class="menu-item mt-2 pb-2" style={`--i: ${anclas.length}`}>
-        <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo class="w-full">
+        <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo elegirSede class="w-full">
           Escribir por WhatsApp
         </Boton>
       </div>

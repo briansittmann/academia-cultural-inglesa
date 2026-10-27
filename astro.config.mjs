@@ -87,6 +87,7 @@ export default defineConfig({
           'quiz-outline',
           'mark-email-read-outline',
           'event-available-outline',
+          'arrow-outward-rounded', // selector de sede de WhatsApp
           // Página privada de preguntas para la dueña.
           'lock-outline',
           'check-rounded',

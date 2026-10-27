@@ -81,6 +81,7 @@ Reemplaza la web vieja en WordPress.com (academiaculturalinglesa.com), que viví
 
 - **Identidad:** verde y dorado del escudo (dos leones con escudo; hay PNG, falta el vector). Tono confiable y cálido. Público de familias y adultos del barrio.
 - **Solo modo claro.** Una sola tipografía: Plus Jakarta Sans.
+- **Selector de sede para WhatsApp (2026-10-27):** los botones "Escribir por WhatsApp" que no son de una sede puntual (header, hero, novedades y cursos que se dan en más de una sede) primero preguntan a qué sede escribir: en el celular sube una hoja desde abajo, en la computadora sale un panel desde el botón. Los de cada sede (tarjetas de Sedes, footer) y los cursos de una sola sede van directo.
 - **Copy:** español rioplatense con voseo, sin guiones largos, sin "&", sin separadores decorativos, sin relleno de marketing. Dos intenciones de botón con etiqueta fija en todo el sitio: "Pedir información" (formulario) y "Escribir por WhatsApp" (contacto).
 - **Un solo "eyebrow"** (etiqueta chica sobre el título) en toda la página: el del hero.
 - **Animación con carácter pero moderada** (5 en una escala de 1 a 10): un efecto distinto por sección, cada uno con un propósito, nada en loop, versión suave para quien pide movimiento reducido.

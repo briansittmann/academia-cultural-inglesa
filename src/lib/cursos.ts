@@ -27,8 +27,10 @@ export function resumirNiveles(niveles: string[]) {
 }
 
 /**
- * Link de WhatsApp con el mensaje ya escrito para consultar por un curso. Va al
- * número de la sede del curso si tiene una sola; si no, al WhatsApp principal.
+ * Link de WhatsApp con el mensaje ya escrito para consultar por un curso. Si el
+ * curso tiene una sola sede, va directo a su número. Si no, el botón abre el
+ * selector de sede con ese mensaje (elegirSede) y el link al WhatsApp principal
+ * queda para cuando no hay JS.
  */
 export async function whatsappDelCurso(curso: CollectionEntry<'cursos'>) {
   const instituto = await getEntry('instituto', 'instituto');
@@ -37,5 +39,8 @@ export async function whatsappDelCurso(curso: CollectionEntry<'cursos'>) {
   const sede = await getEntry(ref);
   if (!sede) throw new Error(`La sede del WhatsApp de ${curso.id} no existe`);
   const texto = `Hola, vi la página de la ${instituto.data.nombre} y quiero información sobre el curso ${curso.data.nombre}.`;
-  return `https://wa.me/${sede.data.whatsapp.internacional}?text=${encodeURIComponent(texto)}`;
+  return {
+    href: `https://wa.me/${sede.data.whatsapp.internacional}?text=${encodeURIComponent(texto)}`,
+    elegirSede: curso.data.sedes.length === 1 ? false : texto,
+  };
 }

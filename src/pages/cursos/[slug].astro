@@ -35,7 +35,7 @@ const novedades = (await getCollection('novedades', ({ data }) => data.vigente &
 );
 
 const formulario = d.formulario ?? publico.data.formulario ?? instituto.data.formularios.consultaGeneral;
-const whatsappUrl = await whatsappDelCurso(curso);
+const whatsapp = await whatsappDelCurso(curso);
 const modalidad = { presencial: 'Presencial', online: 'Online', 'presencial-y-online': 'Presencial u online' }[d.modalidad];
 const cursada = [d.frecuencia, d.duracionClase && `clases de ${d.duracionClase}`, d.horasSemanales && `${horas(d.horasSemanales)} h por semana`]
   .filter(Boolean)
@@ -187,7 +187,7 @@ const cursoLd = {
           }
 
           <div class="mt-6 flex flex-col gap-3">
-            <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo class="w-full">
+            <Boton href={whatsapp.href} variante="whatsapp" icono="material-symbols:chat-rounded" externo elegirSede={whatsapp.elegirSede} class="w-full">
               Escribir por WhatsApp
             </Boton>
             <Boton href={formulario} variante="secundario" icono="material-symbols:open-in-new-rounded" externo class="w-full">

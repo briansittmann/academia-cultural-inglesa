@@ -135,7 +135,13 @@ const whatsappPorCurso = new Map(await Promise.all(cursos.map(async (c) => [c.id
               </dl>
             )}
             <div class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-              <Boton href={whatsappPorCurso.get(c.id)!} variante="whatsapp-borde" icono="material-symbols:chat-rounded" externo>
+              <Boton
+                href={whatsappPorCurso.get(c.id)!.href}
+                variante="whatsapp-borde"
+                icono="material-symbols:chat-rounded"
+                externo
+                elegirSede={whatsappPorCurso.get(c.id)!.elegirSede}
+              >
                 Escribir por WhatsApp
               </Boton>
               <a

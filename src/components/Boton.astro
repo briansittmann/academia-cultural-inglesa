@@ -5,6 +5,8 @@
  * "whatsapp-borde" es la versión discreta para los botones que se repiten (uno
  * por curso): blanca con borde, se rellena de verde WhatsApp al pasar el mouse o
  * con el foco del teclado.
+ * elegirSede: el botón abre el selector de sede (SelectorSede.astro) en vez de ir
+ * directo al chat; si es un texto, es el mensaje precargado para cualquier sede.
  * Receta "button press" de motion-skills: solo transform, 160 ms, ease-out.
  */
 import { Icon } from 'astro-icon/components';
@@ -14,9 +16,10 @@ interface Props {
   variante?: 'primario' | 'secundario' | 'whatsapp' | 'whatsapp-borde';
   icono?: string; // nombre de Material Symbols, ej. "material-symbols:chat-rounded"
   externo?: boolean; // target _blank + rel
+  elegirSede?: boolean | string;
   class?: string;
 }
-const { href, variante = 'primario', icono, externo = false, class: className } = Astro.props;
+const { href, variante = 'primario', icono, externo = false, elegirSede = false, class: className } = Astro.props;
 
 const base =
   'boton inline-flex min-h-12 items-center justify-center gap-2 rounded-control px-5 font-semibold whitespace-nowrap no-underline';
@@ -34,6 +37,9 @@ const variantes = {
   class:list={[base, variantes[variante], className]}
   target={externo ? '_blank' : undefined}
   rel={externo ? 'noopener' : undefined}
+  aria-haspopup={elegirSede ? 'dialog' : undefined}
+  data-elegir-sede={elegirSede ? '' : undefined}
+  data-mensaje={typeof elegirSede === 'string' ? elegirSede : undefined}
 >
   {icono && <Icon name={icono} class="size-5 shrink-0" aria-hidden="true" />}
   <slot />

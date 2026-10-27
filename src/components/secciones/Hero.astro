@@ -37,7 +37,7 @@ const whatsappUrl = `https://wa.me/${sede.data.whatsapp.internacional}?text=${en
       <TituloAnimado as="h1" texto={hero.titulo} retraso={120} class="text-[2.5rem] leading-[1.05] sm:text-5xl lg:text-[2.75rem] xl:text-[3.25rem]" />
       <p class="hero-bajada mt-5 max-w-[32rem] text-lg leading-relaxed text-tinta-suave sm:text-xl">{hero.bajada}</p>
       <div class="hero-ctas mt-8 flex flex-col gap-3 sm:flex-row">
-        <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo>
+        <Boton href={whatsappUrl} variante="whatsapp" icono="material-symbols:chat-rounded" externo elegirSede>
           Escribir por WhatsApp
         </Boton>
         <Boton href="#cursos" variante="secundario" icono="material-symbols:arrow-downward-rounded">
