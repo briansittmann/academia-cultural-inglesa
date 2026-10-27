@@ -31,4 +31,44 @@ horarios:
 foto: ../../assets/img/novedades/verano-2026/foto.png
 flyer: ../../assets/img/novedades/verano-2026/flyer.png
 ---
-Edición de febrero 2026, guardada como referencia para cargar la de 2027. No está vigente y no se publica.
+**¡DOS PROPUESTAS PARA ESTE VERANO!**
+
+*Disfrutá el verano aprendiendo inglés.*
+
+**OPCIÓN 1: CONVERSACIÓN – ENGLISH IN ACTION**
+
+**¡Hablá inglés de verdad!**
+
+Un curso pensado para desarrollar la fluidez y la confianza al comunicarte en inglés, mediante conversaciones reales y situaciones de la vida diaria.
+
+**¿Qué vas a lograr?**
+
+**Conversación fluida:** Debates, role-plays y situaciones cotidianas para que hables sin miedo.
+
+**Comprensión oral al 100%:** Con videos auténticos, podcasts, series y material del mundo real.
+
+**Vocabulario práctico:** Palabras y expresiones que sí se usan, listas para aplicar desde el primer día.
+
+**Pronunciación clara:** Trucos nativos para sonar natural y seguro.
+
+**OPCIÓN 2: INGLÉS DESDE CERO – NIVEL STARTER**
+
+**¡Empezá tu inglés desde cero y disfrutá el verano!**
+
+Un curso especialmente diseñado para quienes desean comenzar a aprender inglés sin necesidad de tener conocimientos previos.
+
+**¿Qué vas a lograr?**
+
+**Gramática sólida:** Entenderás la base y la estructura fundamental del idioma.
+
+**Conversación inmediata:** Te pondremos a hablar desde la primera clase, ganando fluidez en situaciones básicas.
+
+**Nivelación acelerada:** Terminarás el curso listo para sumarte al Nivel Elemental, ¡sin perder tiempo!
+
+**Especialmente diseñado para principiantes:** No necesitás conocimientos previos. ¡Empezamos desde cero!
+
+**¡TU VERANO TAMBIÉN PUEDE SER EN INGLÉS!**
+
+**Academia Cultural Inglesa**
+
+Dos propuestas diferentes, un mismo objetivo: aprender inglés, ganar confianza y disfrutar del verano.
