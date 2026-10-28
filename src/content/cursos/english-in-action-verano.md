@@ -34,7 +34,7 @@ pendiente: Confirmar sede (la web no la indica) y fechas de febrero 2027.
 
 ## Detalles del intensivo
 
-- Siete clases, dos veces por semana, de una hora y media cada una: diez horas y media en tres semanas y media.
+- Seis clases, dos veces por semana, de una hora y media cada una: diez horas y media en tres semanas y media.
 - Dos grupos: Pre-Intermediate / Intermediate y Upper-Intermediate / Advanced.
 - Al terminar, se entrega el certificado del nivel cursado y aprobado.
 - Antes de inscribirte, hacé el test de nivel online gratuito.
