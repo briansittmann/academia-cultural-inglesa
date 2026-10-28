@@ -5,19 +5,24 @@ orden: 3
 etiqueta: Pack
 para: Adultos que buscan una inmersión total
 descripcion: >-
-  Cursá el Intensivo Adultos y English in Action juntos: tres horas y media semanales
-  para avanzar de nivel y practicar conversación en la misma semana.
+  Cursá el Intensivo Adultos y English in Action juntos: tres horas y media
+  semanales para avanzar de nivel y practicar conversación en la misma semana.
+niveles: []
 frecuencia: 2 veces por semana
 horasSemanales: 3.5
-periodo: Agosto a diciembre
+periodo: Marzo a Julio / Agosto a Diciembre
 modalidad: presencial
 sedes:
   - villa-urquiza
+horarios: []
 requiereTestDeNivel: true
+cambridge:
+  discriminant: false
 formulario: https://forms.gle/JmiupbaWCr5FQ5fx8
-pendiente: El título de la web dice "online", pero los cursos que incluye son presenciales. Confirmar.
+pendiente: >-
+  El título de la web dice "online", pero los cursos que incluye son
+  presenciales. Confirmar.
 ---
-
 Si querés una inmersión total en el idioma, podés cursar el Intensivo Adultos y English in Action juntos: en la misma semana avanzás de nivel con el intensivo y practicás conversación con English in Action.
 
 ## Cómo funciona
