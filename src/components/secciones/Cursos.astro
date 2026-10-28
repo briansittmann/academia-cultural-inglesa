@@ -11,6 +11,7 @@
  */
 import { getCollection, getEntry } from 'astro:content';
 import CursosPanel from './CursosPanel.astro';
+import { anclaDelPanel } from '../../lib/cursos';
 
 const instituto = await getEntry('instituto', 'instituto');
 if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
@@ -40,9 +41,9 @@ const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.d
               <button
                 type="button"
                 role="tab"
-                id={`tab-${p.data.ancla}`}
+                id={`tab-${anclaDelPanel(p)}`}
                 aria-selected={i === 0 ? 'true' : 'false'}
-                aria-controls={p.data.ancla}
+                aria-controls={anclaDelPanel(p)}
                 tabindex={i === 0 ? 0 : -1}
                 class="shrink-0 rounded-full border border-borde bg-white px-5 py-2.5 text-sm font-semibold text-tinta-suave hover:border-verde-700 hover:text-verde-900 aria-selected:border-verde-700 aria-selected:bg-verde-700 aria-selected:text-white [.js_&]:aria-selected:border-borde [.js_&]:aria-selected:bg-white [.js_&]:aria-selected:text-tinta-suave"
                 data-tab

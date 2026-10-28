@@ -314,7 +314,7 @@ export default config({
         enTabs: fields.checkbox({
           label: 'Mostrar como pestaña de Cursos',
           defaultValue: true,
-          description: 'Desmarcado: tiene sección propia (Cambridge).',
+          description: 'Cambridge va desmarcado: tiene sección propia. Si se marca, aparece también como pestaña y el menú sigue llevando a su sección.',
         }),
         titulo: fields.text({ label: 'Título del panel', validation: { isRequired: true } }),
         descripcion: fields.text({ label: 'Descripción', multiline: true, validation: { isRequired: true } }),

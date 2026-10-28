@@ -4,6 +4,15 @@
  */
 import { getEntry, type CollectionEntry } from 'astro:content';
 
+/**
+ * Ancla del panel de un público en la sección Cursos. Cambridge tiene sección
+ * propia con #cambridge (header, footer y redirecciones apuntan ahí): si además
+ * se muestra como pestaña, su panel usa otra ancla para no pisarla.
+ */
+export function anclaDelPanel(publico: CollectionEntry<'publicos'>) {
+  return publico.id === 'cambridge' ? `cursos-${publico.data.ancla}` : publico.data.ancla;
+}
+
 /** Horas con coma decimal: 3.5 → "3,5". */
 export function horas(n: number) {
   return n.toLocaleString('es-AR', { maximumFractionDigits: 1 });

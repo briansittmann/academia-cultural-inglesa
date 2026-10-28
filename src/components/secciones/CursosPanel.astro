@@ -17,7 +17,7 @@ import { getEntry } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Boton from '../Boton.astro';
 import Etiqueta from '../Etiqueta.astro';
-import { horas, resumirNiveles, whatsappDelCurso } from '../../lib/cursos';
+import { anclaDelPanel, horas, resumirNiveles, whatsappDelCurso } from '../../lib/cursos';
 
 interface Props {
   publico: CollectionEntry<'publicos'>;
@@ -61,9 +61,9 @@ const whatsappPorCurso = new Map(await Promise.all(cursos.map(async (c) => [c.id
     Con tabindex="0", al recargar con #ninos en la URL el navegador enfocaba el panel
     y le dibujaba el contorno de foco. */}
 <div
-  id={publico.data.ancla}
+  id={anclaDelPanel(publico)}
   role="tabpanel"
-  aria-labelledby={`tab-${publico.data.ancla}`}
+  aria-labelledby={`tab-${anclaDelPanel(publico)}`}
   hidden={!activo}
   class="panel-cursos scroll-mt-36 grid gap-8 lg:grid-cols-12 lg:gap-10"
   data-panel

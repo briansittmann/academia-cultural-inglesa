@@ -8,7 +8,7 @@
  */
 import { getCollection, getEntry, render } from 'astro:content';
 import { Icon } from 'astro-icon/components';
-import { horas, whatsappDelCurso } from '../../lib/cursos';
+import { anclaDelPanel, horas, whatsappDelCurso } from '../../lib/cursos';
 import Base from '../../layouts/Base.astro';
 import Boton from '../../components/Boton.astro';
 import Etiqueta from '../../components/Etiqueta.astro';
@@ -63,7 +63,7 @@ const cursoLd = {
     <header class="border-b border-borde/50 bg-verde-50/60">
       <div class="mx-auto max-w-6xl px-4 pt-8 pb-10 sm:px-6 lg:pt-12 lg:pb-14">
         <a
-          href={`/#${publico.data.ancla}`}
+          href={publico.id === 'cambridge' ? '/#cambridge' : `/#${anclaDelPanel(publico)}`}
           class="hero-eyebrow inline-flex items-center gap-1 rounded-control text-sm font-semibold text-verde-700 hover:text-verde-900"
         >
           <Icon name="material-symbols:arrow-back-rounded" class="size-4" aria-hidden="true" />
