@@ -25,6 +25,13 @@ horarios:
     fechas: >-
       Fechas de cursada (febrero/marzo 2027): Miércoles 10/02, lunes 15/02,
       miércoles 17/02, lunes 22/02, miércoles 24/02 y lunes 01/03.
+  - nombre: Level Upper intermediate / Advanced
+    sede: villa-urquiza
+    dias: 'Martes y Jueves '
+    horas: 18.30 a 20.00 hs
+    fechas: >-
+      Fechas de cursada (febrero/marzo 2027): Jueves 11/02, Martes 16/02, Jueves
+      18/02, Martes 23/02, Jueves 25/02 y Martes 02/03.
 certificado: Certificado por nivel cursado y aprobado
 requiereTestDeNivel: true
 cambridge:
