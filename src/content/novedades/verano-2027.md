@@ -29,7 +29,7 @@ Seis clases para hablar inglés de verdad: comprensión oral, conversación, voc
 
 ## Curso Intensivo Starter
 
-Curso Nivelador de Febrero para Principiantes (Desde Cero)
+Curso de Febrero para Principiantes (Desde Cero)
 
 ¿Siempre quisiste empezar inglés, pero no sabías cuándo? ¡Febrero es el momento perfecto!
 
