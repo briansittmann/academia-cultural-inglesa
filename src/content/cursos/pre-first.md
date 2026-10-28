@@ -18,6 +18,7 @@ sedes:
   - villa-urquiza
   - villa-del-parque
 horarios: []
+certificado: Certificado por nivel aprobado
 requiereTestDeNivel: false
 cambridge:
   discriminant: false
