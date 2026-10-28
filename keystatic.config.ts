@@ -160,7 +160,7 @@ export default config({
         redes: fields.object(
           {
             facebook: url('Facebook', 'Link completo a la página.'),
-            instagram: url('Instagram', 'Link completo al perfil, si hay.'),
+            instagram: fields.text({ label: 'Instagram', description: 'Link al perfil o @usuario, si hay.' }),
           },
           { label: 'Redes', layout: [6, 6] },
         ),

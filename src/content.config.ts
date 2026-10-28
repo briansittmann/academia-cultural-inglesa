@@ -43,7 +43,16 @@ const instituto = defineCollection({
       email: z.email(),
       redes: z.object({
         facebook: z.url().optional(),
-        instagram: z.url().optional(),
+        // Desde el panel se puede escribir el link o solo "@usuario": se convierte al link del perfil.
+        instagram: z
+          .preprocess((v) => {
+            if (typeof v !== 'string' || !v.trim()) return undefined;
+            const t = v.trim();
+            if (/^https?:\/\//.test(t)) return t;
+            if (/^(www\.)?instagram\.com\//.test(t)) return `https://${t}`;
+            return `https://www.instagram.com/${t.replace(/^@/, '')}/`;
+          }, z.url())
+          .optional(),
       }),
       whatsappPrincipal: reference('sedes'), // para header y botón flotante
       horarioAtencion: z.object({ dias: z.string(), horas: z.string(), confirmar: z.boolean().default(false) }),
