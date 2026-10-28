@@ -24,7 +24,7 @@ pendiente: Confirmar fecha de inicio de clases de marzo 2027 y de Kiddies (abril
 ---
 Ya está abierta la inscripción para el ciclo 2027 en nuestras sedes. Niveles para todas las edades: niños desde primer grado, adolescentes y adultos.
 
-## Qué podés anotar
+## En cual queres anotarte?
 
 - Kiddies, para chicos de primer grado, que empieza en abril hasta fines de Noviembre.
 - Elementary, Pre-Intermediate, Intermediate y Pre-First Certificate, de marzo a diciembre.
