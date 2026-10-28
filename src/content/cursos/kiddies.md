@@ -11,26 +11,13 @@ descripcion: >-
 niveles: []
 frecuencia: 1 vez por semana
 duracionClase: 1h 30 minutos
-horasSemanales: 0
+horasSemanales: 1.5
 periodo: Abril a fines de noviembre
 modalidad: presencial
 sedes:
   - villa-urquiza
   - villa-del-parque
-horarios:
-  - nombre: Kiddies A
-    sede: villa-urquiza
-    dias: 'Viernes '
-    horas: 18.00 a 19.30 hs
-    fechas: Inicio clases 09/04/2027
-  - nombre: Kiddies A
-    sede: villa-del-parque
-    dias: Viernes
-    horas: 16.30 a 17.50 hs
-  - nombre: Kiddies B
-    sede: villa-del-parque
-    dias: Viernes
-    horas: 18.00 a 19.20 hs
+horarios: []
 certificado: Clase abierta para los padres al final del curso
 requiereTestDeNivel: false
 cambridge:
