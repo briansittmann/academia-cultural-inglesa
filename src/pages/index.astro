@@ -10,13 +10,18 @@ import Cambridge from '../components/secciones/Cambridge.astro';
 import Academia from '../components/secciones/Academia.astro';
 import ComoEmpezar from '../components/secciones/ComoEmpezar.astro';
 import Sedes from '../components/secciones/Sedes.astro';
+import { getEntry } from 'astro:content';
+
+// Cambridge sale del público con identificador "cambridge": si se borra o se le
+// cambia el identificador en el panel, la sección no se muestra (y el build sigue).
+const hayCambridge = Boolean(await getEntry('publicos', 'cambridge'));
 ---
 
 <Base>
   <Hero />
   <Novedades />
   <Cursos />
-  <Cambridge />
+  {hayCambridge && <Cambridge />}
   <Academia />
   <ComoEmpezar />
   <Sedes />

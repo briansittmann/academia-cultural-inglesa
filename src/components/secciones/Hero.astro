@@ -10,11 +10,11 @@ import { Image } from 'astro:assets';
 import { getCollection, getEntry } from 'astro:content';
 import Boton from '../Boton.astro';
 import TituloAnimado from '../TituloAnimado.astro';
+import { sedeParaWhatsapp } from '../../lib/sedes';
 
 const instituto = await getEntry('instituto', 'instituto');
 if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
-const sede = await getEntry(instituto.data.whatsappPrincipal);
-if (!sede) throw new Error('La sede del WhatsApp principal no existe');
+const sede = await sedeParaWhatsapp();
 
 const inscripciones = (await getCollection('novedades', ({ data }) => data.vigente && data.tipo === 'inscripciones')).sort(
   (a, b) => a.data.orden - b.data.orden,

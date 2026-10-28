@@ -11,6 +11,8 @@
 import { createElement } from 'react';
 import { config, collection, singleton, fields } from '@keystatic/core';
 import { conRecorte } from './src/keystatic/recorte';
+import { soloFormatosWeb } from './src/keystatic/formato';
+import { EMAIL } from './src/lib/validaciones';
 
 const proyectoCloud = import.meta.env.PUBLIC_KEYSTATIC_CLOUD_PROJECT as string | undefined;
 const esDesarrollo = import.meta.env.DEV;
@@ -19,9 +21,17 @@ const esDesarrollo = import.meta.env.DEV;
 // imagen en <carpeta>/<slug>/<campo>.<ext> (en el singleton, <carpeta>/<objeto>/<campo>)
 // y el YAML la referencia en relativo, como pide astro:assets desde src/content/<collection>/.
 // Las fotos cargadas a mano tienen que seguir esa misma estructura; si no, el panel
-// no las encuentra y las saca del YAML al guardar.
-const foto = (carpeta: string) => (label: string, description?: string) =>
-  fields.image({ label, description, directory: `src/assets/img/${carpeta}`, publicPath: `../../assets/img/${carpeta}/` });
+// no las encuentra y las saca del YAML al guardar. Solo se aceptan los formatos que procesa astro:assets.
+const foto = (carpeta: string) => (label: string, description?: string, obligatoria = false) =>
+  soloFormatosWeb(
+    fields.image({
+      label,
+      description,
+      directory: `src/assets/img/${carpeta}`,
+      publicPath: `../../assets/img/${carpeta}/`,
+      validation: { isRequired: obligatoria },
+    }),
+  );
 const fotoInstituto = foto('instituto');
 const fotoSede = foto('sedes');
 const fotoPublico = foto('publicos');
@@ -61,7 +71,19 @@ const horarios = (description: string) =>
       [fields.nombre.value, fields.dias.value, fields.horas.value].filter(Boolean).join(', ') || 'Horario',
   });
 
-const url = (label: string, description?: string) => fields.url({ label, description });
+const url = (label: string, description?: string, obligatorio = false) =>
+  fields.url({ label, description, validation: { isRequired: obligatorio } });
+
+const email = (label: string) =>
+  fields.text({ label, validation: { isRequired: true, pattern: { regex: EMAIL, message: 'Tiene que ser un email válido, sin tildes ni espacios.' } } });
+
+// El slug es el nombre del archivo y lo que guardan las otras entradas que eligen
+// esta (la sede de un curso, los cursos de una novedad). Keystatic no actualiza
+// esas referencias si se cambia: la entrada deja de aparecer donde estaba elegida.
+const identificador = (link = '') => ({
+  label: 'Identificador (no cambiar)',
+  description: `Se completa solo al crear la entrada. Si se cambia, las secciones donde estaba elegida dejan de encontrarla${link}.`,
+});
 
 // Texto largo de la página propia de cada curso o novedad. Editor de texto
 // enriquecido limitado a lo que hace falta: párrafos, subtítulos, negrita,
@@ -130,7 +152,7 @@ export default config({
           multiline: true,
           validation: { isRequired: true },
         }),
-        hechos: fields.array(fields.text({ label: 'Hecho' }), {
+        hechos: fields.array(fields.text({ label: 'Hecho', validation: { isRequired: true } }), {
           label: 'Hechos destacados',
           description: 'Lista de la sección "La Academia". Solo datos verificables.',
           itemLabel: ({ value }) => value || 'Hecho',
@@ -155,10 +177,7 @@ export default config({
           },
           { label: 'Carga horaria (cifra grande de "La Academia")' },
         ),
-        email: fields.text({
-          label: 'Email general',
-          validation: { isRequired: true, pattern: { regex: /^[^@\s]+@[^@\s]+\.[^@\s]+$/, message: 'Tiene que ser un email válido.' } },
-        }),
+        email: email('Email general'),
         redes: fields.object(
           {
             facebook: url('Facebook', 'Link completo a la página.'),
@@ -182,8 +201,8 @@ export default config({
         ),
         formularios: fields.object(
           {
-            consultaGeneral: url('Formulario de consulta general', 'Google Forms. Es el "Pedir información" por defecto.'),
-            testDeNivel: url('Test de nivel online', 'Google Forms.'),
+            consultaGeneral: url('Formulario de consulta general', 'Google Forms. Es el "Pedir información" por defecto.', true),
+            testDeNivel: url('Test de nivel online', 'Google Forms.', true),
           },
           { label: 'Formularios' },
         ),
@@ -205,7 +224,7 @@ export default config({
           {
             titulo: fields.text({ label: 'Título principal', description: 'Máximo dos líneas en escritorio.', validation: { isRequired: true } }),
             bajada: fields.text({ label: 'Bajada', description: 'Máximo 20 palabras.', multiline: true, validation: { isRequired: true } }),
-            foto: conRecorte(fotoInstituto('Foto', 'Horizontal, al menos 1600 px de ancho.'), { proporcion: 4 / 3, donde: 'la portada' }),
+            foto: conRecorte(fotoInstituto('Foto', 'Horizontal, al menos 1600 px de ancho.', true), { proporcion: 4 / 3, donde: 'la portada' }),
             fotoAlt: fields.text({ label: 'Descripción de la foto', description: 'Para lectores de pantalla.', validation: { isRequired: true } }),
           },
           { label: 'Portada (hero)' },
@@ -253,7 +272,7 @@ export default config({
       slugField: 'nombre',
       columns: ['direccion'],
       schema: {
-        nombre: fields.slug({ name: { label: 'Nombre', description: 'Ej.: "Villa Urquiza".' } }),
+        nombre: fields.slug({ name: { label: 'Nombre', description: 'Ej.: "Villa Urquiza".' }, slug: identificador() }),
         orden: fields.integer({ label: 'Orden', defaultValue: 1, validation: { isRequired: true } }),
         direccion: fields.text({ label: 'Dirección', description: 'Calle y número.', validation: { isRequired: true } }),
         barrio: fields.text({ label: 'Barrio', validation: { isRequired: true } }),
@@ -273,10 +292,7 @@ export default config({
           ),
           { label: 'Teléfonos', itemLabel: ({ fields }) => fields.numero.value || 'Teléfono' },
         ),
-        email: fields.text({
-          label: 'Email de la sede',
-          validation: { isRequired: true, pattern: { regex: /^[^@\s]+@[^@\s]+\.[^@\s]+$/, message: 'Tiene que ser un email válido.' } },
-        }),
+        email: email('Email de la sede'),
         whatsapp: fields.object(
           {
             numero: fields.text({ label: 'Como se muestra', description: 'Ej.: "11 2838-2068".', validation: { isRequired: true } }),
@@ -304,7 +320,7 @@ export default config({
       slugField: 'nombre',
       columns: ['titulo'],
       schema: {
-        nombre: fields.slug({ name: { label: 'Nombre', description: 'Nombre corto de la pestaña. Ej.: "Niños".' } }),
+        nombre: fields.slug({ name: { label: 'Nombre', description: 'Nombre corto de la pestaña. Ej.: "Niños".' }, slug: identificador() }),
         orden: fields.integer({ label: 'Orden de la pestaña', defaultValue: 1, validation: { isRequired: true } }),
         ancla: fields.text({
           label: 'Ancla',
@@ -334,14 +350,14 @@ export default config({
       slugField: 'nombre',
       columns: ['publico', 'orden'],
       schema: {
-        nombre: fields.slug({ name: { label: 'Nombre', description: 'Ej.: "Elementary".' } }),
+        nombre: fields.slug({ name: { label: 'Nombre', description: 'Ej.: "Elementary".' }, slug: identificador(' y cambia el link de su página') }),
         publico: fields.relationship({ label: 'Público', collection: 'publicos', validation: { isRequired: true } }),
         orden: fields.integer({ label: 'Orden dentro del público', defaultValue: 1, validation: { isRequired: true } }),
         etiqueta: fields.text({ label: 'Etiqueta', description: 'Pill corta. Ej.: "Promocional", "B2".' }),
         para: fields.text({ label: 'Para quién', description: 'Ej.: "Chicos de segundo grado en adelante".', validation: { isRequired: true } }),
         descripcion: fields.text({ label: 'Descripción', description: 'Resumen corto para la portada.', multiline: true, validation: { isRequired: true } }),
         cuerpo: cuerpo('Se muestra en la página del curso (/cursos/...). Los datos de cursada, sedes y horarios se cargan abajo y se muestran solos.'),
-        niveles: fields.array(fields.text({ label: 'Nivel' }), {
+        niveles: fields.array(fields.text({ label: 'Nivel', validation: { isRequired: true } }), {
           label: 'Niveles',
           description: 'Ej.: Elementary 1, Elementary 2…',
           itemLabel: ({ value }) => value || 'Nivel',
@@ -359,7 +375,7 @@ export default config({
           ],
           defaultValue: 'presencial',
         }),
-        sedes: fields.array(fields.relationship({ label: 'Sede', collection: 'sedes' }), {
+        sedes: fields.array(fields.relationship({ label: 'Sede', collection: 'sedes', validation: { isRequired: true } }), {
           label: 'Sedes donde se dicta',
           description: 'Vacío si está por confirmar.',
           itemLabel: ({ value }) => value || 'Sede',
@@ -390,7 +406,7 @@ export default config({
       slugField: 'titulo',
       columns: ['tipo', 'vigente', 'periodo'],
       schema: {
-        titulo: fields.slug({ name: { label: 'Título', description: 'Ej.: "Inscripciones 2027".' } }),
+        titulo: fields.slug({ name: { label: 'Título', description: 'Ej.: "Inscripciones 2027".' }, slug: identificador(' y cambia el link de su página') }),
         tipo: fields.select({
           label: 'Tipo',
           options: [
@@ -409,7 +425,7 @@ export default config({
         periodo: fields.text({ label: 'Período', description: 'Como se muestra. Ej.: "Febrero 2027".', validation: { isRequired: true } }),
         desde: fields.date({ label: 'Desde' }),
         hasta: fields.date({ label: 'Hasta' }),
-        cursos: fields.array(fields.relationship({ label: 'Curso', collection: 'cursos' }), {
+        cursos: fields.array(fields.relationship({ label: 'Curso', collection: 'cursos', validation: { isRequired: true } }), {
           label: 'Cursos incluidos',
           itemLabel: ({ value }) => value || 'Curso',
         }),

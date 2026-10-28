@@ -11,7 +11,7 @@ import { Icon } from 'astro-icon/components';
 const instituto = await getEntry('instituto', 'instituto');
 if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
 const { cargaHoraria, hechos, descripcion, academia } = instituto.data;
-const sedesFoto = (await getEntries(academia?.sedes ?? [])).sort((a, b) => a.data.orden - b.data.orden);
+const sedesFoto = (await getEntries(academia?.sedes ?? [])).filter(Boolean).sort((a, b) => a.data.orden - b.data.orden);
 const nombresSedes = sedesFoto.map((s) => s.data.nombre).join(' y ');
 const fotoAlt = academia?.fotoAlt ?? (sedesFoto.length ? `Sede ${nombresSedes}` : 'Edificio de la Academia');
 ---

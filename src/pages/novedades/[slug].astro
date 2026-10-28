@@ -11,6 +11,7 @@ import Base from '../../layouts/Base.astro';
 import Boton from '../../components/Boton.astro';
 import Etiqueta from '../../components/Etiqueta.astro';
 import TituloAnimado from '../../components/TituloAnimado.astro';
+import { sedeParaWhatsapp } from '../../lib/sedes';
 
 export async function getStaticPaths() {
   const novedades = await getCollection('novedades', ({ data }) => data.vigente);
@@ -21,8 +22,7 @@ const d = novedad.data;
 
 const instituto = await getEntry('instituto', 'instituto');
 if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
-const sedeWhatsapp = await getEntry(instituto.data.whatsappPrincipal);
-if (!sedeWhatsapp) throw new Error('La sede del WhatsApp principal no existe');
+const sedeWhatsapp = await sedeParaWhatsapp();
 
 const cursos = (await Promise.all(d.cursos.map((ref) => getEntry(ref)))).flatMap((c) => (c ? [c] : []));
 const horarios = await Promise.all(

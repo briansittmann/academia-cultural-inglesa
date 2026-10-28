@@ -11,11 +11,11 @@ import { getEntry } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import Logo from './Logo.astro';
 import Boton from './Boton.astro';
+import { sedeParaWhatsapp } from '../lib/sedes';
 
 const instituto = await getEntry('instituto', 'instituto');
 if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
-const sede = await getEntry(instituto.data.whatsappPrincipal);
-if (!sede) throw new Error('La sede del WhatsApp principal no existe');
+const sede = await sedeParaWhatsapp();
 
 const whatsappUrl = `https://wa.me/${sede.data.whatsapp.internacional}?text=${encodeURIComponent(sede.data.whatsapp.mensaje ?? '')}`;
 

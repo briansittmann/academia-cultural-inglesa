@@ -3,6 +3,7 @@
  * Cursos de la portada y la página de cada curso.
  */
 import { getEntry, type CollectionEntry } from 'astro:content';
+import { sedeParaWhatsapp } from './sedes';
 
 /**
  * Ancla del panel de un público en la sección Cursos. Cambridge tiene sección
@@ -44,9 +45,7 @@ export function resumirNiveles(niveles: string[]) {
 export async function whatsappDelCurso(curso: CollectionEntry<'cursos'>) {
   const instituto = await getEntry('instituto', 'instituto');
   if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
-  const ref = curso.data.sedes.length === 1 ? curso.data.sedes[0] : instituto.data.whatsappPrincipal;
-  const sede = await getEntry(ref);
-  if (!sede) throw new Error(`La sede del WhatsApp de ${curso.id} no existe`);
+  const sede = await sedeParaWhatsapp(curso.data.sedes.length === 1 ? curso.data.sedes[0] : undefined);
   const texto = `Hola, vi la página de la ${instituto.data.nombre} y quiero información sobre el curso ${curso.data.nombre}.`;
   return {
     href: `https://wa.me/${sede.data.whatsapp.internacional}?text=${encodeURIComponent(texto)}`,

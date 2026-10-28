@@ -1,10 +1,18 @@
 import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { EMAIL } from './lib/validaciones';
 
 // Única fuente de verdad de los datos del instituto. Los componentes leen de acá
 // y el panel de Keystatic (keystatic.config.ts) edita estos mismos archivos: si se
 // agrega un campo, hay que sumarlo en los dos lados.
+
+// Lista que descarta los ítems vacíos: Keystatic guarda `null` cuando se agrega un
+// ítem y no se completa, y un solo null alcanza para que falle el build.
+const lista = <T extends z.ZodType>(item: T) =>
+  z.preprocess((v) => (Array.isArray(v) ? v.filter((x) => x != null && x !== '') : v), z.array(item));
+
+const email = z.string().regex(EMAIL, 'Email inválido');
 
 const telefono = z.object({
   numero: z.string(), // tal como se muestra: "011 4523-7660"
@@ -34,13 +42,13 @@ const instituto = defineCollection({
       fundacion: z.number().int(),
       bajada: z.string(), // una línea, para header/footer/OG
       descripcion: z.string(), // párrafo "Quiénes somos" reescrito
-      hechos: z.array(z.string()), // hechos verificables para "La Academia"
+      hechos: lista(z.string()).default([]), // hechos verificables para "La Academia"
       cargaHoraria: z.object({
         titulo: z.string(),
         detalle: z.array(z.object({ horasSemanales: z.number(), mesesExtra: z.number() })),
-        fuente: z.string(),
+        fuente: z.string().optional(), // nota interna
       }),
-      email: z.email(),
+      email,
       redes: z.object({
         facebook: z.url().optional(),
         // Desde el panel se puede escribir el link o solo "@usuario": se convierte al link del perfil.
@@ -82,7 +90,7 @@ const instituto = defineCollection({
         .object({
           foto: image().optional(),
           fotoAlt: z.string().optional(),
-          sedes: z.array(reference('sedes')).default([]),
+          sedes: lista(reference('sedes')).default([]),
         })
         .optional(),
       seo: z.object({
@@ -104,7 +112,7 @@ const sedes = defineCollection({
       ciudad: z.string(), // "CABA"
       codigoPostal: z.string().optional(),
       telefonos: z.array(telefono),
-      email: z.email(),
+      email,
       whatsapp,
       foto: image().optional(),
       fotoAlt: z.string().optional(),
@@ -139,13 +147,13 @@ const cursos = defineCollection({
     etiqueta: z.string().optional(), // pill corta: "Promocional", "B2", "Online o presencial"
     para: z.string(), // a quién va dirigido: "Chicos de 1er grado"
     descripcion: z.string(),
-    niveles: z.array(z.string()).default([]), // ["Elementary 1", ...]
+    niveles: lista(z.string()).default([]), // ["Elementary 1", ...]
     frecuencia: z.string().optional(), // "2 veces por semana"
     duracionClase: z.string().optional(), // "1 h 30"
     horasSemanales: z.number().optional(),
     periodo: z.string().optional(), // "Marzo a diciembre"
     modalidad: z.enum(['presencial', 'online', 'presencial-y-online']).default('presencial'),
-    sedes: z.array(reference('sedes')).default([]), // vacío = a confirmar
+    sedes: lista(reference('sedes')).default([]), // vacío = a confirmar
     horarios: z.array(horario).default([]), // horarios estables (los que cambian por ciclo van en novedades)
     certificado: z.string().optional(), // "Certificado por nivel aprobado"
     requiereTestDeNivel: z.boolean().default(false),
@@ -187,7 +195,7 @@ const novedades = defineCollection({
       periodo: z.string(), // texto para mostrar: "Febrero 2027"
       desde: z.coerce.date().optional(),
       hasta: z.coerce.date().optional(),
-      cursos: z.array(reference('cursos')).default([]),
+      cursos: lista(reference('cursos')).default([]),
       horarios: z.array(horario).default([]), // cohortes con fechas concretas
       foto: image().optional(), // foto de la tarjeta en la portada; si no hay, se usa el flyer
       flyer: image().optional(),

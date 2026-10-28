@@ -51,11 +51,9 @@ export async function armarCuestionario(): Promise<Bloque[]> {
         publicos.findIndex((p) => p.id === b.data.publico.id) ||
       a.data.orden - b.data.orden,
   );
-  const curso = (id: string) => {
-    const c = cursos.find((c) => c.id === id);
-    if (!c) throw new Error(`Falta el curso ${id}`);
-    return c.data;
-  };
+  // Si un curso ya no existe (se le cambió el identificador en el panel), la pregunta queda sin el dato de hoy.
+  const curso = (id: string): Partial<(typeof cursos)[number]["data"]> =>
+    cursos.find((c) => c.id === id)?.data ?? {};
   const sedeWhatsapp = sedes.find(
     (s) => s.id === instituto.data.whatsappPrincipal.id,
   );
@@ -82,7 +80,7 @@ export async function armarCuestionario(): Promise<Bloque[]> {
           tipo: "texto",
           titulo: "¿Y Kiddies? ¿Qué día empieza?",
           resumen: "Inicio de Kiddies",
-          hoy: `"${curso("kiddies").periodo}".`,
+          hoy: curso("kiddies").periodo ? `"${curso("kiddies").periodo}".` : undefined,
           placeholder: "Por ejemplo: sábado 10 de abril",
         },
         {

@@ -23,8 +23,9 @@ const d = curso.data;
 
 const instituto = await getEntry('instituto', 'instituto');
 if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
+// Si el público ya no existe (se borró o se le cambió el identificador en el panel), la
+// página se publica igual y el link de arriba vuelve a la sección Cursos.
 const publico = await getEntry(d.publico);
-if (!publico) throw new Error(`El curso ${curso.id} apunta a un público que no existe`);
 
 const sedes = (await Promise.all(d.sedes.map((ref) => getEntry(ref)))).flatMap((s) => (s ? [s.data.nombre] : []));
 const horarios = await Promise.all(
@@ -34,7 +35,7 @@ const novedades = (await getCollection('novedades', ({ data }) => data.vigente &
   (a, b) => a.data.orden - b.data.orden,
 );
 
-const formulario = d.formulario ?? publico.data.formulario ?? instituto.data.formularios.consultaGeneral;
+const formulario = d.formulario ?? publico?.data.formulario ?? instituto.data.formularios.consultaGeneral;
 const whatsapp = await whatsappDelCurso(curso);
 const modalidad = { presencial: 'Presencial', online: 'Online', 'presencial-y-online': 'Presencial u online' }[d.modalidad];
 const cursada = [d.frecuencia, d.duracionClase && `clases de ${d.duracionClase}`, d.horasSemanales && `${horas(d.horasSemanales)} h por semana`]
@@ -63,11 +64,11 @@ const cursoLd = {
     <header class="border-b border-borde/50 bg-verde-50/60">
       <div class="mx-auto max-w-6xl px-4 pt-8 pb-10 sm:px-6 lg:pt-12 lg:pb-14">
         <a
-          href={publico.id === 'cambridge' ? '/#cambridge' : `/#${anclaDelPanel(publico)}`}
+          href={!publico ? '/#cursos' : publico.id === 'cambridge' ? '/#cambridge' : `/#${anclaDelPanel(publico)}`}
           class="hero-eyebrow inline-flex items-center gap-1 rounded-control text-sm font-semibold text-verde-700 hover:text-verde-900"
         >
           <Icon name="material-symbols:arrow-back-rounded" class="size-4" aria-hidden="true" />
-          {publico.data.titulo}
+          {publico?.data.titulo ?? 'Cursos'}
         </a>
         <div class="mt-4 flex flex-wrap items-center gap-x-4 gap-y-2">
           <TituloAnimado as="h1" texto={d.nombre} retraso={80} class="text-[2.25rem] leading-[1.05] sm:text-5xl" />
