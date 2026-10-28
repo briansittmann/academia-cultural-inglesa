@@ -6,8 +6,8 @@ orden: 2
 eyebrow: Llegó el verano a la Cultural
 resumen: >-
   Tres propuestas intensivas en febrero 2027: English in Action, para hablar
-  inglés de verdad en tres semanas y media, Intensivo Starter e Inglés para
-  viajeros, presencial u online.
+  inglés de verdad en tres semanas y media, Intensivo Starter para principiantes
+  e Inglés para viajeros, presencial u online.
 periodo: Febrero 2027
 desde: 2026-12-01
 hasta: 2027-03-05
