@@ -10,7 +10,7 @@ resumen: >-
 periodo: Enero 2027 y Julio 2027
 cursos: []
 horarios: []
-flyer: ../../assets/img/novedades/viajes-estudios-a-uk/flyer.jpeg
+flyer: ../../assets/img/novedades/viajes-estudios-a-uk/flyer.png
 ---
 📣 **¡Gran Alianza para Viajes de Estudio al Reino Unido!** ✈️🇬🇧
 
