@@ -55,10 +55,8 @@ Este no es un curso de verano tradicional. Es un puente directo a tu cursada reg
 
 El curso está dirigido al nivel Inicial / Principiantes (Desde Cero) y se imparte en modalidad Presencial
 
-● Total de clases: Se realizarán 6 clases intensivas. Lunes y miércoles de 18:30 a 20:00 hs.
+● Total de clases: Se realizarán 6 clases intensivas.
 
 ● Duración por clase: Cada sesión tiene una duración de 1 hora y 30 minutos (1,5 hs).
 
 ● Inmersión total: El programa suma un total de 9 horas de inglés práctico.
-
-● Fechas de cursada (febrero/marzo 2027): Miércoles 10/02, lunes 15/02, miércoles 17/02, lunes 22/02, miércoles 24/02 y lunes 01/03.
