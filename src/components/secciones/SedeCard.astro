@@ -26,13 +26,16 @@ const whatsappUrl = `https://wa.me/${d.whatsapp.internacional}?text=${encodeURIC
     <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center" data-mapa-placeholder>
       <Icon name="material-symbols:location-on-outline" class="size-10 text-verde-700" aria-hidden="true" />
       <p class="text-sm text-tinta-suave">{direccionCompleta}</p>
+      {/* Al tocarlo, el texto se va y queda un spinner hasta que el mapa termina de cargar. */}
       <button
         type="button"
-        class="boton inline-flex min-h-10 items-center gap-2 rounded-control border border-verde-700 bg-white px-4 text-sm font-semibold text-verde-900 hover:bg-verde-50"
+        class="mapa-boton relative inline-flex min-h-10 items-center gap-2 rounded-control border border-verde-700 bg-white px-4 text-sm font-semibold text-verde-900 hover:bg-verde-50"
         data-mapa-boton
       >
-        Ver mapa
+        <span class="mapa-boton-texto">Ver mapa</span>
+        <span class="mapa-spinner" aria-hidden="true"></span>
       </button>
+      <span class="sr-only" role="status" data-mapa-estado></span>
     </div>
   </div>
 
@@ -78,3 +81,56 @@ const whatsappUrl = `https://wa.me/${d.whatsapp.internacional}?text=${encodeURIC
     </div>
   </div>
 </article>
+
+<style>
+  .mapa-boton {
+    transition:
+      transform 160ms var(--ease-out),
+      background-color 160ms var(--ease-out);
+  }
+  .mapa-boton:active {
+    transform: scale(0.97);
+  }
+  .mapa-boton-texto {
+    transition: opacity 150ms var(--ease-out);
+  }
+  .mapa-spinner {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: var(--radius-full);
+    border: 2px solid var(--color-verde-100);
+    border-top-color: var(--color-verde-700);
+    opacity: 0;
+    scale: 0.6;
+    transition:
+      opacity 200ms var(--ease-out),
+      scale 200ms var(--ease-out);
+  }
+  .mapa-boton[data-cargando] {
+    pointer-events: none;
+  }
+  .mapa-boton[data-cargando] .mapa-boton-texto {
+    opacity: 0;
+  }
+  .mapa-boton[data-cargando] .mapa-spinner {
+    opacity: 1;
+    scale: 1;
+    animation: mapa-gira 700ms linear infinite;
+  }
+  @keyframes mapa-gira {
+    to {
+      rotate: 360deg;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mapa-spinner {
+      scale: 1;
+    }
+    .mapa-boton[data-cargando] .mapa-spinner {
+      animation-duration: 1600ms;
+    }
+  }
+</style>

@@ -32,22 +32,42 @@ const sedes = (await getCollection('sedes')).sort((a, b) => a.data.orden - b.dat
 
 <script>
   // Carga diferida del mapa: el iframe de Google se inserta recién al pedirlo.
+  // Mientras carga, el botón muestra un spinner y el iframe queda invisible debajo;
+  // cuando termina, el mapa aparece con un fundido y recién ahí se va el aviso.
   function iniciarMapas() {
     document.querySelectorAll<HTMLElement>('[data-mapa]:not([data-listo])').forEach((caja) => {
       caja.dataset.listo = 'true';
-    caja.querySelector('[data-mapa-boton]')?.addEventListener('click', () => {
-      const iframe = document.createElement('iframe');
-      iframe.src = caja.dataset.src ?? '';
-      iframe.title = caja.dataset.titulo ?? 'Mapa';
-      iframe.loading = 'lazy';
-      iframe.referrerPolicy = 'no-referrer-when-downgrade';
-      iframe.allowFullscreen = true;
-      iframe.className = 'absolute inset-0 h-full w-full border-0';
-      // Se oculta en vez de borrarlo: astro-icon define cada símbolo SVG en su
-      // primera aparición y el resto de la página lo referencia desde ahí.
-      caja.querySelector<HTMLElement>('[data-mapa-placeholder]')?.setAttribute('hidden', '');
-      caja.appendChild(iframe);
-    });
+      const boton = caja.querySelector<HTMLButtonElement>('[data-mapa-boton]');
+      const estado = caja.querySelector<HTMLElement>('[data-mapa-estado]');
+      const aviso = caja.querySelector<HTMLElement>('[data-mapa-placeholder]');
+      boton?.addEventListener('click', () => {
+        if (boton.hasAttribute('data-cargando')) return;
+        boton.setAttribute('data-cargando', '');
+        boton.setAttribute('aria-disabled', 'true');
+        if (estado) estado.textContent = 'Cargando el mapa';
+
+        const iframe = document.createElement('iframe');
+        iframe.src = caja.dataset.src ?? '';
+        iframe.title = caja.dataset.titulo ?? 'Mapa';
+        iframe.referrerPolicy = 'no-referrer-when-downgrade';
+        iframe.allowFullscreen = true;
+        iframe.className = 'absolute inset-0 h-full w-full border-0 opacity-0 transition-opacity duration-300';
+
+        let mostrado = false;
+        const mostrar = () => {
+          if (mostrado) return;
+          mostrado = true;
+          iframe.classList.remove('opacity-0');
+          aviso?.classList.add('transition-opacity', 'duration-300', 'opacity-0');
+          // Se oculta en vez de borrarlo: astro-icon define cada símbolo SVG en su
+          // primera aparición y el resto de la página lo referencia desde ahí.
+          setTimeout(() => aviso?.setAttribute('hidden', ''), 300);
+        };
+        iframe.addEventListener('load', mostrar, { once: true });
+        // Si Google tarda demasiado o el evento no llega, se muestra igual.
+        setTimeout(mostrar, 10000);
+        caja.prepend(iframe);
+      });
     });
   }
   document.addEventListener('astro:page-load', iniciarMapas);
