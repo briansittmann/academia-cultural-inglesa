@@ -1,6 +1,6 @@
 ---
 nombre: Certificate in Advanced English
-publico: cambridge
+publico: adolescentes
 orden: 2
 etiqueta: C1
 para: Quienes quieren rendir el C1 Advanced de Cambridge
