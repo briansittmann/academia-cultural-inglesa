@@ -7,7 +7,8 @@
  * con el foco del teclado.
  * elegirSede: el botón abre el selector de sede (SelectorSede.astro) en vez de ir
  * directo al chat; si es un texto, es el mensaje precargado para cualquier sede.
- * Receta "button press" de motion-skills: solo transform, 160 ms, ease-out.
+ * Relieve (degradado, luz arriba, sombras): .boton en global.css.
+ * Receta "button press" de motion-skills: solo transform y translate, 160 ms, ease-out.
  */
 import { Icon } from 'astro-icon/components';
 
@@ -23,12 +24,13 @@ const { href, variante = 'primario', icono, externo = false, elegirSede = false,
 
 const base =
   'boton inline-flex min-h-12 items-center justify-center gap-2 rounded-control px-5 font-semibold whitespace-nowrap no-underline';
+// Fondo, sombras y hover del relieve: .boton-* en global.css.
 const variantes = {
-  primario: 'bg-verde-700 text-white hover:bg-verde-900',
-  secundario: 'border border-borde bg-white text-verde-900 hover:border-verde-700 hover:bg-verde-50',
-  whatsapp: 'bg-whatsapp text-tinta hover:bg-[#1fb857]',
+  primario: 'boton-primario text-white',
+  secundario: 'boton-claro border border-borde text-verde-900 hover:border-verde-700',
+  whatsapp: 'boton-whatsapp text-tinta',
   'whatsapp-borde':
-    'border border-borde bg-white text-verde-900 hover:border-whatsapp hover:bg-whatsapp hover:text-tinta focus-visible:border-whatsapp focus-visible:bg-whatsapp focus-visible:text-tinta',
+    'boton-claro boton-whatsapp-borde border border-borde text-verde-900 hover:border-whatsapp hover:text-tinta focus-visible:border-whatsapp focus-visible:text-tinta',
 };
 ---
 
@@ -49,17 +51,16 @@ const variantes = {
   .boton {
     transition:
       transform 160ms var(--ease-out),
-      background-color 160ms var(--ease-out),
+      translate 160ms var(--ease-out),
       border-color 160ms var(--ease-out),
       color 160ms var(--ease-out);
   }
   .boton:active {
     transform: scale(0.97);
   }
-  /* El hover solo cambia color (ya está en las clases); se gata para no quedar pegado en touch. */
+  /* El hover de borde y texto está en las clases; se gata para no quedar pegado en touch. */
   @media not ((hover: hover) and (pointer: fine)) {
     .boton:hover:not(:focus-visible) {
-      background-color: revert-layer;
       border-color: revert-layer;
       color: revert-layer;
     }

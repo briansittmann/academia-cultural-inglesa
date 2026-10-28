@@ -68,7 +68,7 @@ const examenPorNivel = new Map(
                 <li
                   class:list={[
                     'sube flex min-w-0 flex-col rounded-control border px-3 py-2.5',
-                    examen ? 'border-dorado-600 bg-white text-verde-900' : 'border-white/15 bg-white/5 text-verde-100',
+                    examen ? 'relieve relieve-dorado border-dorado-600 text-verde-900' : 'relieve relieve-tenue border-white/15 text-verde-100',
                   ]}
                   style={`--i: ${3.5 + i * 0.5}`}
                 >
@@ -88,7 +88,7 @@ const examenPorNivel = new Map(
     <ol class="mt-12 grid gap-5 lg:mt-14 lg:grid-cols-2 lg:gap-6" data-reveal>
       {
         examenes.map(({ curso, horarios }, i) => (
-          <li class="sube flex flex-col rounded-card bg-white p-6 text-tinta shadow-card sm:p-8" style={`--i: ${i * 1.2}`}>
+          <li class="sube relieve relieve-tarjeta flex flex-col rounded-card p-6 text-tinta sm:p-8" style={`--i: ${i * 1.2}`}>
             {/* Nombre a la izquierda y el nivel en dorado a la derecha; el texto usa todo el ancho. */}
             <div class="flex items-start justify-between gap-4">
               <div class="min-w-0">
@@ -97,7 +97,7 @@ const examenPorNivel = new Map(
                   <span class="sr-only">Examen: </span>{curso.data.cambridge?.examen}
                 </p>
               </div>
-              <div class="sello flex size-[4.5rem] shrink-0 flex-col items-center justify-center rounded-control bg-dorado-600/15 text-dorado-800" style={`--i: ${i}`} aria-hidden="true">
+              <div class="sello flex size-[4.5rem] shrink-0 flex-col items-center justify-center rounded-control relieve relieve-sello text-dorado-800" style={`--i: ${i}`} aria-hidden="true">
                 <span class="text-3xl font-bold leading-none tracking-tight tabular-nums">{curso.data.cambridge?.nivelMcer}</span>
                 <span class="mt-1 text-[10px] font-semibold tracking-wide uppercase">Nivel</span>
               </div>

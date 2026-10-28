@@ -45,7 +45,7 @@ const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.d
                 aria-selected={i === 0 ? 'true' : 'false'}
                 aria-controls={anclaDelPanel(p)}
                 tabindex={i === 0 ? 0 : -1}
-                class="shrink-0 rounded-full border border-borde bg-white px-5 py-2.5 text-sm font-semibold text-tinta-suave hover:border-verde-700 hover:text-verde-900 aria-selected:border-verde-700 aria-selected:bg-verde-700 aria-selected:text-white [.js_&]:aria-selected:border-borde [.js_&]:aria-selected:bg-white [.js_&]:aria-selected:text-tinta-suave"
+                class="relieve boton-claro shrink-0 rounded-full border border-borde px-5 py-2.5 text-sm font-semibold text-tinta-suave hover:border-verde-700 hover:text-verde-900 aria-selected:border-verde-700 aria-selected:text-white [.js_&]:aria-selected:border-borde [.js_&]:aria-selected:text-tinta-suave"
                 data-tab
               >
                 {p.data.nombre}
@@ -57,7 +57,7 @@ const cursos = (await getCollection('cursos')).sort((a, b) => a.data.orden - b.d
         <div class="tabs-copia pointer-events-none absolute inset-0 hidden gap-2 [.js_&]:flex" aria-hidden="true" data-tabs-copia>
           {
             publicos.map((p) => (
-              <span class="shrink-0 rounded-full border border-verde-700 bg-verde-700 px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-white">
+              <span class="relieve boton-primario shrink-0 rounded-full border border-verde-700 px-5 py-2.5 text-sm font-semibold whitespace-nowrap text-white">
                 {p.data.nombre}
               </span>
             ))

@@ -206,9 +206,10 @@ header[data-compacto] {
     translate: 4px 0;
   }
 }
-/* Indicador de tabs (receta): copia activa recortada con clip-path. */
+/* Indicador de tabs (receta): copia activa recortada con clip-path. Arriba y abajo
+   el recorte se pasa unos píxeles para no cortar la sombra del relieve. */
 .tabs-copia {
-  clip-path: inset(0 var(--clip-der, 100%) 0 var(--clip-izq, 0) round var(--radius-full));
+  clip-path: inset(-6px var(--clip-der, 100%) -12px var(--clip-izq, 0) round var(--radius-full));
   transition: clip-path 250ms var(--ease-in-out);
 }
 

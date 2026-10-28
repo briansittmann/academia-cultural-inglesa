@@ -13,6 +13,7 @@
 
   --color-verde-900: #1B4321; /* títulos, banda Cambridge, footer */
   --color-verde-700: #2E6B34; /* primario: botones, links, íconos */
+  --color-verde-600: #3A7F41; /* arriba del degradado de los botones (texto blanco: 4,9:1) */
   --color-verde-100: #E5F1E4; /* tinte de sección, chips */
   --color-verde-50: #F1FDEF;  /* tinte suave */
   --color-crema: #FBFBF9;     /* fondo de página */
@@ -22,6 +23,8 @@
   --color-tinta-suave: #41493F;  /* texto secundario */
   --color-borde: #C0C9BC;        /* bordes, divisores */
   --color-whatsapp: #25D366;     /* solo botones de WhatsApp */
+  --color-whatsapp-claro: #3EDB7A;  /* arriba del degradado */
+  --color-whatsapp-oscuro: #1FB857; /* hover */
 
   /* Tipografía: una sola familia, variable, alojada en el proyecto (Fontsource). */
   --font-*: initial;
@@ -45,6 +48,17 @@
   --shadow-card: 0 4px 16px rgba(46, 107, 52, 0.06);
   --shadow-card-hover: 0 8px 24px rgba(46, 107, 52, 0.10);
   --shadow-flotante: 0 16px 48px rgba(20, 30, 22, 0.18); /* paneles que flotan sobre la página (selector de sede) */
+  /* Botones con relieve: luz arriba, sombra interior abajo, sombra de contacto y sombra del color del botón. */
+  --shadow-boton: inset 0 1px 0 rgb(255 255 255 / 0.2), inset 0 -1px 0 rgb(0 0 0 / 0.15), 0 1px 2px rgb(20 30 22 / 0.15), 0 4px 12px -4px rgb(46 107 52 / 0.3);
+  --shadow-boton-whatsapp: inset 0 1px 0 rgb(255 255 255 / 0.3), inset 0 -1px 0 rgb(0 0 0 / 0.08), 0 1px 2px rgb(20 30 22 / 0.12), 0 4px 12px -4px rgb(31 184 87 / 0.3);
+  --shadow-boton-claro: inset 0 1px 0 #ffffff, inset 0 -1px 0 rgb(20 30 22 / 0.04), 0 1px 2px rgb(20 30 22 / 0.05), 0 3px 8px -4px rgb(46 107 52 / 0.12);
+  --shadow-boton-hundido: inset 0 2px 3px rgb(0 0 0 / 0.18); /* al apretar */
+  --shadow-boton-hundido-claro: inset 0 2px 3px rgb(20 30 22 / 0.08);
+  /* Mismo lenguaje en lo que no es botón (sin hover ni hundido), sobre el verde oscuro de Cambridge. */
+  --shadow-tarjeta-oscuro: 0 1px 2px rgb(0 0 0 / 0.2), 0 12px 32px -12px rgb(0 0 0 / 0.45);
+  --shadow-relieve-dorado: inset 0 1px 0 #ffffff, inset 0 -1px 0 rgb(123 88 0 / 0.12), 0 1px 2px rgb(0 0 0 / 0.25), 0 6px 14px -6px rgb(0 0 0 / 0.4);
+  --shadow-relieve-tenue: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  --shadow-sello: inset 0 1px 0 rgb(255 255 255 / 0.7), inset 0 -1px 0 rgb(123 88 0 / 0.15), 0 1px 2px rgb(123 88 0 / 0.15);
 
   /* Duraciones: UI por debajo de 300 ms. */
   --default-transition-duration: 200ms;
@@ -125,6 +139,94 @@
   }
   .prosa a:hover {
     @apply text-verde-900;
+  }
+
+  /*
+    Relieve: degradado vertical, luz y sombra interiores y sombra de color. Lo usan
+    los botones (Boton.astro) y, con .relieve, lo que tiene que combinar con ellos
+    sin comportarse como botón (pestañas de Cursos, tarjetas de Cambridge).
+    En los botones, un degradado no se puede animar, así que el hover lo pinta una
+    capa (::before) que aparece por opacidad. Al apretar, el botón baja 1 px y la
+    sombra pasa adentro.
+  */
+  .boton,
+  .relieve {
+    background-image: var(--relieve-fondo);
+    box-shadow: var(--relieve-sombra);
+  }
+  .boton {
+    position: relative;
+    isolation: isolate;
+  }
+  .boton::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background-image: var(--relieve-fondo-hover);
+    opacity: 0;
+    transition: opacity 160ms var(--ease-out);
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .boton:hover::before {
+      opacity: 1;
+    }
+  }
+  .boton:active {
+    translate: 0 1px;
+    box-shadow: var(--relieve-sombra-hundido);
+  }
+  .boton-primario {
+    --relieve-fondo: linear-gradient(var(--color-verde-600), var(--color-verde-700));
+    --relieve-fondo-hover: linear-gradient(var(--color-verde-700), var(--color-verde-900));
+    --relieve-sombra: var(--shadow-boton);
+    --relieve-sombra-hundido: var(--shadow-boton-hundido);
+  }
+  .boton-whatsapp {
+    --relieve-fondo: linear-gradient(var(--color-whatsapp-claro), var(--color-whatsapp));
+    --relieve-fondo-hover: linear-gradient(var(--color-whatsapp), var(--color-whatsapp-oscuro));
+    --relieve-sombra: var(--shadow-boton-whatsapp);
+    --relieve-sombra-hundido: var(--shadow-boton-hundido);
+  }
+  /* Blancos con borde: secundario y whatsapp-borde (este se rellena de WhatsApp al pasar el mouse o con el foco). */
+  .boton-claro {
+    --relieve-fondo: linear-gradient(var(--color-white), var(--color-verde-50));
+    --relieve-fondo-hover: linear-gradient(var(--color-verde-50), var(--color-verde-100));
+    --relieve-sombra: var(--shadow-boton-claro);
+    --relieve-sombra-hundido: var(--shadow-boton-hundido-claro);
+  }
+  .boton-claro.boton-whatsapp-borde {
+    --relieve-fondo-hover: linear-gradient(var(--color-whatsapp-claro), var(--color-whatsapp));
+  }
+  .boton-whatsapp-borde:focus-visible::before {
+    opacity: 1;
+  }
+  /* Pestaña elegida sin JS (con JS la pinta la copia de .tabs-copia). */
+  html:not(.js) .relieve[aria-selected='true'] {
+    --relieve-fondo: linear-gradient(var(--color-verde-600), var(--color-verde-700));
+    --relieve-sombra: var(--shadow-boton);
+  }
+
+  /* Cambridge, sobre el verde oscuro: tarjeta de examen, celdas de la escala y sello del nivel. */
+  .relieve-tarjeta {
+    --relieve-fondo: linear-gradient(var(--color-white) 60%, var(--color-crema));
+    --relieve-sombra: var(--shadow-tarjeta-oscuro);
+  }
+  .relieve-dorado {
+    --relieve-fondo: linear-gradient(var(--color-white), color-mix(in oklab, var(--color-dorado-600) 8%, var(--color-white)));
+    --relieve-sombra: var(--shadow-relieve-dorado);
+  }
+  .relieve-tenue {
+    --relieve-fondo: linear-gradient(rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.03));
+    --relieve-sombra: var(--shadow-relieve-tenue);
+  }
+  .relieve-sello {
+    --relieve-fondo: linear-gradient(
+      color-mix(in oklab, var(--color-dorado-600) 24%, var(--color-white)),
+      color-mix(in oklab, var(--color-dorado-600) 14%, var(--color-white))
+    );
+    --relieve-sombra: var(--shadow-sello);
   }
 
   /* Tarjetas que son un link entero: borde y sombra al pasar el mouse. */
