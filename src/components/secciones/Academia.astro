@@ -5,14 +5,15 @@
  * párrafo corto. Layout asimétrico, sin cards.
  */
 import { Image } from 'astro:assets';
-import { getEntry } from 'astro:content';
+import { getEntries, getEntry } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 
 const instituto = await getEntry('instituto', 'instituto');
 if (!instituto) throw new Error('Falta src/content/instituto/instituto.yaml');
 const { cargaHoraria, hechos, descripcion, academia } = instituto.data;
-const sedeFoto = academia?.sede ? await getEntry(academia.sede) : undefined;
-const fotoAlt = academia?.fotoAlt ?? (sedeFoto ? `Fachada de la sede ${sedeFoto.data.nombre}` : 'Edificio de la Academia');
+const sedesFoto = (await getEntries(academia?.sedes ?? [])).sort((a, b) => a.data.orden - b.data.orden);
+const nombresSedes = sedesFoto.map((s) => s.data.nombre).join(' y ');
+const fotoAlt = academia?.fotoAlt ?? (sedesFoto.length ? `Sede ${nombresSedes}` : 'Edificio de la Academia');
 ---
 
 <section id="nosotros" class="scroll-mt-16 py-16 lg:py-24">
@@ -72,12 +73,16 @@ const fotoAlt = academia?.fotoAlt ?? (sedeFoto ? `Fachada de la sede ${sedeFoto.
                   class="aspect-[4/3] w-full object-cover object-[center_55%] sm:aspect-[16/10]"
                 />
               </div>
-              {sedeFoto && (
-                <figcaption class="sube mt-3 flex items-center gap-2 text-sm text-tinta-suave" style="--i: 5">
-                  <Icon name="material-symbols:location-on-outline" class="size-4 shrink-0 text-verde-700" aria-hidden="true" />
-                  <span>
-                    <span class="font-semibold text-verde-900">Sede {sedeFoto.data.nombre}</span>, {sedeFoto.data.direccion}
-                  </span>
+              {sedesFoto.length > 0 && (
+                <figcaption class="sube mt-3 flex flex-wrap gap-x-6 gap-y-1.5 text-sm text-tinta-suave" style="--i: 5">
+                  {sedesFoto.map((s) => (
+                    <span class="flex items-center gap-2">
+                      <Icon name="material-symbols:location-on-outline" class="size-4 shrink-0 text-verde-700" aria-hidden="true" />
+                      <span>
+                        <span class="font-semibold text-verde-900">Sede {s.data.nombre}</span>, {s.data.direccion}
+                      </span>
+                    </span>
+                  ))}
                 </figcaption>
               )}
             </figure>

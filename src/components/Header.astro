@@ -19,12 +19,13 @@ if (!sede) throw new Error('La sede del WhatsApp principal no existe');
 
 const whatsappUrl = `https://wa.me/${sede.data.whatsapp.internacional}?text=${encodeURIComponent(sede.data.whatsapp.mensaje ?? '')}`;
 
-// Anclas con "/" adelante para que funcionen también desde /cursos/... y /novedades/...
+// Anclas en el orden de las secciones de la portada, con "/" adelante para que
+// funcionen también desde /cursos/... y /novedades/...
 const anclas = [
   { href: '/#cursos', texto: 'Cursos' },
   { href: '/#cambridge', texto: 'Cambridge' },
-  { href: '/#sedes', texto: 'Sedes' },
   { href: '/#nosotros', texto: 'Nosotros' },
+  { href: '/#sedes', texto: 'Sedes' },
 ];
 ---
 

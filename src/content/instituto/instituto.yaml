@@ -90,9 +90,11 @@ hero:
 academia:
   foto: ../../assets/img/instituto/academia/foto.jpeg
   fotoAlt: >-
-    Fachada blanca de estilo inglés de la sede Villa Urquiza, con techos de
-    pizarra, el cartel verde de Cultural Inglesa y la reja de entrada.
-  sede: villa-urquiza
+    Fotos de las dos sedes: arriba, la fachada blanca de estilo inglés y el hall
+    de Villa Urquiza; abajo, la esquina de Villa del Parque y su recepción.
+  sedes:
+    - villa-urquiza
+    - villa-del-parque
 seo:
   titulo: Academia Cultural Inglesa | Inglés en Villa Urquiza y Villa del Parque
   descripcion: >-

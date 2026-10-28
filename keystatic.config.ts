@@ -217,10 +217,10 @@ export default config({
               { proporcion: 16 / 10, donde: 'La Academia', guia: { proporcion: 4 / 3, texto: 'lo que se ve en el celular' } },
             ),
             fotoAlt: fields.text({ label: 'Descripción de la foto', description: 'Para lectores de pantalla. Qué se ve en la foto.' }),
-            sede: fields.relationship({
-              label: 'Sede de la foto',
+            sedes: fields.multiRelationship({
+              label: 'Sedes de la foto',
               collection: 'sedes',
-              description: 'Opcional. Muestra la dirección de la sede debajo de la foto.',
+              description: 'Opcional. Las sedes que se ven en la foto: debajo aparecen su nombre y dirección.',
             }),
           },
           { label: 'Foto de "La Academia"' },
