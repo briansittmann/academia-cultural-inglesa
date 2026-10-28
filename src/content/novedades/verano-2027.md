@@ -38,6 +38,4 @@ Diseñamos un curso intensivo y corto, ideal para aprovechar el verano. El objet
 
 ## Inglés para viajeros
 
-Práctica inmediata para desenvolverte en aeropuertos, hoteles y restaurantes. Presencial en Villa del Parque (seis clases) u online (cuatro clases).
-
-Las fechas y los horarios se publican en esta misma página cuando abre la inscripción. Antes de anotarte, hacé el test de nivel online gratuito.
+Práctica inmediata para desenvolverte en aeropuertos, hoteles y restaurantes. Presencial y online
