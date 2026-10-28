@@ -24,11 +24,11 @@ pendiente: >-
 ---
 Tres propuestas intensivas para febrero 2027, pensadas para adultos que quieren activar el inglés en pocas semanas.
 
-## English in Action
+## English in Action verano
 
 Seis clases para hablar inglés de verdad: comprensión oral, conversación, vocabulario práctico y pronunciación. Dos grupos, de Pre-Intermediate a Advanced, con certificado al aprobar.
 
-## Curso Intensivo Starter
+## Curso Intensivo verano Starter
 
 Curso de Febrero para Principiantes (Desde Cero)
 
@@ -36,6 +36,6 @@ Curso de Febrero para Principiantes (Desde Cero)
 
 Diseñamos un curso intensivo y corto, ideal para aprovechar el verano. El objetivo es claro: darte las herramientas de gramática y conversación que necesitás para arrancar el Nivel Elemental en marzo con total confianza.
 
-## Inglés para viajeros
+## Inglés para viajeros verano
 
 Práctica inmediata para desenvolverte en aeropuertos, hoteles y restaurantes. Presencial y online
