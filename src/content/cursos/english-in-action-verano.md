@@ -15,7 +15,8 @@ duracionClase: 1 h 30
 horasSemanales: 3
 periodo: Febrero
 modalidad: presencial
-sedes: []
+sedes:
+  - villa-urquiza
 horarios: []
 certificado: Certificado por nivel cursado y aprobado
 requiereTestDeNivel: true
