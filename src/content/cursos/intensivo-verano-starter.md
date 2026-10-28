@@ -15,7 +15,7 @@ descripcion: >-
 niveles: []
 frecuencia: 2 veces por semana
 duracionClase: 1h 30 minutos
-horasSemanales: 2
+horasSemanales: 3
 periodo: Febrero 2027
 modalidad: presencial
 sedes:
