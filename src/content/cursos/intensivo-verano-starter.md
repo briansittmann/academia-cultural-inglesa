@@ -28,7 +28,7 @@ cambridge:
 ---
 ¡ARRANCÁ INGLÉS ESTE VERANO!
 
-Curso Nivelador de Febrero para Principiantes (Desde Cero)
+Curso para Principiantes (Desde Cero)
 
 ¿Siempre quisiste empezar inglés, pero no sabías cuándo? ¡Febrero es el momento perfecto!
 
