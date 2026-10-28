@@ -5,7 +5,7 @@ orden: 1
 etiqueta: Conversación
 para: Adultos de nivel Pre-Intermediate a Advanced
 descripcion: >-
-  Siete clases intensivas en tres semanas y media para activar el inglés hablado:
+  Seis clases intensivas en tres semanas y media para activar el inglés hablado:
   comprensión oral, conversación fluida, vocabulario práctico y pronunciación.
 niveles:
   - Pre-Intermediate / Intermediate
@@ -14,12 +14,15 @@ frecuencia: 2 veces por semana
 duracionClase: 1 h 30
 periodo: Febrero
 modalidad: presencial
+sedes: []
+horarios: []
 certificado: Certificado por nivel cursado y aprobado
 requiereTestDeNivel: true
+cambridge:
+  discriminant: false
 formulario: https://forms.gle/C66ruMBPgGZSJ2k5A
 pendiente: Confirmar sede (la web no la indica) y fechas de febrero 2027.
 ---
-
 ¡El curso que te pone a hablar inglés de verdad! Dejá atrás la teoría y activá tu inglés en solo tres semanas y media con un programa intensivo diseñado para la fluidez real.
 
 ## Qué vas a lograr
