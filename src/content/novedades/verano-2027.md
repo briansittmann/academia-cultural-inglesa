@@ -13,6 +13,7 @@ desde: 2026-12-01
 hasta: 2027-03-05
 cursos:
   - english-in-action-verano
+  - intensivo-verano-starter
   - viajeros
 horarios: []
 foto: ../../assets/img/novedades/verano-2027/foto.png
