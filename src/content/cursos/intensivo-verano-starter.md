@@ -1,6 +1,6 @@
 ---
 nombre: Intensivo verano Starter
-publico: adultos
+publico: verano
 orden: 2
 etiqueta: Intensivo starter
 para: Curso para adultos principiantes (desde cero)
