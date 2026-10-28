@@ -1,5 +1,5 @@
 ---
-nombre: English in Action intensivo
+nombre: English in Action intensivo verano
 publico: verano
 orden: 1
 etiqueta: Conversación
