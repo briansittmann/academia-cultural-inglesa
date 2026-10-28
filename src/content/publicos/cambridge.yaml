@@ -1,10 +1,11 @@
 nombre: Cambridge
 orden: 5
 ancla: cambridge
-enTabs: false
+enTabs: true
 titulo: Certificados internacionales de Cambridge
 descripcion: >-
-  Cursos anuales de preparación para los exámenes B2 First (FCE) y C1 Advanced (CAE).
-  Somos sede de estos exámenes internacionales y tenemos un altísimo porcentaje de
-  alumnos aprobados.
-formulario: https://docs.google.com/forms/d/e/1FAIpQLSel4t4Y3Rq4crfxrmPUxc1NbqpaO2anLAELX4ajbbrWd4BbdA/viewform
+  Cursos anuales de preparación para los exámenes B2 First (FCE) y C1 Advanced
+  (CAE). Somos sede de estos exámenes internacionales y tenemos un altísimo
+  porcentaje de alumnos aprobados.
+formulario: >-
+  https://docs.google.com/forms/d/e/1FAIpQLSel4t4Y3Rq4crfxrmPUxc1NbqpaO2anLAELX4ajbbrWd4BbdA/viewform
