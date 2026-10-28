@@ -36,7 +36,7 @@ Mejorá tu nivel de inglés de una forma rápida y con la mejor calidad. Los mó
 ## Cómo funciona
 
 - Los estudiantes se dividen por nivel: Starter, Elementary, Pre-Intermediate, Intermediate, Upper-Intermediate y Advanced.
-- Cada módulo dura cinco meses, de agosto a diciembre.
+- Cada módulo dura cinco meses, de Marzo a Julio / Agosto a Diciembre.
 - Una vez por semana, clases de dos horas, en la sede Villa Urquiza.
 - Al finalizar cada módulo se entrega el certificado del nivel cursado.
 
