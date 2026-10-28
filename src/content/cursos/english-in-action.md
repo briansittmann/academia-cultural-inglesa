@@ -1,28 +1,32 @@
 ---
-nombre: English in Action
+nombre: English in Action - Conversation
 publico: adultos
 orden: 2
 etiqueta: Conversación
 para: Adultos que ya tienen base y quieren hablar
 descripcion: >-
-  El curso que te pone a hablar inglés de verdad: videos, podcasts y series reales,
-  debates, role-plays y situaciones cotidianas, vocabulario que sí se usa y trucos de
-  pronunciación. Grupos reducidos.
+  El curso que te pone a hablar inglés de verdad: videos, podcasts y series
+  reales, debates, role-plays y situaciones cotidianas, vocabulario que sí se
+  usa y trucos de pronunciación. Grupos reducidos.
 niveles:
   - Level 1 (Pre-Intermediate / Intermediate)
   - Level 2 (Upper-Intermediate / Advanced)
 frecuencia: 1 vez por semana
 duracionClase: 1 h 30
-periodo: Agosto a diciembre
+horasSemanales: 1.5
+periodo: Marzo a Julio / Agosto a Diciembre
 modalidad: presencial
 sedes:
   - villa-urquiza
+horarios: []
 requiereTestDeNivel: true
+cambridge:
+  discriminant: false
 formulario: https://forms.gle/JmiupbaWCr5FQ5fx8
 pendiente: >-
-  La web dice 1 h 30 pero Level 1 figura de 19:30 a 21:30 (2 h). Confirmar duración.
+  La web dice 1 h 30 pero Level 1 figura de 19:30 a 21:30 (2 h). Confirmar
+  duración.
 ---
-
 ¡El curso que te pone a hablar inglés de verdad! Un programa intensivo diseñado para la fluidez real, en grupos reducidos.
 
 ## Qué vas a lograr
