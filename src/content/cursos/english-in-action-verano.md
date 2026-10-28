@@ -12,6 +12,7 @@ niveles:
   - Upper-Intermediate / Advanced
 frecuencia: 2 veces por semana
 duracionClase: 1 h 30
+horasSemanales: 3
 periodo: Febrero
 modalidad: presencial
 sedes: []
