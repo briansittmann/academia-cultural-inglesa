@@ -226,7 +226,34 @@ header[data-compacto] {
 
 /* ---------- Novedades: la tarjeta sube, la foto se descubre y el texto entra en cascada ---------- */
 /* Demoras según --n (orden de la tarjeta) y --j (línea dentro de la tarjeta). El hover
-   usa `scale` y `translate`, propiedades aparte de la entrada, para no heredar su demora. */
+   usa `scale` y `translate`, propiedades aparte de la entrada, para no heredar su demora.
+   Cada tarjeta tiene su propio data-reveal: el contenido espera a la tarjeta y a la sección. */
+.novedad-tarjeta {
+  transition:
+    opacity 500ms var(--ease-out),
+    transform 700ms var(--ease-out);
+}
+/* Celular: una columna; cada tarjeta entra sola desde la izquierda al llegar a la pantalla. */
+@media (max-width: 47.99rem) {
+  .novedad-tarjeta {
+    --n: 0;
+  }
+  .js .novedad-tarjeta:not([data-visible]) {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+}
+/* Desde md: suben todas juntas con la sección, en cascada. */
+@media (min-width: 48rem) {
+  .novedad-tarjeta {
+    --n: var(--orden, 0);
+    transition-delay: calc(var(--i, 0) * 100ms);
+  }
+  .js [data-reveal]:not([data-visible]) .novedad-tarjeta {
+    opacity: 0;
+    transform: translateY(32px);
+  }
+}
 .novedad-foto {
   clip-path: inset(0 0 0 0 round var(--radius-control));
   transition: clip-path 800ms var(--ease-in-out) calc(250ms + var(--n, 0) * 150ms);
@@ -498,7 +525,14 @@ header[data-compacto] {
     transform: none;
     scale: none;
   }
-  /* Novedades: la foto y el texto aparecen con un fundido, sin telón, cascada ni zoom. */
+  /* Novedades: tarjeta, foto y texto aparecen con un fundido, sin desplazamiento, telón ni zoom. */
+  .novedad-tarjeta {
+    transition: opacity 300ms var(--ease-out);
+  }
+  .js .novedad-tarjeta:not([data-visible]),
+  .js [data-reveal]:not([data-visible]) .novedad-tarjeta {
+    transform: none;
+  }
   .novedad-foto {
     transition: opacity 400ms var(--ease-out);
   }

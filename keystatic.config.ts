@@ -310,6 +310,16 @@ export default config({
         formulario: url('Formulario "Pedir información"', 'Google Forms para los cursos de este público.'),
         foto: fotoPublico('Foto', 'Formato 4:3 o 4:5.'),
         fotoAlt: fields.text({ label: 'Descripción de la foto' }),
+        fotoEncuadre: fields.select({
+          label: 'Encuadre de la foto',
+          description: 'En la computadora la foto se recorta vertical: elegí qué parte se ve si es apaisada.',
+          options: [
+            { label: 'Izquierda', value: 'izquierda' },
+            { label: 'Centro', value: 'centro' },
+            { label: 'Derecha', value: 'derecha' },
+          ],
+          defaultValue: 'centro',
+        }),
       },
     }),
 
