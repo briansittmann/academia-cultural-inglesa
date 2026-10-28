@@ -17,7 +17,14 @@ periodo: Febrero
 modalidad: presencial
 sedes:
   - villa-urquiza
-horarios: []
+horarios:
+  - nombre: Level Pre intermediate / Intermediate
+    sede: villa-urquiza
+    dias: 'Lunes y Miércoles '
+    horas: 18.30 a 20.00 hs
+    fechas: >-
+      Fechas de cursada (febrero/marzo 2027): Miércoles 10/02, lunes 15/02,
+      miércoles 17/02, lunes 22/02, miércoles 24/02 y lunes 01/03.
 certificado: Certificado por nivel cursado y aprobado
 requiereTestDeNivel: true
 cambridge:
