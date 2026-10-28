@@ -1,23 +1,27 @@
 ---
-nombre: Inglés para viajeros
+nombre: Inglés para viajeros verano
 publico: verano
 orden: 2
-etiqueta: Presencial u online
+etiqueta: Online
 para: Adultos que quieren viajar y comunicarse sin miedo
 descripcion: >-
   Práctica inmediata para desenvolverte en aeropuertos, hoteles, restaurantes y
-  cualquier situación de viaje. Presencial en Villa del Parque, dos veces por semana,
-  u online una vez por semana.
+  cualquier situación de viaje. Presencial en Villa del Parque, dos veces por
+  semana, u online una vez por semana.
+niveles: []
 frecuencia: 2 veces por semana (presencial) o 1 vez por semana (online)
 periodo: Febrero
-modalidad: presencial-y-online
+modalidad: online
 sedes:
   - villa-del-parque
+  - villa-urquiza
+horarios: []
 requiereTestDeNivel: true
+cambridge:
+  discriminant: false
 formulario: https://forms.gle/Z4ugMqYDv2azFNBs5
 pendiente: Confirmar fechas de febrero 2027.
 ---
-
 ¿Querés viajar tranquilo y comunicarte sin miedo? Este curso te da las herramientas reales para desenvolverte en cualquier situación turística o de trabajo. No es teoría: es práctica inmediata.
 
 ## Qué vas a lograr
