@@ -20,7 +20,14 @@ periodo: Febrero 2027
 modalidad: presencial
 sedes:
   - villa-urquiza
-horarios: []
+horarios:
+  - nombre: Intensivo verano starter
+    sede: villa-urquiza
+    dias: 'Lunes y miércoles '
+    horas: 18.30 a 20.00 hs
+    fechas: >-
+      Fechas de cursada (febrero/marzo 2027): Miércoles 10/02, lunes 15/02,
+      miércoles 17/02, lunes 22/02, miércoles 24/02 y lunes 01/03.
 certificado: Certificado por nivel aprobado
 requiereTestDeNivel: true
 cambridge:
