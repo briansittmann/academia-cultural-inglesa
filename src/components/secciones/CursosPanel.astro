@@ -79,10 +79,7 @@ const whatsappPorCurso = new Map(await Promise.all(cursos.map(async (c) => [c.id
             widths={[480, 800, 1200]}
             sizes="40vw"
             loading="lazy"
-            class:list={[
-              'h-full w-full object-cover',
-              { izquierda: 'object-left', centro: 'object-center', derecha: 'object-right' }[publico.data.fotoEncuadre],
-            ]}
+            class="h-full w-full object-cover"
           />
         </div>
       )

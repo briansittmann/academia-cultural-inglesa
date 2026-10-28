@@ -20,6 +20,7 @@
     "@astrojs/vercel": "^11.0.14",
     "@fontsource-variable/plus-jakarta-sans": "^5.3.0",
     "@iconify-json/material-symbols": "^1.2.95",
+    "@keystar/ui": "^0.10.0",
     "@keystatic/astro": "^6.0.0",
     "@keystatic/core": "^0.6.9",
     "@tailwindcss/vite": "^4.3.3",

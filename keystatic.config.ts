@@ -10,6 +10,7 @@
  */
 import { createElement } from 'react';
 import { config, collection, singleton, fields } from '@keystatic/core';
+import { conRecorte } from './src/keystatic/recorte';
 
 const proyectoCloud = import.meta.env.PUBLIC_KEYSTATIC_CLOUD_PROJECT as string | undefined;
 const esDesarrollo = import.meta.env.DEV;
@@ -25,6 +26,7 @@ const fotoInstituto = foto('instituto');
 const fotoSede = foto('sedes');
 const fotoPublico = foto('publicos');
 const fotoNovedad = foto('novedades');
+// Las fotos que el sitio recorta llevan "Editar recorte" con la proporción con la que se ven.
 
 // Íconos de Material Symbols disponibles (los que lista astro.config.mjs).
 const iconos = [
@@ -203,14 +205,17 @@ export default config({
           {
             titulo: fields.text({ label: 'Título principal', description: 'Máximo dos líneas en escritorio.', validation: { isRequired: true } }),
             bajada: fields.text({ label: 'Bajada', description: 'Máximo 20 palabras.', multiline: true, validation: { isRequired: true } }),
-            foto: fotoInstituto('Foto', 'Formato 4:3, al menos 1600 px de ancho.'),
+            foto: conRecorte(fotoInstituto('Foto', 'Horizontal, al menos 1600 px de ancho.'), { proporcion: 4 / 3, donde: 'la portada' }),
             fotoAlt: fields.text({ label: 'Descripción de la foto', description: 'Para lectores de pantalla.', validation: { isRequired: true } }),
           },
           { label: 'Portada (hero)' },
         ),
         academia: fields.object(
           {
-            foto: fotoInstituto('Foto', 'Va debajo de la cifra de carga horaria. Horizontal, al menos 1600 px de ancho. Sin foto, no se muestra nada.'),
+            foto: conRecorte(
+              fotoInstituto('Foto', 'Va debajo de la cifra de carga horaria. Horizontal, al menos 1600 px de ancho. Sin foto, no se muestra nada.'),
+              { proporcion: 16 / 10, donde: 'La Academia', guia: { proporcion: 4 / 3, texto: 'lo que se ve en el celular' } },
+            ),
             fotoAlt: fields.text({ label: 'Descripción de la foto', description: 'Para lectores de pantalla. Qué se ve en la foto.' }),
             sede: fields.relationship({
               label: 'Sede de la foto',
@@ -229,7 +234,10 @@ export default config({
               multiline: true,
               validation: { isRequired: true, length: { max: 160 } },
             }),
-            imagen: fotoInstituto('Imagen al compartir', 'Opcional, 1200 × 630. Si no hay, se usa la imagen con el logo.'),
+            imagen: conRecorte(fotoInstituto('Imagen al compartir', 'Opcional, al menos 1200 px de ancho. Si no hay, se usa la imagen con el logo.'), {
+              proporcion: 1200 / 630,
+              donde: 'la vista previa al compartir el link',
+            }),
           },
           { label: 'SEO' },
         ),
@@ -281,7 +289,10 @@ export default config({
           },
           { label: 'WhatsApp', layout: [6, 6, 12] },
         ),
-        foto: fotoSede('Foto de la sede', 'Opcional. Todavía no se muestra en la web.'),
+        foto: conRecorte(fotoSede('Foto de la sede', 'Opcional. Se ve chica en el selector de sede de WhatsApp.'), {
+          proporcion: 1,
+          donde: 'el selector de sede de WhatsApp',
+        }),
         fotoAlt: fields.text({ label: 'Descripción de la foto' }),
       },
     }),
@@ -308,18 +319,11 @@ export default config({
         titulo: fields.text({ label: 'Título del panel', validation: { isRequired: true } }),
         descripcion: fields.text({ label: 'Descripción', multiline: true, validation: { isRequired: true } }),
         formulario: url('Formulario "Pedir información"', 'Google Forms para los cursos de este público.'),
-        foto: fotoPublico('Foto', 'Formato 4:3 o 4:5.'),
-        fotoAlt: fields.text({ label: 'Descripción de la foto' }),
-        fotoEncuadre: fields.select({
-          label: 'Encuadre de la foto',
-          description: 'En la computadora la foto se recorta vertical: elegí qué parte se ve si es apaisada.',
-          options: [
-            { label: 'Izquierda', value: 'izquierda' },
-            { label: 'Centro', value: 'centro' },
-            { label: 'Derecha', value: 'derecha' },
-          ],
-          defaultValue: 'centro',
+        foto: conRecorte(fotoPublico('Foto', 'Se ve en la computadora, al lado de los cursos.'), {
+          proporcion: 4 / 5,
+          donde: 'el panel de Cursos',
         }),
+        fotoAlt: fields.text({ label: 'Descripción de la foto' }),
       },
     }),
 
@@ -410,7 +414,10 @@ export default config({
           itemLabel: ({ value }) => value || 'Curso',
         }),
         horarios: horarios('Cohortes con fechas concretas.'),
-        foto: fotoNovedad('Foto de la tarjeta', 'Opcional. Se ve en la franja Novedades de la portada. Si no hay, se usa el flyer. Que no tenga fechas ni años.'),
+        foto: conRecorte(
+          fotoNovedad('Foto de la tarjeta', 'Opcional. Se ve en la franja Novedades de la portada. Si no hay, se usa el flyer. Que no tenga fechas ni años.'),
+          { proporcion: 4 / 5, donde: 'la tarjeta de Novedades' },
+        ),
         flyer: fotoNovedad('Flyer', 'Opcional.'),
         flyerAlt: fields.text({ label: 'Descripción del flyer' }),
         pendiente,

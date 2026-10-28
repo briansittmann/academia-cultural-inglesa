@@ -124,8 +124,6 @@ const publicos = defineCollection({
       formulario: z.url().optional(), // "Pedir información" por defecto para sus cursos
       foto: image().optional(),
       fotoAlt: z.string().optional(),
-      // Qué parte de la foto se ve cuando el panel la recorta vertical (4:5).
-      fotoEncuadre: z.enum(['izquierda', 'centro', 'derecha']).default('centro'),
     }),
 });
 

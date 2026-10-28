@@ -14,7 +14,7 @@ encontrarla y la borra del YAML al guardar.
 | `publicos/ninos/foto.jpg` | Cursos: niños | Yegor Makarenko | https://unsplash.com/photos/boys-drawing-at-classroom-table-vOpkxzkJx9I |
 | `publicos/adolescentes/foto.jpg` | Cursos: adolescentes | Vitaly Gariev | https://unsplash.com/photos/teacher-pointing-at-students-with-raised-hands-HIheRKI9mTs |
 | `publicos/adultos/foto.jpg` | Cursos: adultos | Brooke Cagle | https://unsplash.com/photos/three-people-sitting-in-front-of-table-laughing-together-g1Kr4Ozfoac |
-| `publicos/verano/foto.jpg` | Cursos: verano | Joseph Chan | https://unsplash.com/photos/two-women-walking-with-luggage-bags-FcLh4pcidIk |
+| `publicos/verano/foto.jpg` | Cursos: verano | Subida desde el panel en octubre de 2026 (reemplazó a la de Unsplash). Origen a confirmar | |
 
 **Fotos reales del instituto**
 
