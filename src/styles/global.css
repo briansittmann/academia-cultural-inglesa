@@ -45,7 +45,6 @@
   /* Sombras tintadas de verde, no negras. */
   --shadow-*: initial;
   --shadow-card: 0 4px 16px rgba(46, 107, 52, 0.06);
-  --shadow-card-hover: 0 8px 24px rgba(46, 107, 52, 0.10);
   --shadow-flotante: 0 16px 48px rgba(20, 30, 22, 0.18); /* paneles que flotan sobre la página (selector de sede) */
   /* Botones con relieve: luz arriba, sombra interior abajo, sombra de contacto y sombra del color del botón. */
   --shadow-boton: inset 0 1px 0 rgb(255 255 255 / 0.2), inset 0 -1px 0 rgb(0 0 0 / 0.15), 0 1px 2px rgb(20 30 22 / 0.15), 0 4px 12px -4px rgb(46 107 52 / 0.3);
@@ -264,12 +263,12 @@
   @media (hover: hover) and (pointer: fine) {
     .tarjeta-elevable:hover::after {
       opacity: 1;
-      transition: opacity 500ms var(--ease-in-out);
+      transition: opacity 400ms var(--ease-in-out);
     }
   }
-  .tarjeta-elevable:has(:focus-visible)::after {
+  .tarjeta-elevable:is(:focus-visible, :has(:focus-visible))::after {
     opacity: 1;
-    transition: opacity 500ms var(--ease-in-out);
+    transition: opacity 400ms var(--ease-in-out);
   }
   .tarjeta-sede {
     box-shadow: var(--shadow-sede);
@@ -281,17 +280,30 @@
   .tarjeta-academia {
     --sombra-hover: var(--shadow-sede-hover);
   }
-
-  /* Tarjetas que son un link entero: borde y sombra al pasar el mouse. */
-  .tarjeta-link {
+  /* Novedades: son links enteros, así que además suben un poco (mismo ritmo que la sombra). */
+  .tarjeta-novedad {
+    box-shadow: var(--shadow-sede);
+    --sombra-hover: var(--shadow-sede-hover);
     transition:
-      box-shadow 200ms var(--ease-out),
-      border-color 200ms var(--ease-out);
+      translate 300ms var(--ease-out),
+      border-color 300ms var(--ease-out);
   }
   @media (hover: hover) and (pointer: fine) {
-    .tarjeta-link:hover {
-      border-color: var(--color-verde-700);
-      box-shadow: var(--shadow-card-hover);
+    .tarjeta-novedad:hover {
+      translate: 0 -3px;
+      border-color: color-mix(in oklab, var(--color-verde-700) 35%, transparent);
+      transition:
+        translate 400ms var(--ease-in-out),
+        border-color 400ms var(--ease-in-out);
     }
   }
+  .tarjeta-novedad:focus-visible {
+    translate: 0 -3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tarjeta-novedad:is(:hover, :focus-visible) {
+      translate: none;
+    }
+  }
+
 }

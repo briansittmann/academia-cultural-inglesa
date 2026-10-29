@@ -208,14 +208,66 @@ header[data-compacto] {
     translate: 4px 0;
   }
 }
-/* ---------- La Academia: hechos ---------- */
-/* Con el mouse, el hecho late (crece un poco y vuelve) y lo cruza un brillo, una sola
-   vez, mientras el mouse sigue encima. Pedido por Brian; referencia: Glare Hover de
-   React Bits (franja que se traslada, 650 ms). La franja se mueve con transform y el
-   hecho la recorta (overflow: hidden): sobre el crema casi no se ve y sobre el texto
-   verde lo ilumina. El latido usa scale, aparte del transform de la entrada (.sube),
-   para no heredar su demora. */
-.hecho-brillo {
+/* ---------- Páginas de novedad y de curso: la página se arma por partes ---------- */
+/* Cada hijo de .cascada entra de a uno (70 ms entre bloques; del noveno en adelante,
+   juntos) cuando su [data-reveal] aparece en pantalla. Por defecto sube; con
+   .cascada-derecha / .cascada-izquierda entra desde ese lado. --base es la demora
+   inicial: lo que se ve al cargar la página espera a que entre el encabezado. */
+.cascada > * {
+  transition:
+    opacity 500ms var(--ease-out),
+    transform 600ms var(--ease-out);
+  transition-delay: calc(var(--base, 120ms) + var(--k, 0) * 70ms);
+}
+.cascada > :nth-child(2) { --k: 1; }
+.cascada > :nth-child(3) { --k: 2; }
+.cascada > :nth-child(4) { --k: 3; }
+.cascada > :nth-child(5) { --k: 4; }
+.cascada > :nth-child(6) { --k: 5; }
+.cascada > :nth-child(7) { --k: 6; }
+.cascada > :nth-child(8) { --k: 7; }
+.cascada > :nth-child(n + 9) { --k: 8; }
+.js [data-reveal]:not([data-visible]) .cascada > * {
+  opacity: 0;
+  transform: translateY(14px);
+}
+.js [data-reveal]:not([data-visible]) .cascada-izquierda > * {
+  transform: translateX(-20px);
+}
+.js [data-reveal]:not([data-visible]) .cascada-derecha > * {
+  transform: translateX(32px);
+}
+/* Flyer de la novedad: además de deslizarse con el lateral, la imagen se descubre de
+   derecha a izquierda mientras el zoom se asienta (el recorte va en la imagen, no en el
+   elemento observado). */
+.pagina-flyer img {
+  transition:
+    clip-path 800ms var(--ease-in-out) 220ms,
+    transform 1100ms var(--ease-out) 220ms;
+}
+.js [data-reveal]:not([data-visible]) .pagina-flyer img {
+  clip-path: inset(0 0 0 100%);
+  transform: scale(1.08);
+}
+/* Flechas de los links: la de "volver" retrocede y la de "seguir" avanza con el mouse. */
+.flecha-avanza,
+.flecha-volver {
+  transition: translate 200ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  a:hover .flecha-avanza {
+    translate: 4px 0;
+  }
+  a:hover .flecha-volver {
+    translate: -4px 0;
+  }
+}
+
+/* ---------- La Academia: brillo y latido de los hechos al pasar el mouse ---------- */
+/* Una franja de luz cruza el elemento una sola vez, mientras el mouse sigue encima.
+   Pedido por Brian; referencia: Glare Hover de React Bits (franja que se traslada,
+   650 ms). Se mueve con transform y el contenedor la recorta (overflow: hidden). */
+.brillo {
   position: absolute;
   inset-block: 0;
   left: 0;
@@ -237,7 +289,7 @@ header[data-compacto] {
     scale: 1;
   }
 }
-@keyframes hecho-brillo {
+@keyframes brillo-cruce {
   from {
     transform: translateX(-130%) skewX(-20deg);
   }
@@ -246,11 +298,13 @@ header[data-compacto] {
   }
 }
 @media (hover: hover) and (pointer: fine) {
+  /* Hechos: además del brillo, laten (crecen un poco y vuelven). El latido usa scale,
+     aparte del transform de la entrada (.sube), para no heredar su demora. */
   [data-visible] .hecho:hover {
     animation: hecho-latido 600ms;
   }
-  [data-visible] .hecho:hover .hecho-brillo {
-    animation: hecho-brillo 650ms var(--ease-in-out);
+  [data-visible] .hecho:hover .brillo {
+    animation: brillo-cruce 650ms var(--ease-in-out);
   }
 }
 
@@ -592,9 +646,23 @@ header[data-compacto] {
   [data-visible] .curso-item:hover {
     translate: none;
   }
-  /* Los hechos no laten ni brillan. */
+  /* Páginas de novedad y curso: los bloques aparecen con un fundido, sin desplazarse. */
+  .js [data-reveal]:not([data-visible]) :is(.cascada, .cascada-izquierda, .cascada-derecha) > * {
+    transform: none;
+  }
+  .cascada > * {
+    transition: opacity 300ms var(--ease-out);
+  }
+  .js [data-reveal]:not([data-visible]) .pagina-flyer img {
+    clip-path: none;
+    transform: none;
+  }
+  a:hover :is(.flecha-avanza, .flecha-volver) {
+    translate: none;
+  }
+  /* Ni latido ni brillo. */
   [data-visible] .hecho:hover,
-  [data-visible] .hecho:hover .hecho-brillo {
+  [data-visible] .hecho:hover .brillo {
     animation: none;
   }
   /* Foto de La Academia: aparece con un fundido, sin telón, zoom ni hover. */

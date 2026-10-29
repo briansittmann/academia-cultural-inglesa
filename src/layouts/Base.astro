@@ -80,8 +80,18 @@ const ogImageUrl = new URL(ogImage, Astro.site);
     {!simple && <DatosEstructurados />}
     <ClientRouter />
     <slot name="head" />
-    {/* Marca que hay JS: los estados iniciales de las animaciones dependen de esta clase. */}
-    <script is:inline>document.documentElement.classList.add('js');</script>
+    {/* Marca que hay JS: los estados iniciales de las animaciones dependen de esta clase.
+        Al navegar con View Transitions, Astro reemplaza los atributos de <html> por los
+        de la página nueva (sin la clase) y este script no se vuelve a ejecutar: sin
+        volver a ponerla en astro:after-swap (antes de que se pinte la página), las
+        entradas no se veían al llegar desde otra página. El listener se registra una vez. */}
+    <script is:inline>
+      document.documentElement.classList.add('js');
+      if (!window.__jsTrasNavegar) {
+        window.__jsTrasNavegar = true;
+        document.addEventListener('astro:after-swap', () => document.documentElement.classList.add('js'));
+      }
+    </script>
   </head>
   <body class="flex min-h-dvh flex-col">
     <a
