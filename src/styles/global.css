@@ -57,6 +57,7 @@
   --shadow-tarjeta-oscuro: 0 1px 2px rgb(0 0 0 / 0.2), 0 12px 32px -12px rgb(0 0 0 / 0.45);
   --shadow-relieve-dorado: inset 0 1px 0 #ffffff, inset 0 -1px 0 rgb(123 88 0 / 0.12), 0 1px 2px rgb(0 0 0 / 0.25), 0 6px 14px -6px rgb(0 0 0 / 0.4);
   --shadow-relieve-tenue: inset 0 1px 0 rgb(255 255 255 / 0.08);
+  --shadow-relieve-verde: inset 0 1px 0 #ffffff, 0 1px 2px rgb(20 30 22 / 0.06), 0 4px 12px -4px rgb(46 107 52 / 0.14);
   --shadow-sello: inset 0 1px 0 rgb(255 255 255 / 0.7), inset 0 -1px 0 rgb(123 88 0 / 0.15), 0 1px 2px rgb(123 88 0 / 0.15);
   /* Tarjetas de sede: contacto + ambiental corta en reposo; con el mouse, más larga y difusa. */
   --shadow-sede: 0 1px 2px rgb(20 30 22 / 0.06), 0 4px 12px -4px rgb(46 107 52 / 0.14);
@@ -222,6 +223,11 @@
     --relieve-fondo: linear-gradient(var(--color-white), color-mix(in oklab, var(--color-dorado-600) 8%, var(--color-white)));
     --relieve-sombra: var(--shadow-relieve-dorado);
   }
+  /* La Academia: tarjeta de las cifras, verde muy suave con luz arriba. */
+  .relieve-verde {
+    --relieve-fondo: linear-gradient(var(--color-verde-50), var(--color-verde-100));
+    --relieve-sombra: var(--shadow-relieve-verde);
+  }
   .relieve-tenue {
     --relieve-fondo: linear-gradient(rgb(255 255 255 / 0.08), rgb(255 255 255 / 0.03));
     --relieve-sombra: var(--shadow-relieve-tenue);
@@ -271,6 +277,9 @@
   }
   .tarjeta-examen {
     --sombra-hover: var(--shadow-tarjeta-oscuro-hover);
+  }
+  .tarjeta-academia {
+    --sombra-hover: var(--shadow-sede-hover);
   }
 
   /* Tarjetas que son un link entero: borde y sombra al pasar el mouse. */

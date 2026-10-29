@@ -208,6 +208,52 @@ header[data-compacto] {
     translate: 4px 0;
   }
 }
+/* ---------- La Academia: hechos ---------- */
+/* Con el mouse, el hecho late (crece un poco y vuelve) y lo cruza un brillo, una sola
+   vez, mientras el mouse sigue encima. Pedido por Brian; referencia: Glare Hover de
+   React Bits (franja que se traslada, 650 ms). La franja se mueve con transform y el
+   hecho la recorta (overflow: hidden): sobre el crema casi no se ve y sobre el texto
+   verde lo ilumina. El latido usa scale, aparte del transform de la entrada (.sube),
+   para no heredar su demora. */
+.hecho-brillo {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+  width: 35%;
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.85), transparent);
+  transform: translateX(-130%) skewX(-20deg);
+  pointer-events: none;
+}
+@keyframes hecho-latido {
+  0% {
+    scale: 1;
+    animation-timing-function: var(--ease-out);
+  }
+  40% {
+    scale: 1.03;
+    animation-timing-function: var(--ease-in-out);
+  }
+  100% {
+    scale: 1;
+  }
+}
+@keyframes hecho-brillo {
+  from {
+    transform: translateX(-130%) skewX(-20deg);
+  }
+  to {
+    transform: translateX(400%) skewX(-20deg);
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  [data-visible] .hecho:hover {
+    animation: hecho-latido 600ms;
+  }
+  [data-visible] .hecho:hover .hecho-brillo {
+    animation: hecho-brillo 650ms var(--ease-in-out);
+  }
+}
+
 /* Indicador de tabs (receta): copia activa recortada con clip-path. Arriba y abajo
    el recorte se pasa unos píxeles para no cortar la sombra del relieve. */
 .tabs-copia {
@@ -545,6 +591,11 @@ header[data-compacto] {
   }
   [data-visible] .curso-item:hover {
     translate: none;
+  }
+  /* Los hechos no laten ni brillan. */
+  [data-visible] .hecho:hover,
+  [data-visible] .hecho:hover .hecho-brillo {
+    animation: none;
   }
   /* Foto de La Academia: aparece con un fundido, sin telón, zoom ni hover. */
   .foto-telon {

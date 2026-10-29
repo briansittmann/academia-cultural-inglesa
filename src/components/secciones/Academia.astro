@@ -14,6 +14,11 @@ const { cargaHoraria, hechos, descripcion, academia } = instituto.data;
 const sedesFoto = (await getEntries(academia?.sedes ?? [])).filter(Boolean).sort((a, b) => a.data.orden - b.data.orden);
 const nombresSedes = sedesFoto.map((s) => s.data.nombre).join(' y ');
 const fotoAlt = academia?.fotoAlt ?? (sedesFoto.length ? `Sede ${nombresSedes}` : 'Edificio de la Academia');
+// "Quiénes somos" se escribe en párrafos en el panel (separados por una línea en blanco).
+// El primero va como entrada, más grande.
+const [entrada, ...parrafos] = descripcion.split(/\n+/).map((p) => p.trim()).filter(Boolean);
+const mitad = Math.ceil(hechos.length / 2);
+const columnasHechos = [hechos.slice(0, mitad), hechos.slice(mitad)].filter((c) => c.length > 0);
 ---
 
 <section id="nosotros" class="scroll-mt-16 py-16 lg:py-24">
@@ -21,22 +26,21 @@ const fotoAlt = academia?.fotoAlt ?? (sedesFoto.length ? `Sede ${nombresSedes}` 
     <div class="grid gap-12 lg:grid-cols-12 lg:gap-16">
       <div class="lg:col-span-5" data-reveal>
         <h2 class="sube text-3xl sm:text-4xl">La Academia</h2>
-        <p class="sube mt-5 text-lg leading-relaxed text-tinta-suave" style="--i: 1">{descripcion}</p>
-        <ul class="mt-8 divide-y divide-borde/60 border-y border-borde/60">
+        {entrada && <p class="sube mt-5 text-xl leading-snug font-semibold text-verde-900 sm:text-2xl" style="--i: 1">{entrada}</p>}
+        <div class="mt-4 space-y-4">
           {
-            hechos.map((h, i) => (
-              <li class="izq flex items-start gap-3 py-3" style={`--i: ${2 + i * 0.7}`}>
-                <Icon name="material-symbols:check-circle-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
-                <span class="font-medium text-verde-900">{h}</span>
-              </li>
+            parrafos.map((p, i) => (
+              <p class="sube text-lg leading-relaxed text-tinta-suave" style={`--i: ${1.5 + i * 0.3}`}>
+                {p}
+              </p>
             ))
           }
-        </ul>
+        </div>
       </div>
 
       <div class="lg:col-span-7 lg:pt-2">
         <div data-reveal>
-          <div class="zoom rounded-card bg-verde-100/70 p-6 sm:p-10">
+          <div class="zoom relieve relieve-verde tarjeta-elevable tarjeta-academia rounded-card p-6 sm:p-10">
             <h3 class="text-2xl sm:text-3xl">{cargaHoraria.titulo}</h3>
             <div class="mt-8 grid gap-8 sm:grid-cols-2">
               {
@@ -63,6 +67,8 @@ const fotoAlt = academia?.fotoAlt ?? (sedesFoto.length ? `Sede ${nombresSedes}` 
             // Foto del edificio: se revela como un telón que sube y el zoom se asienta.
             // El recorte va en el hijo, nunca en el elemento observado (ver animaciones.css).
             <figure class="mt-6 lg:mt-8" data-reveal>
+              {/* La sombra del hover va en un envoltorio: el telón recorta su propio contenido. */}
+              <div class="tarjeta-elevable tarjeta-academia rounded-card">
               <div class="foto-telon overflow-hidden rounded-card shadow-card">
                 <Image
                   src={academia.foto}
@@ -72,6 +78,7 @@ const fotoAlt = academia?.fotoAlt ?? (sedesFoto.length ? `Sede ${nombresSedes}` 
                   loading="lazy"
                   class="aspect-[4/3] w-full object-cover object-[center_55%] sm:aspect-[16/10]"
                 />
+              </div>
               </div>
               {sedesFoto.length > 0 && (
                 <figcaption class="sube mt-3 flex flex-wrap gap-x-6 gap-y-1.5 text-sm text-tinta-suave" style="--i: 5">
@@ -89,6 +96,27 @@ const fotoAlt = academia?.fotoAlt ?? (sedesFoto.length ? `Sede ${nombresSedes}` 
           )
         }
       </div>
+    </div>
+
+    {/* Hechos (los carga la dueña desde el panel) en dos columnas: la primera mitad a la
+        izquierda y el resto a la derecha. Son dos listas explícitas y no columnas de CSS
+        (columns), que en Safari dejaban la segunda columna más abajo. Cada columna se
+        apila sola, así que un hecho de dos líneas no deja un hueco en la otra. La
+        cascada va por fila: el primero de cada columna entra a la vez. */}
+    <div class="mt-12 grid gap-x-12 gap-y-4 border-t border-borde/60 pt-10 sm:grid-cols-2 sm:items-start lg:mt-14" data-reveal>
+      {
+        columnasHechos.map((columna) => (
+          <ul class="grid gap-4">
+            {columna.map((h, fila) => (
+              <li class="hecho sube relative flex w-fit origin-left items-start gap-3 overflow-hidden" style={`--i: ${fila * 0.35}`}>
+                <Icon name="material-symbols:check-circle-outline" class="mt-0.5 size-5 shrink-0 text-verde-700" aria-hidden="true" />
+                <span class="font-medium text-verde-900">{h}</span>
+                <span class="hecho-brillo" aria-hidden="true"></span>
+              </li>
+            ))}
+          </ul>
+        ))
+      }
     </div>
   </div>
 </section>
