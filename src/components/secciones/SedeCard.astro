@@ -29,7 +29,7 @@ const whatsappUrl = `https://wa.me/${d.whatsapp.internacional}?text=${encodeURIC
       {/* Al tocarlo, el texto se va y queda un spinner hasta que el mapa termina de cargar. */}
       <button
         type="button"
-        class="mapa-boton relative inline-flex min-h-10 items-center gap-2 rounded-control border border-verde-700 bg-white px-4 text-sm font-semibold text-verde-900 hover:bg-verde-50"
+        class="mapa-boton boton boton-claro inline-flex min-h-10 items-center gap-2 rounded-control border border-verde-700 px-4 text-sm font-semibold text-verde-900"
         data-mapa-boton
       >
         <span class="mapa-boton-texto">Ver mapa</span>
@@ -83,10 +83,11 @@ const whatsappUrl = `https://wa.me/${d.whatsapp.internacional}?text=${encodeURIC
 </article>
 
 <style>
+  /* Relieve, hover y hundido: .boton en global.css. */
   .mapa-boton {
     transition:
       transform 160ms var(--ease-out),
-      background-color 160ms var(--ease-out);
+      translate 160ms var(--ease-out);
   }
   .mapa-boton:active {
     transform: scale(0.97);
