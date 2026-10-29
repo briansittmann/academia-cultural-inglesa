@@ -23,7 +23,6 @@
   --color-tinta-suave: #41493F;  /* texto secundario */
   --color-borde: #C0C9BC;        /* bordes, divisores */
   --color-whatsapp: #25D366;     /* solo botones de WhatsApp */
-  --color-whatsapp-claro: #3EDB7A;  /* arriba del degradado */
   --color-whatsapp-oscuro: #1FB857; /* hover */
 
   /* Tipografía: una sola familia, variable, alojada en el proyecto (Fontsource). */
@@ -59,6 +58,10 @@
   --shadow-relieve-dorado: inset 0 1px 0 #ffffff, inset 0 -1px 0 rgb(123 88 0 / 0.12), 0 1px 2px rgb(0 0 0 / 0.25), 0 6px 14px -6px rgb(0 0 0 / 0.4);
   --shadow-relieve-tenue: inset 0 1px 0 rgb(255 255 255 / 0.08);
   --shadow-sello: inset 0 1px 0 rgb(255 255 255 / 0.7), inset 0 -1px 0 rgb(123 88 0 / 0.15), 0 1px 2px rgb(123 88 0 / 0.15);
+  /* Tarjetas de sede: contacto + ambiental corta en reposo; con el mouse, más larga y difusa. */
+  --shadow-sede: 0 1px 2px rgb(20 30 22 / 0.06), 0 4px 12px -4px rgb(46 107 52 / 0.14);
+  --shadow-sede-hover: 0 2px 4px rgb(20 30 22 / 0.05), 0 18px 36px -14px rgb(46 107 52 / 0.26);
+  --shadow-tarjeta-oscuro-hover: 0 2px 4px rgb(0 0 0 / 0.2), 0 24px 48px -16px rgb(0 0 0 / 0.55); /* tarjetas de Cambridge */
 
   /* Duraciones: UI por debajo de 300 ms. */
   --default-transition-duration: 200ms;
@@ -145,62 +148,64 @@
     Relieve: degradado vertical, luz y sombra interiores y sombra de color. Lo usan
     los botones (Boton.astro) y, con .relieve, lo que tiene que combinar con ellos
     sin comportarse como botón (pestañas de Cursos, tarjetas de Cambridge).
-    En los botones, un degradado no se puede animar, así que el hover lo pinta una
-    capa (::before) que aparece por opacidad. Al apretar, el botón baja 1 px y la
+    En los botones, el degradado es una luz semitransparente fija sobre el color de
+    fondo, y el hover cambia solo ese color (se anima en Boton.astro). Antes el hover
+    era una capa ::before que aparecía por opacidad: el navegador la pasaba a una capa
+    propia y a veces no repintaba el borde al terminar (el botón quedaba "pegado" en
+    hover y sin borde hasta otro repintado). Al apretar, el botón baja 1 px y la
     sombra pasa adentro.
   */
   .boton,
   .relieve {
+    background-color: var(--relieve-color);
     background-image: var(--relieve-fondo);
     box-shadow: var(--relieve-sombra);
   }
-  .boton {
-    position: relative;
-    isolation: isolate;
-  }
-  .boton::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    background-image: var(--relieve-fondo-hover);
-    opacity: 0;
-    transition: opacity 160ms var(--ease-out);
-  }
   @media (hover: hover) and (pointer: fine) {
-    .boton:hover::before {
-      opacity: 1;
+    .boton:hover {
+      background-color: var(--relieve-color-hover);
     }
   }
   .boton:active {
     translate: 0 1px;
     box-shadow: var(--relieve-sombra-hundido);
   }
+  /* Luz arriba (blanco que se desvanece) y tinte verde abajo, sobre el color del botón. */
+  .boton-primario,
+  .boton-whatsapp {
+    --relieve-fondo: linear-gradient(rgb(255 255 255 / 0.1), rgb(255 255 255 / 0));
+  }
   .boton-primario {
-    --relieve-fondo: linear-gradient(var(--color-verde-600), var(--color-verde-700));
-    --relieve-fondo-hover: linear-gradient(var(--color-verde-700), var(--color-verde-900));
+    --relieve-color: var(--color-verde-700);
+    --relieve-color-hover: color-mix(in oklab, var(--color-verde-700), var(--color-verde-900));
     --relieve-sombra: var(--shadow-boton);
     --relieve-sombra-hundido: var(--shadow-boton-hundido);
   }
   .boton-whatsapp {
-    --relieve-fondo: linear-gradient(var(--color-whatsapp-claro), var(--color-whatsapp));
-    --relieve-fondo-hover: linear-gradient(var(--color-whatsapp), var(--color-whatsapp-oscuro));
+    --relieve-color: var(--color-whatsapp);
+    --relieve-color-hover: var(--color-whatsapp-oscuro);
     --relieve-sombra: var(--shadow-boton-whatsapp);
     --relieve-sombra-hundido: var(--shadow-boton-hundido);
   }
   /* Blancos con borde: secundario y whatsapp-borde (este se rellena de WhatsApp al pasar el mouse o con el foco). */
   .boton-claro {
-    --relieve-fondo: linear-gradient(var(--color-white), var(--color-verde-50));
-    --relieve-fondo-hover: linear-gradient(var(--color-verde-50), var(--color-verde-100));
+    --relieve-color: var(--color-white);
+    --relieve-color-hover: var(--color-verde-50);
+    --relieve-fondo: linear-gradient(transparent, color-mix(in oklab, var(--color-verde-100) 60%, transparent));
     --relieve-sombra: var(--shadow-boton-claro);
     --relieve-sombra-hundido: var(--shadow-boton-hundido-claro);
   }
   .boton-claro.boton-whatsapp-borde {
-    --relieve-fondo-hover: linear-gradient(var(--color-whatsapp-claro), var(--color-whatsapp));
+    --relieve-color-hover: var(--color-whatsapp);
   }
-  .boton-whatsapp-borde:focus-visible::before {
-    opacity: 1;
+  @media (hover: hover) and (pointer: fine) {
+    .boton-claro.boton-whatsapp-borde:hover {
+      --relieve-fondo: linear-gradient(rgb(255 255 255 / 0.1), rgb(255 255 255 / 0));
+    }
+  }
+  .boton-claro.boton-whatsapp-borde:focus-visible {
+    --relieve-fondo: linear-gradient(rgb(255 255 255 / 0.1), rgb(255 255 255 / 0));
+    background-color: var(--color-whatsapp);
   }
   /* Pestaña elegida sin JS (con JS la pinta la copia de .tabs-copia). */
   html:not(.js) .relieve[aria-selected='true'] {
@@ -227,6 +232,45 @@
       color-mix(in oklab, var(--color-dorado-600) 14%, var(--color-white))
     );
     --relieve-sombra: var(--shadow-sello);
+  }
+
+  /*
+    Tarjetas que se despegan con el mouse (sedes, exámenes de Cambridge): con el
+    mouse encima (o el foco del teclado adentro) aparece una sombra más larga y
+    difusa (--sombra-hover). No suben: no son un link entero, solo se iluminan. La
+    sombra va en ::after y aparece por opacidad, así que la tarjeta no puede recortar
+    su contenido (overflow) sin cortarla.
+  */
+  .tarjeta-elevable {
+    position: relative;
+  }
+  .tarjeta-elevable::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    box-shadow: var(--sombra-hover);
+    opacity: 0;
+    transition: opacity 300ms var(--ease-out); /* al irse */
+    pointer-events: none;
+  }
+  /* Al aparecer, más lento y con arranque suave (pedido por Brian: que se vea gentil). */
+  @media (hover: hover) and (pointer: fine) {
+    .tarjeta-elevable:hover::after {
+      opacity: 1;
+      transition: opacity 500ms var(--ease-in-out);
+    }
+  }
+  .tarjeta-elevable:has(:focus-visible)::after {
+    opacity: 1;
+    transition: opacity 500ms var(--ease-in-out);
+  }
+  .tarjeta-sede {
+    box-shadow: var(--shadow-sede);
+    --sombra-hover: var(--shadow-sede-hover);
+  }
+  .tarjeta-examen {
+    --sombra-hover: var(--shadow-tarjeta-oscuro-hover);
   }
 
   /* Tarjetas que son un link entero: borde y sombra al pasar el mouse. */

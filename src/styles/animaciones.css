@@ -178,11 +178,13 @@ header[data-compacto] {
   /* La entrada anima `transform` con demora escalonada; el hover usa `translate`,
      una propiedad aparte con su propia transición sin demora. Si compartieran
      propiedad, la demora de la entrada se aplicaría también al sacar el mouse y
-     el nivel que se deja volvería tarde (más tarde cuanto más abajo esté). */
+     el nivel que se deja volvería tarde (más tarde cuanto más abajo esté).
+     El hover es lento y con arranque suave (pedido por Brian: que el paso de un
+     curso al otro se vea gentil); el que se deja vuelve con el mismo ritmo. */
   transition:
     opacity 450ms var(--ease-out) calc(250ms + var(--i, 0) * 150ms),
     transform 600ms var(--ease-out) calc(250ms + var(--i, 0) * 150ms),
-    translate 200ms var(--ease-out) 0ms;
+    translate 450ms var(--ease-in-out) 0ms;
 }
 .curso-punto {
   transition:
@@ -214,11 +216,38 @@ header[data-compacto] {
 }
 
 /* ---------- Cambridge: sello con rebote corto ---------- */
+/* La entrada (transform, con demora) y el rebote del hover (scale, sin demora) van en
+   propiedades separadas: si compartieran propiedad, el hover heredaría la demora. */
 .sello {
   transition:
     opacity 300ms var(--ease-out),
     transform 500ms var(--ease-out-back);
   transition-delay: calc(450ms + var(--i, 0) * 120ms);
+}
+/* Con el mouse sobre la tarjeta, el nivel da un rebote (crece, se pasa apenas hacia
+   abajo y se asienta) y queda en su tamaño: lleva la vista al dato que importa. Corre
+   una vez cada vez que el mouse entra a la tarjeta. */
+@keyframes sello-rebote {
+  0% {
+    scale: 1;
+    animation-timing-function: var(--ease-out);
+  }
+  35% {
+    scale: 1.1;
+    animation-timing-function: var(--ease-in-out);
+  }
+  70% {
+    scale: 0.98;
+    animation-timing-function: var(--ease-in-out);
+  }
+  100% {
+    scale: 1;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .tarjeta-examen:hover .sello {
+    animation: sello-rebote 550ms;
+  }
 }
 .js [data-reveal]:not([data-visible]) .sello {
   opacity: 0;
@@ -501,6 +530,10 @@ header[data-compacto] {
   .curso-item,
   .curso-punto {
     transition: opacity 300ms var(--ease-out);
+  }
+  /* El sello no rebota con el mouse: queda solo la sombra de la tarjeta. */
+  .tarjeta-examen:hover .sello {
+    animation: none;
   }
   .js [data-reveal]:not([data-visible]) .cifra-bloque::before,
   .js [data-reveal]:not([data-visible]) .recorrido::before {

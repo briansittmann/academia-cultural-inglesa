@@ -21,8 +21,9 @@ const comoLlegar = `https://www.google.com/maps/search/?api=1&query=${consulta}`
 const whatsappUrl = `https://wa.me/${d.whatsapp.internacional}?text=${encodeURIComponent(d.whatsapp.mensaje ?? '')}`;
 ---
 
-<article class="flex flex-col overflow-hidden rounded-card border border-borde/60 bg-white shadow-card">
-  <div class="relative aspect-[16/9] bg-verde-100" data-mapa data-src={mapaEmbed} data-titulo={`Mapa de la sede ${d.nombre}`}>
+<article class="tarjeta-elevable tarjeta-sede flex flex-col rounded-card border border-borde/60 bg-white">
+  {/* El recorte va en el mapa y no en la tarjeta, para no cortar la sombra del hover. */}
+  <div class="relative aspect-[16/9] overflow-hidden rounded-t-[calc(var(--radius-card)-1px)] bg-verde-100" data-mapa data-src={mapaEmbed} data-titulo={`Mapa de la sede ${d.nombre}`}>
     <div class="absolute inset-0 flex flex-col items-center justify-center gap-3 p-4 text-center" data-mapa-placeholder>
       <Icon name="material-symbols:location-on-outline" class="size-10 text-verde-700" aria-hidden="true" />
       <p class="text-sm text-tinta-suave">{direccionCompleta}</p>
@@ -87,7 +88,8 @@ const whatsappUrl = `https://wa.me/${d.whatsapp.internacional}?text=${encodeURIC
   .mapa-boton {
     transition:
       transform 160ms var(--ease-out),
-      translate 160ms var(--ease-out);
+      translate 160ms var(--ease-out),
+      background-color 160ms var(--ease-out);
   }
   .mapa-boton:active {
     transform: scale(0.97);
