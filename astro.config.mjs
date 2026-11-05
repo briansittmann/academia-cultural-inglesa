@@ -13,13 +13,11 @@ import vercel from '@astrojs/vercel';
 // panel; el sitio sigue sin React. Las imágenes las procesa astro:assets en el
 // build (el adaptador no usa la optimización de imágenes de Vercel).
 
-// Dominio del sitio (canonical, Open Graph, sitemap, JSON-LD). En Vercel se
-// toma el dominio de producción: el .vercel.app mientras no haya dominio
-// propio, y academiaculturalinglesa.com en cuanto se lo agregue al proyecto
-// (hace falta un redespliegue). Si se fijara a mano un dominio que todavía no
-// apunta acá, la miniatura de WhatsApp y redes queda vacía.
-const dominio = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-const site = dominio ? `https://${dominio}` : 'https://academiaculturalinglesa.com';
+// Dominio del sitio (canonical, Open Graph, sitemap, robots.txt, JSON-LD).
+// Fijo: el dominio propio ya apunta a Vercel (www redirige acá con un 308).
+// No se toma de VERCEL_PROJECT_PRODUCTION_URL porque seguía devolviendo el
+// .vercel.app y los previews tienen que declarar el dominio de todos modos.
+const site = 'https://academiaculturalinglesa.com';
 
 export default defineConfig({
   site,

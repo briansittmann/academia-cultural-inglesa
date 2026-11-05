@@ -1,6 +1,6 @@
 # Academia Cultural Inglesa: contexto del proyecto web
 
-Estado al 2026-10-12. Escrito para dar contexto a un proyecto de Claude que se usa para brainstorming. Se regenera desde el repo cuando el sitio cambia de forma importante (ver el final).
+Estado al 2026-11-05. Escrito para dar contexto a un proyecto de Claude que se usa para brainstorming. Se regenera desde el repo cuando el sitio cambia de forma importante (ver el final).
 
 ## Quién es quién
 
@@ -56,7 +56,7 @@ Estado al 2026-10-12. Escrito para dar contexto a un proyecto de Claude que se u
 
 ## El sitio hoy
 
-Reemplaza la web vieja en WordPress.com (academiaculturalinglesa.com), que vivía de flyers en la portada y páginas sueltas por curso. Las URLs viejas redirigen a las nuevas.
+Vive en **https://academiaculturalinglesa.com** (desde el 2026-11-05; www redirige al dominio sin www). Reemplaza la web vieja en WordPress.com, que estaba en ese mismo dominio y vivía de flyers en la portada y páginas sueltas por curso. Las URLs viejas redirigen a las nuevas. El dominio sigue registrado en WordPress.com (ahí están los DNS), pero el sitio lo sirve Vercel. Pendiente de Brian: probar el panel en el dominio, redirigir el .vercel.app al dominio y dar de alta Search Console y el perfil de Google Business.
 
 **Portada (una página con secciones, en este orden):**
 1. **Header** fijo: logo, Cursos, Cambridge, Sedes, Nosotros y botón "Escribir por WhatsApp". En el celular, menú hamburguesa.
