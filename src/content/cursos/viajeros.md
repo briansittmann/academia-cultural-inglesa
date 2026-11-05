@@ -2,7 +2,7 @@
 nombre: Inglés para viajeros verano
 publico: verano
 orden: 2
-etiqueta: Online
+etiqueta: Presencial Sede Villa del Parque y online
 para: Adultos que quieren viajar y comunicarse sin miedo
 descripcion: >-
   Práctica inmediata para desenvolverte en aeropuertos, hoteles, restaurantes y
