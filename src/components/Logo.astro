@@ -3,17 +3,22 @@
  * Logo del instituto (escudo con los dos leones): src/assets/logo/logo.png, el
  * PNG que entregó el instituto el 2026-11-05, sin márgenes transparentes. Se
  * sirve como <img> optimizada por astro:assets, a 2x para pantallas retina.
+ * Sobre fondo oscuro (footer) va `variante="claro"`: logo-footer.png, con los
+ * leones blancos en lugar de verdes.
  * Los favicons salen de src/assets/logo/escudo.png (el escudo sin los leones).
  */
 import { Image } from 'astro:assets';
-import logo from '../assets/logo/logo.png';
+import logoOscuro from '../assets/logo/logo.png';
+import logoClaro from '../assets/logo/logo-footer.png';
 
 interface Props {
   size?: number; // alto en px
+  variante?: 'oscuro' | 'claro'; // claro: leones blancos, para fondo verde
   class?: string;
   alt?: string; // vacío cuando va junto al nombre del instituto
 }
-const { size = 40, class: className, alt = '' } = Astro.props;
+const { size = 40, variante = 'oscuro', class: className, alt = '' } = Astro.props;
+const logo = variante === 'claro' ? logoClaro : logoOscuro;
 const width = Math.round((size * logo.width) / logo.height);
 ---
 
