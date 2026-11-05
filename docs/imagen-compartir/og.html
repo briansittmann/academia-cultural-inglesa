@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="es-AR"><head><meta charset="utf-8">
+<style>
+@font-face{font-family:"PJS";src:url(../../node_modules/@fontsource-variable/plus-jakarta-sans/files/plus-jakarta-sans-latin-wght-normal.woff2) format("woff2");font-weight:200 800}
+:root{--verde-900:#1B4321;--verde-700:#2E6B34;--verde-100:#E5F1E4;--crema:#FBFBF9;--dorado-600:#C69214;--dorado-800:#7B5800;--tinta-suave:#41493F}
+*{margin:0;box-sizing:border-box}
+html,body{width:1200px;height:630px;overflow:hidden;background:var(--crema)}
+body{font-family:"PJS",sans-serif;display:grid;grid-template-columns:640px 1fr;-webkit-font-smoothing:antialiased}
+.texto{position:relative;padding:0 0 0 64px;display:flex;flex-direction:column;justify-content:center;
+  background:radial-gradient(120% 90% at 0% 0%,#fff 0%,var(--crema) 55%,#F3F6EF 100%)}
+.logo{height:132px;width:auto;align-self:flex-start;margin-left:-6px;filter:drop-shadow(0 6px 10px rgb(27 67 33/.12))}
+h1{margin-top:30px;font-size:66px;line-height:1.02;font-weight:800;letter-spacing:-.025em;color:var(--verde-900)}
+.bajada{margin-top:20px;font-size:27px;line-height:1.3;font-weight:500;color:var(--tinta-suave);max-width:540px}
+.datos{margin-top:40px;display:flex;gap:12px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:8px;height:46px;padding:0 20px 0 16px;border-radius:999px;font-size:21px;font-weight:700;white-space:nowrap}
+.chip svg{width:24px;height:24px}
+.chip-dorado{color:#5E4300;background:linear-gradient(#F7E6B4,#EFD48A);box-shadow:inset 0 1px 0 rgb(255 255 255/.7),inset 0 -1px 0 rgb(123 88 0/.15),0 1px 2px rgb(123 88 0/.15)}
+.chip-verde{color:var(--verde-900);background:linear-gradient(#EEF7ED,var(--verde-100));box-shadow:inset 0 1px 0 #fff,0 1px 2px rgb(20 30 22/.06),0 4px 12px -4px rgb(46 107 52/.14)}
+.chip-verde svg{color:var(--verde-700)}
+.foto{position:relative;overflow:hidden;border-left:8px solid var(--dorado-600)}
+.foto img{width:100%;height:100%;object-fit:cover;object-position:0% 40%;display:block}
+.foto::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgb(27 67 33/0) 55%,rgb(27 67 33/.82) 100%)}
+.pie{position:absolute;left:32px;right:32px;bottom:28px;z-index:1;color:#fff;font-size:22px;font-weight:700;display:flex;align-items:center;gap:8px;text-shadow:0 1px 2px rgb(0 0 0/.3)}
+.pie svg{width:26px;height:26px;color:#F2D27A;flex:none}
+</style></head><body>
+<section class="texto">
+  <img class="logo" src="../../src/assets/logo/logo-recortado.png" alt="">
+  <h1>Academia<br>Cultural Inglesa</h1>
+  <p class="bajada">Inglés para niños, adolescentes y adultos.</p>
+  <div class="datos">
+    <span class="chip chip-dorado" style="padding:0 20px">Desde 1979</span>
+    <span class="chip chip-verde"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M21 17v-6.9L12 15L1 9l11-6l11 6v8zm-9 4l-7-3.8v-5l7 3.8l7-3.8v5z"/></svg>Exámenes Cambridge</span>
+    
+  </div>
+</section>
+<figure class="foto">
+  <img src="fachada-villa-urquiza.jpg" alt="">
+  <p class="pie"><svg viewBox="0 0 24 24"><path fill="currentColor" d="M13.413 11.413Q14 10.825 14 10t-.587-1.412T12 8t-1.412.588T10 10t.588 1.413T12 12t1.413-.587M12 22q-4.025-3.425-6.012-6.362T4 10.2q0-3.75 2.413-5.975T12 2t5.588 2.225T20 10.2q0 2.5-1.987 5.438T12 22"/></svg>Villa Urquiza y Villa del Parque</p>
+</figure>
+</body></html>
