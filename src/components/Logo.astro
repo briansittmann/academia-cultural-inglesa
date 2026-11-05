@@ -1,12 +1,12 @@
 ---
 /**
- * Logo del instituto (escudo con los dos leones). Hoy es el PNG que entregó el
- * instituto (src/assets/logo/logo.png, 1254 px); se usa la versión recortada sin
- * márgenes transparentes y se sirve como <img> optimizada por astro:assets, a 2x
- * para pantallas retina. Cuando llegue el SVG original, se reemplaza acá.
+ * Logo del instituto (escudo con los dos leones): src/assets/logo/logo.png, el
+ * PNG que entregó el instituto el 2026-11-05, sin márgenes transparentes. Se
+ * sirve como <img> optimizada por astro:assets, a 2x para pantallas retina.
+ * Los favicons salen de src/assets/logo/escudo.png (el escudo sin los leones).
  */
 import { Image } from 'astro:assets';
-import logo from '../assets/logo/logo-recortado.png';
+import logo from '../assets/logo/logo.png';
 
 interface Props {
   size?: number; // alto en px
