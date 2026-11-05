@@ -72,11 +72,6 @@ testDeNivel:
         Completá tus datos y respondé las 124 preguntas. Si no sabés una, marcá
         "No sabe / No contesta".
       icono: quiz-outline
-    - titulo: Hacé el test online
-      texto: >-
-        Completá tus datos y respondé las 124 preguntas. Si no sabés una, marcá
-        "No sabe / No contesta".
-      icono: quiz-outline
     - titulo: Recibí tu nivel por mail
       texto: El resultado llega a tu casilla con el nivel que te corresponde.
       icono: mark-email-read-outline
