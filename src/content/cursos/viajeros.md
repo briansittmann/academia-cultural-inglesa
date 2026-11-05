@@ -11,7 +11,7 @@ descripcion: >-
 niveles: []
 frecuencia: 2 veces por semana (presencial) o 1 vez por semana (online)
 periodo: Febrero
-modalidad: online
+modalidad: presencial-y-online
 sedes:
   - villa-del-parque
   - villa-urquiza
