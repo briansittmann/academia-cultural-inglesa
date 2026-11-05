@@ -67,6 +67,9 @@ formularios:
 testDeNivel:
   preguntas: 124
   pasos:
+    - titulo: 'Si sos adulto y tenes ganas de comenzar '
+      texto: Segui estos pasos
+      icono: quiz-outline
     - titulo: Hacé el test online
       texto: >-
         Completá tus datos y respondé las 124 preguntas. Si no sabés una, marcá
