@@ -63,8 +63,9 @@ export default defineConfig({
   },
   integrations: [
     icon({
-      // Una sola familia de íconos en todo el sitio. Se listan los que se
-      // usan para que el bundle no cargue todo el set.
+      // Una sola familia de íconos en todo el sitio (Material Symbols); la
+      // excepción son los logos de redes del footer, que Material no trae.
+      // Se listan los que se usan para que el bundle no cargue todo el set.
       include: {
         'material-symbols': [
           'call-outline',
@@ -91,6 +92,7 @@ export default defineConfig({
           'check-rounded',
           'content-copy-outline',
         ],
+        'simple-icons': ['instagram', 'facebook'],
       },
     }),
     // La página de preguntas para la dueña es privada: fuera del sitemap.

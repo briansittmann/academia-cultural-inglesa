@@ -1,6 +1,6 @@
 ---
 /**
- * Footer: escudo y una línea, anclas, las dos sedes, email general y Facebook.
+ * Footer: escudo y una línea, anclas, las dos sedes, email general y redes (Instagram y Facebook).
  */
 import { getEntry, getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
@@ -19,6 +19,12 @@ const anclas = [
   { href: '/#test-de-nivel', texto: 'Cómo empezar' },
   { href: '/#sedes', texto: 'Sedes' },
 ];
+
+// Redes con su logo (en el color del texto). Solo las que están cargadas en el panel.
+const redes = [
+  { href: instituto.data.redes.instagram, texto: 'Instagram', icono: 'simple-icons:instagram' },
+  { href: instituto.data.redes.facebook, texto: 'Facebook', icono: 'simple-icons:facebook' },
+].filter((r) => r.href);
 ---
 
 <footer class="bg-verde-900 text-verde-100">
@@ -92,10 +98,15 @@ const anclas = [
       <span class="flex flex-wrap gap-x-5 gap-y-1">
         <a href={`mailto:${instituto.data.email}`} class="hover:text-white">{instituto.data.email}</a>
         {
-          instituto.data.redes.facebook && (
-            <a href={instituto.data.redes.facebook} rel="noopener" target="_blank" class="hover:text-white">
-              Facebook
-            </a>
+          redes.length > 0 && (
+            <span class="flex gap-x-5">
+              {redes.map((r) => (
+                <a href={r.href} rel="noopener" target="_blank" class="inline-flex items-center gap-1.5 hover:text-white">
+                  <Icon name={r.icono} class="size-3.5 shrink-0" aria-hidden="true" />
+                  {r.texto}
+                </a>
+              ))}
+            </span>
           )
         }
       </span>
