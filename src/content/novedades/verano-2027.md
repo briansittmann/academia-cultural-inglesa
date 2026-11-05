@@ -38,4 +38,4 @@ Diseñamos un curso intensivo y corto, ideal para aprovechar el verano. El objet
 
 ## Inglés para viajeros verano
 
-Práctica inmediata para desenvolverte en aeropuertos, hoteles y restaurantes. Presencial y online
+Práctica inmediata para desenvolverte en aeropuertos, hoteles y restaurantes. Presencial Sede Villa del Parque y online
