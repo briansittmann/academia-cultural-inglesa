@@ -585,8 +585,33 @@ header[data-compacto] {
   }
 }
 
+/* ---------- Header: el logo crece con el mouse y rebota al hacer clic ---------- */
+/* Crece y se aprieta con `scale` (propiedad aparte, sin demora). El rebote del clic corre
+   en el script del Header (WAAPI) y termina en el tamaño que tenga el logo en ese momento. */
+.logo-marca {
+  transition: scale 250ms var(--ease-out);
+}
+@media (hover: hover) and (pointer: fine) {
+  .logo-enlace:hover .logo-marca {
+    scale: 1.08;
+  }
+}
+.logo-enlace:active .logo-marca {
+  scale: 0.94;
+  transition-duration: 100ms;
+}
+
 /* ---------- Reduced motion: solo opacidad, sin desplazamientos ---------- */
 @media (prefers-reduced-motion: reduce) {
+  /* El logo no cambia de tamaño: solo se atenúa un poco con el mouse o al apretar. */
+  .logo-marca {
+    transition: opacity 150ms var(--ease-out);
+  }
+  .logo-enlace:hover .logo-marca,
+  .logo-enlace:active .logo-marca {
+    scale: none;
+    opacity: 0.8;
+  }
   .palabra {
     animation: solo-opacidad 400ms var(--ease-out) both;
     animation-delay: var(--retraso-titulo, 0ms);
